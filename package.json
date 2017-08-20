@@ -38,6 +38,7 @@
     "scripts": {
         "start": "webpack-dev-server --inline --devtool source-map -d",
         "storybook": "start-storybook -p 6006",
-        "build": "env NODE_ENV=production webpack"
+        "build": "env NODE_ENV=production webpack",
+        "benchmark": "babel --out-dir ./dist-bench --quiet ./src && node ./dist-bench/__benchmark__/index.js 6"
     }
 }

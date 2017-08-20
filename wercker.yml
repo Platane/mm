@@ -16,6 +16,10 @@ build:
             name: build
             code: yarn run build
 
+        - script:
+            name: benchmark
+            code: yarn run benchmark
+
 
 deploy:
 
