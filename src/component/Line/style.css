@@ -1,0 +1,10 @@
+.container {
+    display: flex;
+    flex-direction: row;
+}
+.dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    margin: 8px;
+}

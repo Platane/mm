@@ -1,0 +1,28 @@
+
+build:
+
+    box: node:8.1
+
+    steps:
+
+        - script:
+            name: install dependencies
+            code: |
+                npm install -g yarn --silent
+                export YARN_CACHE=$WERCKER_CACHE_DIR/yarn
+                HOME=$YARN_CACHE yarn --pure-lockfile
+
+        - script:
+            name: build
+            code: yarn run build
+
+
+deploy:
+
+    box: node:8.1
+
+    steps:
+
+        - takuma7/gh-pages:
+            token: $GH_TOKEN
+            basedir: dist

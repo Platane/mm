@@ -1,0 +1,25 @@
+.container {
+    background-color: #aaa;
+}
+.row {
+    display: flex;
+    flex-direction: column;
+}
+.line {
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin: 4px;
+}
+.diff {
+    margin-left: 20px;
+    display: flex;
+    flex-direction: row;
+}
+.arrows {
+    display: flex;
+    flex-direction: column;
+}
