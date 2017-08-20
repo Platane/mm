@@ -32,20 +32,20 @@ export const LineToPlay = ({ line, diff, setDiff, submitDiff }: Props) =>
                 <Line line={line} />
             </div>
             <div className={style.diff}>
-                {Array.from({ length: diff.black }).map((_, i) =>
-                    <DiffDot key={i} value={true} />
-                )}
                 <Arrows
                     value={diff.black}
                     onChange={i => setDiff({ ...diff, black: i })}
                 />
-                {Array.from({ length: diff.white }).map((_, i) =>
-                    <DiffDot key={i} value={false} />
+                {Array.from({ length: diff.black }).map((_, i) =>
+                    <DiffDot key={i} value={true} />
                 )}
                 <Arrows
                     value={diff.white}
                     onChange={i => setDiff({ ...diff, white: i })}
                 />
+                {Array.from({ length: diff.white }).map((_, i) =>
+                    <DiffDot key={i} value={false} />
+                )}
 
                 <button onClick={submitDiff}>ok</button>
             </div>
