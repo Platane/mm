@@ -8,7 +8,8 @@ type Dot_type = 'white' | 'black' | null
 
 export type Props = {
     dots: [Dot_type, Dot_type, Dot_type, Dot_type],
-    animated: boolean,
+    animated: ?boolean,
+    wobble: ?boolean,
     setDots: (*) => void,
 }
 
@@ -24,8 +25,16 @@ const createClickSlotHandler = (setDots, dots, k) => () =>
         )
     )
 
-export const Diff = ({ dots, setDots, animated }: Props) =>
-    <div className={style.container + ' ' + (animated ? style.animated : '')}>
+export const Diff = ({ dots, setDots, animated, wobble }: Props) =>
+    <div
+        className={
+            style.container +
+            ' ' +
+            (animated ? style.animated : '') +
+            ' ' +
+            (wobble ? style.wobble : '')
+        }
+    >
         {[0, 1].map(i =>
             <div key={i} className={style.row}>
                 {[0, 1].map(j =>

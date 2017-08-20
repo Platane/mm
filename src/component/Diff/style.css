@@ -15,6 +15,12 @@
     transform-style: preserve-3d;
     cursor: pointer;
 }
+.wobble .slot {
+    animation-name: wobble;
+    animation-duration: 800ms;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
 .dot {
     transform-style: preserve-3d;
     transform: scale3d(0.8, 0.8, 0.6);
@@ -40,5 +46,16 @@
     }
     100% {
         transform: translateZ(0) scale3d(0.8, 0.8, 0.6);
+    }
+}
+@keyframes wobble {
+    0% {
+        transform: scale3d(1, 1, 1);
+    }
+    60% {
+        transform: scale3d(0.9, 0.9, 0.9);
+    }
+    100% {
+        transform: scale3d(1, 1, 1);
     }
 }

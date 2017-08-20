@@ -1,7 +1,11 @@
 .container {
     display: flex;
     flex-direction: row;
+    align-items: center;
     transform-style: preserve-3d;
+    justify-content: space-around;
+    width: 100%;
+    max-width: 500px;
 }
 .dot {
     transform-style: preserve-3d;

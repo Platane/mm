@@ -1,4 +1,5 @@
 import React from 'react'
+import { Diff } from '../Diff/stateful'
 import { Line } from '../Line'
 
 import style from './style.css'
@@ -7,25 +8,40 @@ import type { Board as Board_type } from '../../type'
 
 export type Props = { board: Board_type }
 
-const DiffDot = ({ value }) =>
-    <div
-        className={style.dot}
-        style={{ backgroundColor: value ? 'black' : 'white' }}
-    />
+const Row = ({ i, line, diff, selected, setDiff }) =>
+    <div className={style.row}>
+        <div className={style.number}>
+            {i + 1}
+        </div>
+        <div
+            className={style.line + ' ' + (selected ? style.lineSelected : '')}
+        >
+            {line && <Line line={line} animated />}
+        </div>
+        <div className={style.diff}>
+            {diff &&
+                <Diff
+                    diff={diff}
+                    setDiff={setDiff}
+                    wobble={!!setDiff}
+                    animated
+                />}
+        </div>
+    </div>
 
-export const Board = ({ board }: Props) =>
+export const Board = ({ board, setDiff }: Props) =>
     <div className={style.container}>
-        {board.map(({ line, diff }, i) =>
-            <div key={i} className={style.row}>
-                <Line key={i} line={line} />
-                <div className={style.diff}>
-                    {Array.from({ length: diff.black }).map((_, i) =>
-                        <DiffDot key={i} value={true} />
-                    )}
-                    {Array.from({ length: diff.white }).map((_, i) =>
-                        <DiffDot key={i} value={false} />
-                    )}
-                </div>
-            </div>
-        )}
+        <div className={style.boardTop} />
+        <div className={style.board}>
+            {Array.from({ length: 7 }, (_, i) => 6 - i).map(i =>
+                <Row
+                    key={i}
+                    i={i}
+                    line={board[i] && board[i].line}
+                    diff={board[i] && board[i].diff}
+                    selected={board.length - 1 === i}
+                    setDiff={board.length - 1 === i && setDiff}
+                />
+            )}
+        </div>
     </div>
