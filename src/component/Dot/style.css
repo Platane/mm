@@ -1,0 +1,78 @@
+.container {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    transform-style: preserve-3d;
+    margin: 20px;
+}
+.foot,
+.head {
+    transform-style: preserve-3d;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translateZ(40px);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+.body {
+    transform-style: preserve-3d;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: translateZ(20px) rotateX(90deg) translateZ(-5px);
+    width: 30px;
+    height: 40px;
+}
+.foot {
+    transform: translateZ(0px);
+}
+
+.color1 .head {
+    background-color: #ca83dd;
+}
+.color1 .body,
+.color1 .foot {
+    background-color: #b15ec7;
+}
+
+.color2 .head {
+    background-color: #dedc43;
+}
+.color2 .body,
+.color2 .foot {
+    background-color: #bdbb27;
+}
+
+.color3 .head {
+    background-color: #de4343;
+}
+.color3 .body,
+.color3 .foot {
+    background-color: #c93939;
+}
+
+.color4 .head {
+    background-color: #4369de;
+}
+.color4 .body,
+.color4 .foot {
+    background-color: #3458c7;
+}
+
+.color5 .head {
+    background-color: #4fde43;
+}
+.color5 .body,
+.color5 .foot {
+    background-color: #40cb35;
+}
+
+.color5 .head {
+    background-color: #dea043;
+}
+.color5 .body,
+.color5 .foot {
+    background-color: #c28832;
+}

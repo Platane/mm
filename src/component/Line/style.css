@@ -1,10 +1,9 @@
 .container {
     display: flex;
     flex-direction: row;
+    transform-style: preserve-3d;
 }
 .dot {
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
+    transform-style: preserve-3d;
     margin: 8px;
 }
