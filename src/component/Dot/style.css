@@ -3,7 +3,6 @@
     width: 30px;
     height: 30px;
     transform-style: preserve-3d;
-    margin: 20px;
 }
 .foot,
 .head {
@@ -29,50 +28,66 @@
     transform: translateZ(0px);
 }
 
-.color1 .head {
+.color-1 .head {
     background-color: #ca83dd;
 }
-.color1 .body,
-.color1 .foot {
+.color-1 .body,
+.color-1 .foot {
     background-color: #b15ec7;
 }
 
-.color2 .head {
+.color-2 .head {
     background-color: #dedc43;
 }
-.color2 .body,
-.color2 .foot {
+.color-2 .body,
+.color-2 .foot {
     background-color: #bdbb27;
 }
 
-.color3 .head {
+.color-3 .head {
     background-color: #de4343;
 }
-.color3 .body,
-.color3 .foot {
+.color-3 .body,
+.color-3 .foot {
     background-color: #c93939;
 }
 
-.color4 .head {
+.color-4 .head {
     background-color: #4369de;
 }
-.color4 .body,
-.color4 .foot {
+.color-4 .body,
+.color-4 .foot {
     background-color: #3458c7;
 }
 
-.color5 .head {
+.color-5 .head {
     background-color: #4fde43;
 }
-.color5 .body,
-.color5 .foot {
+.color-5 .body,
+.color-5 .foot {
     background-color: #40cb35;
 }
 
-.color5 .head {
+.color-6 .head {
     background-color: #dea043;
 }
-.color5 .body,
-.color5 .foot {
+.color-6 .body,
+.color-6 .foot {
     background-color: #c28832;
+}
+
+.color-white .head {
+    background-color: #dedede;
+}
+.color-white .body,
+.color-white .foot {
+    background-color: #cbcaca;
+}
+
+.color-black .head {
+    background-color: #333;
+}
+.color-black .body,
+.color-black .foot {
+    background-color: #262626;
 }
