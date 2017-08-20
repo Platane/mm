@@ -79,7 +79,7 @@ module.exports = {
     },
 
     plugins: [
-        new webpack.NamedModulesPlugin(),
+        !production && new webpack.NamedModulesPlugin(),
 
         new ExtractTextPlugin({ filename: 'style.css', allChunks: true }),
 
