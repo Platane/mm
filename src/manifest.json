@@ -3,7 +3,7 @@
     "name": "mm",
     "short_name": "mm",
 
-    "start_url": ".",
+    "start_url": "index.html",
     "scope": ".",
 
     "display": "standalone",
@@ -14,9 +14,9 @@
     "description": "",
 
     "icons": [
-        { "size": "48", "src": "./icon48.png" },
-        { "size": "96", "src": "./icon96.png" },
-        { "size": "144", "src": "./icon144.png" },
-        { "size": "192", "src": "./icon192.png" }
+        { "sizes": "48x48", "src": "./icon48.png", "type": "image/png" },
+        { "sizes": "96x96", "src": "./icon96.png", "type": "image/png" },
+        { "sizes": "144x144", "src": "./icon144.png", "type": "image/png" },
+        { "sizes": "192x192", "src": "./icon192.png", "type": "image/png" }
     ]
 }
