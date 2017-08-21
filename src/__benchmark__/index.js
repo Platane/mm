@@ -1,4 +1,5 @@
-import { getPossibleLines, getBestLine, getDiff } from '../service/gameSolver'
+import { getPossibleLines, getBestLine } from '../service/gameSolver'
+import { getDiff } from '../service/gameSolver/validSolution'
 import { create as createRandom } from './random'
 
 import type { Line, Board, Dot } from '../type'

@@ -17,6 +17,10 @@ build:
             code: yarn run build
 
         - script:
+            name: test
+            code: yarn run test
+
+        - script:
             name: benchmark
             code: yarn run benchmark
 

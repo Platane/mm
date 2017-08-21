@@ -1,7 +1,7 @@
 import type { Board, Line, Dot, Diff } from '../../type'
 import type { ImcompleteLine } from './type'
 
-import { getDiff, isValidLine } from './getPossibleLines'
+import { getDiff, isValidSolution } from './validSolution'
 
 export const getScore = (board: Board, possibleLines: Line[], line: Line) => {
     const issues = {}
@@ -21,7 +21,8 @@ export const getScore = (board: Board, possibleLines: Line[], line: Line) => {
 
             const newBoard = [...board, { line, diff }]
 
-            const n = possibleLines.filter(l => isValidLine(newBoard, l)).length
+            const n = possibleLines.filter(l => isValidSolution(newBoard, l))
+                .length
 
             return sum + issues[key] * n
         }, 0) / possibleLines.length
@@ -67,7 +68,8 @@ export const getApproximatedScore = (
             newBoard[newBoard.length - 1].diff.black = +b
             newBoard[newBoard.length - 1].diff.white = +w
 
-            const n = possibleLines.filter(l => isValidLine(newBoard, l)).length
+            const n = possibleLines.filter(l => isValidSolution(newBoard, l))
+                .length
 
             return sum + issues[key] * n
         }, 0) / n
