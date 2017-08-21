@@ -21,10 +21,18 @@ self.addEventListener('activate', event => {
         // get the currently cached files, remove the one that are out of date
         caches.keys().then(cacheKeys => {
             Promise.all(
-                cacheKeys.map(
-                    key => !whiteList.includes(key) && caches.delete(key)
-                )
+                cacheKeys
+                    .filter(key => !whiteList.includes(key))
+                    .map(key => caches.delete(key))
             )
         })
     )
+})
+
+self.addEventListener('fetch', event => {
+    const requestURL = new URL(event.request.url)
+
+    if (assets.includes(requestURL.pathname))
+        // cached as asset
+        event.respondWith(caches.match(event.request))
 })
