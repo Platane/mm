@@ -37,11 +37,6 @@ self.addEventListener('fetch', event => {
 
     const requestURL = new URL(event.request.url)
 
-    if (
-        isSuffix('/sw.js', requestURL.pathname) ||
-        isSuffix('/manifest.json', requestURL.pathname)
-    )
-        return
-
-    event.respondWith(caches.match(event.request))
+    if (['/', ...assets].some(s => isSuffix(s, requestURL.pathname)))
+        event.respondWith(caches.match(event.request))
 })
