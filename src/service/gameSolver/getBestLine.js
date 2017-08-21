@@ -59,13 +59,13 @@ export const getApproximatedScore = (
 
     // for this issues, determine how many will be left once played,
     // take the average
+    const newBoard = [...board, { line, diff: { black: 0, white: 0 } }]
     return (
         elagatedKeys.reduce((sum, key) => {
             const [b, w] = key.split('-')
 
-            const diff = { black: +b, white: +w }
-
-            const newBoard = [...board, { line, diff }]
+            newBoard[newBoard.length - 1].diff.black = +b
+            newBoard[newBoard.length - 1].diff.white = +w
 
             const n = possibleLines.filter(l => isValidLine(newBoard, l)).length
 
