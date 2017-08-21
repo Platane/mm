@@ -1,8 +1,6 @@
-/* global caches self URL fetch */
+const assets = ['index.html', 'app_original_file.js', 'style_original_file.css']
 
-const assets = ['index.html', 'app.js', 'style.css']
-
-const assetCacheKey = 'staticAsset'
+const assetCacheKey = assets.join('-')
 
 self.addEventListener('install', event => {
     event.waitUntil(
@@ -11,10 +9,16 @@ self.addEventListener('install', event => {
 })
 
 self.addEventListener('activate', event => {
+    const whiteList = [assetCacheKey]
+
     event.waitUntil(
         // get the currently cached files, remove the one that are out of date
         caches.keys().then(cacheKeys => {
-            Promise.all(cacheKeys.map(key => caches.delete(key)))
+            Promise.all(
+                cacheKeys.map(
+                    key => !whiteList.includes(key) && caches.delete(key)
+                )
+            )
         })
     )
 })

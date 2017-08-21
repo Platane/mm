@@ -1,6 +1,6 @@
 /* global navigator */
 
-const SW_PATH = require('file-loader?name=[hash:8].js!./sw.js')
+const SW_PATH = require('file-loader?name=sw.js!./sw.js')
 
 const isSupported = () =>
     'undefined' !== typeof navigator &&

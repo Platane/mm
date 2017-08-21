@@ -1,3 +1,4 @@
+const fs = require('fs')
 const path = require('path')
 const webpack = require('webpack')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
@@ -15,12 +16,12 @@ const createEnvVarArray = () => {
 
 module.exports = {
     entry: {
-        app: ['./src/index.js', './src/index.html'],
+        app_original_file: ['./src/index.js', './src/index.html'],
     },
 
     output: {
         path: path.join(__dirname, 'dist'),
-        filename: '[name].js',
+        filename: production ? '[hash:8].js' : '[name].js',
     },
 
     module: {
@@ -81,7 +82,10 @@ module.exports = {
     plugins: [
         !production && new webpack.NamedModulesPlugin(),
 
-        new ExtractTextPlugin({ filename: 'style.css', allChunks: true }),
+        new ExtractTextPlugin({
+            filename: production ? '[hash:8].css' : 'style_original_file.css',
+            allChunks: true,
+        }),
 
         new webpack.DefinePlugin(createEnvVarArray()),
 
@@ -92,6 +96,17 @@ module.exports = {
                 sourceMap: false,
                 comments: false,
             }),
+
+        // write stats
+        production &&
+            function() {
+                this.plugin('done', stats =>
+                    fs.writeFileSync(
+                        path.join(__dirname, 'webpack-stats.json'),
+                        JSON.stringify(stats.toJson())
+                    )
+                )
+            },
     ].filter(Boolean),
 
     devtool: 'source-map',
