@@ -16,6 +16,7 @@
     "icons": [
         { "size": "48", "src": "./icon48.png" },
         { "size": "96", "src": "./icon96.png" },
+        { "size": "144", "src": "./icon144.png" },
         { "size": "192", "src": "./icon192.png" }
     ]
 }
