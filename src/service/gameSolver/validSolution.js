@@ -38,7 +38,15 @@ export const isValidSolutionForRow = (
     const dblack = diff.black - black
     const dwhite = diff.white - white
 
-    return dblack >= 0 && dwhite >= 0 && dblack + dwhite <= 4 - l.length
+    return (
+        // should not have more black than the target
+        dblack >= 0 &&
+        // should not have more black than the target
+        // /!\ some white can be changed to black by completing l
+        dwhite + Math.min(dblack, 4 - l.length) >= 0 &&
+        // enougth free space to add the missing black and white
+        dblack + dwhite <= 4 - l.length
+    )
 }
 
 export const isValidSolution = (board: Board, l: ImcompleteLine): boolean =>

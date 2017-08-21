@@ -6,6 +6,7 @@ const samples = [
     [[2, 2, 2, 2], [1, 2, 3, 4], { black: 1, white: 0 }],
     [[1, 2, 3, 4], [1], { black: 1, white: 0 }],
     [[1, 2, 3, 4], [1, 3], { black: 1, white: 1 }],
+    [[1, 2, 3, 4], [2, 3], { black: 0, white: 2 }],
 ]
 
 describe('getDiff', () =>
