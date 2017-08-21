@@ -54,6 +54,7 @@ module.exports = {
                         {
                             loader: 'css-loader',
                             options: {
+                                minimize: production,
                                 modules: true,
                                 importLoaders: true,
                                 localIdentName: production
