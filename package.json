@@ -5,11 +5,10 @@
         "prop-types": "15.5.10",
         "react": "15.6.1",
         "react-dom": "15.6.1",
-        "react-redux": "5.0.5",
-        "redux": "3.7.1"
+        "react-redux": "5.0.6",
+        "redux": "3.7.2"
     },
     "devDependencies": {
-        "@storybook/addon-storyshots": "3.1.8",
         "@storybook/cli": "3.1.6",
         "@storybook/react": "3.1.8",
         "babel-cli": "6.24.1",
@@ -20,7 +19,6 @@
         "babel-plugin-transform-async-to-generator": "6.24.1",
         "babel-plugin-transform-class-properties": "6.24.1",
         "babel-plugin-transform-runtime": "6.23.0",
-        "babel-plugin-transform-string-literal-replace": "1.0.2",
         "babel-preset-flow": "6.23.0",
         "babel-preset-react": "6.24.1",
         "babel-runtime": "6.23.0",
