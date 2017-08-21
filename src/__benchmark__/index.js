@@ -1,4 +1,5 @@
 import { getPossibleLines, getBestLine } from '../service/gameSolver'
+import { asyncGetBestLine } from '../service/gameSolver/asyncGetBestLine'
 import { getDiff } from '../service/gameSolver/validSolution'
 import { create as createRandom } from './random'
 
@@ -19,7 +20,7 @@ const randomDot = (): Dot => Math.floor(random() * 6) + 1
 
 const generateLine: Line = () => Array.from({ length: 4 }, randomDot)
 
-const play = () => {
+const play = async () => {
     const solution: Line = generateLine()
 
     const board: Board = []
@@ -30,7 +31,12 @@ const play = () => {
     let win = false
 
     while (k < 10 && !win) {
-        const line = getBestLine(board, getPossibleLines(board))
+        const line = await asyncGetBestLine(board)
+
+        if (!line) {
+            break
+        }
+
         const diff = getDiff(solution, line)
 
         board.push({ line, diff })
@@ -53,26 +59,31 @@ const q = (a, b, arr) =>
             .slice(Math.floor(arr.length * a), Math.ceil(arr.length * b))
     )
 
-const n = +(process.argv[2] || 5)
+const run = async () => {
+    const n = +(process.argv[2] || 5)
 
-const games = Array.from({ length: n }, play)
+    const games = []
+    for (let i = n; i--; ) games.push(await play())
 
-const win_games = games.filter(x => x.win)
-const average_k = mean(win_games.map(x => x.k))
-const q95_k = q(0.9, 1, win_games.map(x => x.k))
+    const win_games = games.filter(x => x.win)
+    const average_k = mean(win_games.map(x => x.k))
+    const q95_k = q(0.9, 1, win_games.map(x => x.k))
 
-const average_duration = mean(win_games.map(x => x.duration))
-const q95_duration = q(0.9, 1, win_games.map(x => x.duration))
+    const average_duration = mean(win_games.map(x => x.duration))
+    const q95_duration = q(0.9, 1, win_games.map(x => x.duration))
 
-console.log(`
-    ${games.length} games
-    ${win_games.length} win
+    console.log(`
+        ${games.length} games
+        ${win_games.length} win
 
-    turn :
-    average ${average_k} turn
-    5% worst ${q95_k} turn
+        turn :
+        average ${average_k} turn
+        5% worst ${q95_k} turn
 
-    duration :
-    average ${average_duration} ms
-    5% worst ${q95_duration} ms
-`)
+        duration :
+        average ${average_duration} ms
+        5% worst ${q95_duration} ms
+    `)
+}
+
+run()
