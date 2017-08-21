@@ -21,10 +21,15 @@ export const asyncGetBestLine = async (board: Board): Promise<Line | null> => {
     if (board.length === 0) return [1, 2, 3, 4]
 
     const possibleLines = getPossibleLines(board)
-    const chunks = chunkify(100, possibleLines)
+    const chunks = chunkify(50, possibleLines)
 
     let bestLine = null
     let bestScore = 9999999
+
+    const acceptable_score =
+        possibleLines.length > 60
+            ? possibleLines.length * 0.45
+            : possibleLines.length
 
     while (chunks.length) {
         chunks.shift().forEach(line => {
@@ -33,8 +38,12 @@ export const asyncGetBestLine = async (board: Board): Promise<Line | null> => {
             if (score < bestScore) {
                 bestScore = score
                 bestLine = line
+
+                if (score < acceptable_score) return
             }
         })
+
+        if (bestScore < acceptable_score) return bestLine
 
         await raf()
     }

@@ -42,7 +42,7 @@
         "start": "webpack-dev-server --inline --devtool source-map -d",
         "storybook": "start-storybook -p 6006",
         "build": "env NODE_ENV=production webpack && cp ./src/manifest.json ./dist/manifest.json && cp ./src/asset/icon/* ./dist/ && node ./script/renameFile.js",
-        "benchmark": "babel --out-dir ./dist-bench --quiet ./src && node ./dist-bench/__benchmark__/index.js 20",
+        "benchmark": "babel --out-dir ./dist-bench --quiet ./src && node ./dist-bench/__benchmark__/index.js 100",
         "test": "env NODE_ENV=test jest"
     }
 }
