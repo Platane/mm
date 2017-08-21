@@ -29,10 +29,19 @@ self.addEventListener('activate', event => {
     )
 })
 
+const isSuffix = (suffix, word) => word.slice(-suffix.length) === suffix
+
 self.addEventListener('fetch', event => {
+    // consider all the things as cached
+    // expect sw.js and manifest.json
+
     const requestURL = new URL(event.request.url)
 
-    if (assets.includes(requestURL.pathname))
-        // cached as asset
-        event.respondWith(caches.match(event.request))
+    if (
+        isSuffix('/sw.js', requestURL.pathname) ||
+        isSuffix('/manifest.json', requestURL.pathname)
+    )
+        return
+
+    event.respondWith(caches.match(event.request))
 })
