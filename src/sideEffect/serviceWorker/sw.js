@@ -1,4 +1,10 @@
-const assets = ['index.html', 'app_original_file.js', 'style_original_file.css']
+const assets = [
+    '.',
+    './',
+    'index.html',
+    'app_original_file.js',
+    'style_original_file.css',
+]
 
 const assetCacheKey = assets.join('-')
 
