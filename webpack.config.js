@@ -113,7 +113,7 @@ module.exports = {
 
     devServer: {
         port: 8082,
-        contentBase: [path.join(__dirname, 'node_modules/firebase')],
+        contentBase: [path.join(__dirname, 'src')],
         historyApiFallback: true,
         watchOptions: {
             ignored: /node_modules/,

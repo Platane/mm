@@ -7,3 +7,5 @@ export const colors = [
     '#df2525',
     '#c66618',
 ]
+
+export const UI = ['#b6e3ce', '#e4f4d9', '#f24b55', '#6a6d70']

@@ -2,7 +2,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import { defaultState, reduce } from './reducer'
 
 import { init as initUI } from './sideEffect/ui'
-// import { init as initCompute } from './sideEffect/compute'
+import { init as initCompute } from './sideEffect/compute'
 import { init as initServiceWorker } from './sideEffect/serviceWorker'
 
 let store
@@ -33,4 +33,4 @@ let store
     store = createStore(reduce, defaultState, compose(...enhancers))
 }
 
-;[initUI, initServiceWorker].forEach(init => init(store))
+;[initUI, initCompute, initServiceWorker].forEach(init => init(store))

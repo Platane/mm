@@ -13,13 +13,15 @@
     width: 40px;
     height: 40px;
     transform-style: preserve-3d;
-    cursor: pointer;
 }
 .wobble .slot {
     animation-name: wobble;
     animation-duration: 800ms;
     animation-timing-function: linear;
     animation-iteration-count: infinite;
+}
+.clickable .slot {
+    cursor: pointer;
 }
 .dot {
     transform-style: preserve-3d;

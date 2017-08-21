@@ -1,9 +1,20 @@
 import type { Board, Line, Diff } from '../type'
 
-export type State = {
-    board: Board,
+export type State =
+    | {
+          state: 'playThis',
 
-    lineToPlay: Line,
+          board: Board,
+          linePossible: Line[],
+      }
+    | {
+          state: 'computing',
 
-    linePossible: Line[],
-}
+          board: Board,
+      }
+    | {
+          state: 'writeDiff',
+
+          board: Board,
+          linePossible: Line[],
+      }

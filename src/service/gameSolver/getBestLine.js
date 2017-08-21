@@ -28,14 +28,16 @@ const getScore = (board, lines, line) => {
     )
 }
 
-const getBestLine_ = (board: Board, lines: Line[]): Line =>
-    lines.reduce((best, line) => {
-        const score = getScore(board, lines, line)
+const getBestLine_ = (board: Board, lines: Line[]): Line | null =>
+    !lines[0]
+        ? null
+        : lines.reduce((best, line) => {
+              const score = getScore(board, lines, line)
 
-        if (!best || best.score > score) return { line, score }
+              if (!best || best.score > score) return { line, score }
 
-        return best
-    }, null).line
+              return best
+          }, null).line
 
-export const getBestLine = (board: Board, lines: Line[]): Line =>
+export const getBestLine = (board: Board, lines: Line[]): Line | null =>
     board.length === 0 ? [1, 2, 3, 4] : getBestLine_(board, lines)

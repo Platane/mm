@@ -1,6 +1,7 @@
 import React from 'react'
 import { Diff } from '../Diff/stateful'
 import { Line } from '../Line'
+import { Banners } from './Banners'
 
 import style from './style.css'
 
@@ -29,9 +30,12 @@ const Row = ({ i, line, diff, selected, setDiff }) =>
         </div>
     </div>
 
-export const Board = ({ board, setDiff }: Props) =>
+export const Board = ({ board, setDiff, submitDiff, linePlayed }: Props) =>
     <div className={style.container}>
-        <div className={style.boardTop} />
+        <div className={style.caseLeft} />
+        <div className={style.caseRight} />
+        <div className={style.caseFront} />
+
         <div className={style.board}>
             {Array.from({ length: 7 }, (_, i) => 6 - i).map(i =>
                 <Row
@@ -39,9 +43,15 @@ export const Board = ({ board, setDiff }: Props) =>
                     i={i}
                     line={board[i] && board[i].line}
                     diff={board[i] && board[i].diff}
-                    selected={board.length - 1 === i}
+                    selected={board.length - 1 === i && linePlayed}
                     setDiff={board.length - 1 === i && setDiff}
                 />
             )}
         </div>
+
+        <Banners
+            submitDiff={submitDiff}
+            linePlayed={linePlayed}
+            y={7 - board.length}
+        />
     </div>

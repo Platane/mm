@@ -32,7 +32,9 @@ export const Diff = ({ dots, setDots, animated, wobble }: Props) =>
             ' ' +
             (animated ? style.animated : '') +
             ' ' +
-            (wobble ? style.wobble : '')
+            (wobble && false ? style.wobble : '') +
+            ' ' +
+            (setDots ? style.clickable : '')
         }
     >
         {[0, 1].map(i =>

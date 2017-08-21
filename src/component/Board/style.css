@@ -1,6 +1,7 @@
 .container {
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 .row {
     display: flex;
@@ -16,6 +17,7 @@
     flex-basis: 70%;
     justify-content: center;
     margin-left: 10px;
+    transition: transform 300ms ease;
 }
 .lineSelected {
     transform: scale3d(1, 1, 1.5);
@@ -26,6 +28,7 @@
     background-color: #8f4116;
 }
 .row:nth-child(2n + 0) {
+    background-color: #9c4819;
 }
 .diff {
     display: flex;
@@ -37,9 +40,41 @@
 .board {
     background-color: #9c4819;
 }
-.boardTop {
+
+.caseFront {
+    height: 50px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+    transform: rotateX(90deg);
+    transform-origin: bottom;
+    transform-style: preserve-3d;
+    background-color: #7e411e;
+}
+.caseLeft {
+    width: 50px;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    transform: rotateY(90deg);
+    transform-origin: left;
+    transform-style: preserve-3d;
     background-color: #85441f;
 }
+.caseRight {
+    width: 50px;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    transform: rotateY(-90deg);
+    transform-origin: right;
+    transform-style: preserve-3d;
+    background-color: #85441f;
+}
+
 .number {
     position: absolute;
     width: 90px;

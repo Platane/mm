@@ -50,7 +50,7 @@ export class Diff extends React.Component {
             <SimpleDiff
                 {...this.props}
                 dots={this.state.dots}
-                setDots={this.setDots}
+                setDots={this.props.setDiff && this.setDots}
             />
         )
     }

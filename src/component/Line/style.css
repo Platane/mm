@@ -41,7 +41,10 @@
 }
 @keyframes appear2 {
     0% {
-        transform: translateZ(300px);
+        transform: translateZ(300px) scale3d(0, 0, 0);
+    }
+    19% {
+        transform: translateZ(300px) scale3d(0, 0, 0);
     }
     20% {
         transform: translateZ(300px);
@@ -55,7 +58,10 @@
 }
 @keyframes appear3 {
     0% {
-        transform: translateZ(300px);
+        transform: translateZ(300px) scale3d(0, 0, 0);
+    }
+    39% {
+        transform: translateZ(300px) scale3d(0, 0, 0);
     }
     40% {
         transform: translateZ(300px);
@@ -69,7 +75,10 @@
 }
 @keyframes appear4 {
     0% {
-        transform: translateZ(300px);
+        transform: translateZ(300px) scale3d(0, 0, 0);
+    }
+    59% {
+        transform: translateZ(300px) scale3d(0, 0, 0);
     }
     60% {
         transform: translateZ(300px);
