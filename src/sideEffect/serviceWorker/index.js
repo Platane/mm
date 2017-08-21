@@ -8,7 +8,7 @@ const isSupported = () =>
     'function' === typeof navigator.serviceWorker.register
 
 export const init = () => {
-    if (isSupported()) return
+    if (!isSupported()) return
 
     navigator.serviceWorker.register(SW_PATH, { scope: './' }).catch(err =>
         // eslint-disable-next-line no-console
