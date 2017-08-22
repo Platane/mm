@@ -3,14 +3,14 @@ import { create, isSupported } from '../../service/deviceOrientation'
 
 export const wrap = C => {
     class Stateful extends React.Component {
-        state = { gamma: 0 }
+        state = { gamma: 0, alpha: 0, beta: 0 }
 
         getOrientation = create()
 
         _timeout = null
 
         loop = () => {
-            this.setState({ gamma: this.getOrientation().gamma })
+            this.setState(this.getOrientation())
 
             cancelAnimationFrame(this._timeout)
             this._timeout = requestAnimationFrame(this.loop)
@@ -25,7 +25,7 @@ export const wrap = C => {
         }
 
         render() {
-            return <C {...this.props} gamma={this.state.gamma} />
+            return <C {...this.props} {...this.state} />
         }
     }
     return Stateful

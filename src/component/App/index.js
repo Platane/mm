@@ -18,6 +18,8 @@ class SBoard extends React.PureComponent {
 export const App = ({
     board,
     gamma,
+    alpha,
+    beta,
     linePlayed,
     setDiff,
     submitDiff,
@@ -28,19 +30,28 @@ export const App = ({
         <div
             className={style.board}
             style={{
-                transform:
-                    `translateY(${(board.length - 3.5) * 90}px)` +
-                    `rotateY(${gamma * 16}deg)`,
+                transform: `translateY(${(board.length - 3.5) * 90}px)`,
             }}
         >
-            <SBoard board={board} setDiff={setDiff} />
+            <div
+                className={style.gyro}
+                style={{
+                    transform:
+                        `rotateX(${Math.max(-0.6, Math.min(0.2, beta)) *
+                            70}deg)` +
+                        `rotateY(${Math.max(-0.4, Math.min(0.4, -gamma)) *
+                            70}deg)`,
+                }}
+            >
+                <SBoard board={board} setDiff={setDiff} />
 
-            <SBanners
-                y={7 - board.length}
-                submitDiff={submitDiff}
-                linePlayed={linePlayed}
-                state={state}
-                error={error}
-            />
+                <SBanners
+                    y={7 - board.length}
+                    submitDiff={submitDiff}
+                    linePlayed={linePlayed}
+                    state={state}
+                    error={error}
+                />
+            </div>
         </div>
     </div>

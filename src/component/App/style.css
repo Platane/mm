@@ -15,6 +15,10 @@
     justify-content: center;
     align-items: center;
 }
+.gyro2,
+.gyro {
+    transform-style: preserve-3d;
+}
 @keyframes wobble {
     0% {
         transform: rotateX(90deg);

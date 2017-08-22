@@ -45,7 +45,7 @@ export const Banners = ({ y, submitDiff, linePlayed, error, state }) =>
                 className={style.infoSecond + ' ' + style[`info-${state}`]}
                 style={{
                     transform:
-                        `translate3d(0,${y * LINE_HEIGHT + 120}px,50px) ` +
+                        `translate3d(0,${y * LINE_HEIGHT + 120}px,30px) ` +
                         'rotateX(0deg)',
                 }}
             >
