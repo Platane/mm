@@ -18,3 +18,9 @@ export type State =
           board: Board,
           linePossible: Line[],
       }
+    | {
+          state: 'error',
+
+          board: Board,
+          error: string,
+      }

@@ -3,7 +3,7 @@ import { Board } from '../Board/stateful'
 
 import style from './style.css'
 
-export const App = ({ board, linePlayed, setDiff, computing }) =>
+export const App = ({ board, linePlayed, setDiff, computing, error }) =>
     <div className={style.container}>
         <div
             className={style.board}
@@ -14,6 +14,7 @@ export const App = ({ board, linePlayed, setDiff, computing }) =>
                 linePlayed={linePlayed}
                 setDiff={setDiff}
                 computing={computing}
+                error={error}
             />
         </div>
     </div>

@@ -6,6 +6,7 @@
     right: 0;
     transform-style: preserve-3d;
 }
+.infoError,
 .infoComputing,
 .infoWriteDiff,
 .infoWriten,
@@ -24,6 +25,10 @@
     align-items: center;
 }
 .infoPlayLine {
+    width: 60%;
+    margin-left: 5%;
+}
+.infoError {
     width: 60%;
     margin-left: 5%;
 }

@@ -36,6 +36,7 @@ export const Board = ({
     submitDiff,
     linePlayed,
     computing,
+    error,
 }: Props) =>
     <div className={style.container}>
         <div className={style.caseLeft} />
@@ -60,6 +61,7 @@ export const Board = ({
         </div>
 
         <Banners
+            error={error}
             computing={computing}
             submitDiff={submitDiff}
             linePlayed={linePlayed}

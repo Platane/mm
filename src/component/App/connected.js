@@ -4,10 +4,7 @@ import { setDiff, linePlayed } from '../../action'
 
 import type { State } from '../../reducer/type'
 
-const mapStateToProps = (state: State) => ({
-    state: state.state,
-    board: state.board,
-})
+const mapStateToProps = (state: State) => state
 
 const mapDispatchToProps = {
     setDiff,
@@ -32,6 +29,12 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
             return {
                 board: stateProps.board,
                 computing: true,
+            }
+
+        case 'error':
+            return {
+                board: stateProps.board,
+                error: stateProps.error,
             }
 
         default:

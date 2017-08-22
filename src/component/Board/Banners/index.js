@@ -9,7 +9,7 @@ const Button = ({ onClick }) =>
 
 const LINE_HEIGHT = 90
 
-export const Banners = ({ y, submitDiff, linePlayed, computing }) =>
+export const Banners = ({ y, submitDiff, linePlayed, computing, error }) =>
     <div className={style.container}>
         {submitDiff &&
             <div
@@ -49,6 +49,19 @@ export const Banners = ({ y, submitDiff, linePlayed, computing }) =>
                 <div className={style.arrow} />
                 Play this line
                 <Button onClick={linePlayed} />
+            </div>}
+
+        {error &&
+            <div
+                className={style.infoError}
+                style={{
+                    transform:
+                        `translate3d(0,${y * LINE_HEIGHT - 60}px,50px) ` +
+                        'rotateX(-20deg)',
+                }}
+            >
+                <div className={style.arrow} />
+                {error}
             </div>}
 
         {computing &&

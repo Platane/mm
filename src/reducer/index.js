@@ -46,6 +46,16 @@ export const reduce = (state: State, action): State => {
             }
         }
 
+        case 'computing:error': {
+            if (state.state != 'computing') return state
+
+            return {
+                state: 'error',
+                board: state.board,
+                error: 'computing error',
+            }
+        }
+
         case 'computing:start':
         default:
             return state
