@@ -1,17 +1,17 @@
 {
     "version": "1.0.0",
-    "name": "mm",
-    "short_name": "mm",
+    "name": "master mind solver",
+    "short_name": "master mind",
 
     "start_url": "index.html",
     "scope": ".",
 
     "display": "standalone",
-    "background_color": "#ffffff",
-    "theme_color": "#d55323",
+    "background_color": "#f24b55",
+    "theme_color": "#b6e3ce",
 
     "lang": "en-US",
-    "description": "",
+    "description": "Help you win win a master mind game",
 
     "icons": [
         { "sizes": "48x48", "src": "./icon48.png", "type": "image/png" },
