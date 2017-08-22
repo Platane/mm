@@ -6,11 +6,8 @@
     right: 0;
     transform-style: preserve-3d;
 }
-.infoError,
-.infoComputing,
-.infoWriteDiff,
-.infoWriten,
-.infoPlayLine {
+.infoSecond,
+.infoMain {
     transform-style: preserve-3d;
     position: absolute;
     top: 0;
@@ -23,30 +20,31 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    transition-property: transform, width, margin-left;
+    /*transition-property: width;*/
+    transition-duration: 300ms;
+    transition-timing-function: ease;
 }
-.infoPlayLine {
+.info-playThis {
     width: 60%;
     margin-left: 5%;
 }
-.infoError {
+.info-error {
     width: 60%;
     margin-left: 5%;
 }
-.infoComputing {
+.info-computing {
     width: 20%;
     margin-left: 25%;
 }
-.infoPlayLine .button {
+.info-writeDiff {
+    width: 30%;
+    margin-left: 70%;
+}
+
+.info-playThis .button {
     margin-left: auto;
     margin-right: 10px;
-}
-.infoWriteDiff {
-    width: 30%;
-    margin-left: 70%;
-}
-.infoWriten {
-    width: 30%;
-    margin-left: 70%;
 }
 .button {
     border-radius: 4px;

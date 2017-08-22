@@ -1,4 +1,5 @@
 import { App as Component } from './index'
+import { wrap } from './submitDiff.state'
 import { connect } from 'react-redux'
 import { setDiff, linePlayed } from '../../action'
 
@@ -15,35 +16,39 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
     switch (stateProps.state) {
         case 'playThis':
             return {
-                board: stateProps.board,
+                board: stateProps.board.map(
+                    (x, i, arr) => (i === arr.length - 1 ? { line: x.line } : x)
+                ),
+                state: stateProps.state,
+
                 linePlayed: dispatchProps.linePlayed,
             }
 
         case 'writeDiff':
             return {
                 board: stateProps.board,
-                setDiff: dispatchProps.setDiff,
-            }
+                state: stateProps.state,
 
-        case 'computing':
-            return {
-                board: stateProps.board,
-                computing: true,
+                setDiff: dispatchProps.setDiff,
             }
 
         case 'error':
             return {
                 board: stateProps.board,
+                state: stateProps.state,
+
                 error: stateProps.error,
             }
 
+        case 'computing':
         default:
             return {
+                state: stateProps.state,
                 board: stateProps.board,
             }
     }
 }
 
 export const App = connect(mapStateToProps, mapDispatchToProps, mergeProps)(
-    Component
+    wrap(Component)
 )

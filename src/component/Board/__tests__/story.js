@@ -28,21 +28,6 @@ storiesOf('Board', module)
                 margin: 50,
             }}
         >
-            <Board
-                board={board}
-                setDiff={action('setDiff')}
-                submitDiff={action('submitDiff')}
-            />
-        </div>
-    )
-    .add('playThis', () =>
-        <div
-            style={{
-                transform: 'rotateX(30deg)',
-                transformStyle: 'preserve-3d',
-                margin: 50,
-            }}
-        >
-            <Board board={board} linePlayed={action('setDiff')} />
+            <Board board={board} setDiff={action('setDiff')} />
         </div>
     )

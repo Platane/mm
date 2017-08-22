@@ -1,7 +1,6 @@
 import React from 'react'
 import { Diff } from '../Diff/stateful'
 import { Line } from '../Line'
-import { Banners } from './Banners'
 
 import style from './style.css'
 
@@ -28,16 +27,12 @@ const Row = ({ i, line, diff, selected, setDiff }) =>
         </div>
     </div>
 
-export type Props = { board: Board_type, computing: boolean }
+export type Props = {
+    board: Board_type,
+    setDiff?: (*) => void,
+}
 
-export const Board = ({
-    board,
-    setDiff,
-    submitDiff,
-    linePlayed,
-    computing,
-    error,
-}: Props) =>
+export const Board = ({ board, state, setDiff }: Props) =>
     <div className={style.container}>
         <div className={style.caseLeft} />
         <div className={style.caseRight} />
@@ -49,22 +44,9 @@ export const Board = ({
                     key={i}
                     i={i}
                     line={board[i] && board[i].line}
-                    diff={
-                        board[i] &&
-                        (board[i + 1] || !linePlayed) &&
-                        board[i].diff
-                    }
-                    selected={board.length - 1 === i && linePlayed && false}
+                    diff={board[i] && board[i].diff}
                     setDiff={board.length - 1 === i && setDiff}
                 />
             )}
         </div>
-
-        <Banners
-            error={error}
-            computing={computing}
-            submitDiff={submitDiff}
-            linePlayed={linePlayed}
-            y={7 - board.length}
-        />
     </div>
