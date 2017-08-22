@@ -1,5 +1,6 @@
 import { App as Component } from './index'
-import { wrap } from './submitDiff.state'
+import { wrap as wrapSubmitDiff } from './submitDiff.state'
+import { wrap as wrapGyro } from './gyro.state'
 import { connect } from 'react-redux'
 import { setDiff, linePlayed } from '../../action'
 
@@ -50,5 +51,5 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
 }
 
 export const App = connect(mapStateToProps, mapDispatchToProps, mergeProps)(
-    wrap(Component)
+    wrapSubmitDiff(wrapGyro(Component))
 )
