@@ -49,6 +49,8 @@ export const Banners = ({ y, submitDiff, linePlayed, error, state }) =>
                         'rotateX(0deg)',
                 }}
             >
+                <div className={style.arrow} />
+
                 <Button onClick={submitDiff} />
             </div>}
     </div>
