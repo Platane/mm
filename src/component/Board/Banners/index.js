@@ -9,13 +9,15 @@ const Button = ({ onClick }) =>
 
 const LINE_HEIGHT = 90
 
-export const Banners = ({ y, submitDiff, linePlayed }) =>
+export const Banners = ({ y, submitDiff, linePlayed, computing }) =>
     <div className={style.container}>
         {submitDiff &&
             <div
                 className={style.infoWriteDiff}
                 style={{
-                    transform: `translate3d(0,${y * LINE_HEIGHT - 60}px,0px)`,
+                    transform:
+                        `translate3d(0,${y * LINE_HEIGHT - 60}px,50px) ` +
+                        'rotateX(-20deg)',
                 }}
             >
                 <div className={style.arrow} />
@@ -26,7 +28,9 @@ export const Banners = ({ y, submitDiff, linePlayed }) =>
             <div
                 className={style.infoWriten}
                 style={{
-                    transform: `translate3d(0,${y * LINE_HEIGHT + 100}px,0px)`,
+                    transform:
+                        `translate3d(0,${y * LINE_HEIGHT + 120}px,50px) ` +
+                        'rotateX(0deg)',
                 }}
             >
                 <div className={style.arrow} />
@@ -37,11 +41,26 @@ export const Banners = ({ y, submitDiff, linePlayed }) =>
             <div
                 className={style.infoPlayLine}
                 style={{
-                    transform: `translate3d(0,${y * LINE_HEIGHT - 60}px,0px)`,
+                    transform:
+                        `translate3d(0,${y * LINE_HEIGHT - 60}px,50px) ` +
+                        'rotateX(-20deg)',
                 }}
             >
                 <div className={style.arrow} />
                 Play this line
                 <Button onClick={linePlayed} />
+            </div>}
+
+        {computing &&
+            <div
+                className={style.infoComputing}
+                style={{
+                    transform:
+                        `translate3d(0,${y * LINE_HEIGHT - 60}px,50px) ` +
+                        'rotateX(-20deg)',
+                }}
+            >
+                <div className={style.arrow} />
+                computing ...
             </div>}
     </div>

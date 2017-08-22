@@ -10,6 +10,8 @@ const raf =
         ? () => new Promise(resolve => setTimeout(resolve, 0))
         : () => new Promise(resolve => requestAnimationFrame(resolve))
 
+const wait = delay => new Promise(resolve => setTimeout(resolve, delay))
+
 const chunkify = (n, arr) =>
     Array.from({ length: Math.ceil(arr.length / n) }).map((_, i) =>
         arr.slice(i * n, (i + 1) * n)

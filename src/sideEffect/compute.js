@@ -1,4 +1,5 @@
 import { getPossibleLines, getBestLine } from '../service/gameSolver'
+import { asyncGetBestLine } from '../service/gameSolver/asyncGetBestLine'
 import {
     startComputing,
     doneComputing,
@@ -24,7 +25,7 @@ const memoize = fn => {
 export const init = store => {
     const pending = []
 
-    const update = () => {
+    const update = async () => {
         const { state, board } = store.getState()
 
         if (state === 'computing' && !pending.some(b => b === board)) {
@@ -33,7 +34,7 @@ export const init = store => {
             store.dispatch(startComputing())
 
             const possibleLines = getPossibleLines(board)
-            const bestLine = getBestLine(board, possibleLines)
+            const bestLine = await asyncGetBestLine(board)
 
             if (bestLine) store.dispatch(doneComputing(bestLine, possibleLines))
             else store.dispatch(errorComputing())

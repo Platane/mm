@@ -1,7 +1,12 @@
 .container {
-    /*position: relative;*/
-    /*transform-style: preserve-3d;*/
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    transform-style: preserve-3d;
 }
+.infoComputing,
 .infoWriteDiff,
 .infoWriten,
 .infoPlayLine {
@@ -10,8 +15,9 @@
     top: 0;
     left: 0;
     height: 50px;
-    background-color: rgba(255, 255, 255, 0.2);
-    border: solid 2px #666;
+    background-color: rgba(255, 255, 255, 0.3);
+    border: solid 2px #bbb;
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,6 +26,10 @@
 .infoPlayLine {
     width: 60%;
     margin-left: 5%;
+}
+.infoComputing {
+    width: 20%;
+    margin-left: 25%;
 }
 .infoPlayLine .button {
     margin-left: auto;
@@ -34,7 +44,8 @@
     margin-left: 70%;
 }
 .button {
-    padding: 4px;
+    border-radius: 4px;
+    padding: 4px 10px;
     background-color: rgba(255, 255, 255, 0.2);
     cursor: pointer;
 }

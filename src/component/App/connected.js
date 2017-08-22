@@ -28,6 +28,12 @@ const mergeProps = (stateProps, dispatchProps, ownProps) => {
                 setDiff: dispatchProps.setDiff,
             }
 
+        case 'computing':
+            return {
+                board: stateProps.board,
+                computing: true,
+            }
+
         default:
             return {
                 board: stateProps.board,

@@ -7,8 +7,6 @@ import style from './style.css'
 
 import type { Board as Board_type } from '../../type'
 
-export type Props = { board: Board_type }
-
 const Row = ({ i, line, diff, selected, setDiff }) =>
     <div className={style.row}>
         <div className={style.number}>
@@ -30,7 +28,15 @@ const Row = ({ i, line, diff, selected, setDiff }) =>
         </div>
     </div>
 
-export const Board = ({ board, setDiff, submitDiff, linePlayed }: Props) =>
+export type Props = { board: Board_type, computing: boolean }
+
+export const Board = ({
+    board,
+    setDiff,
+    submitDiff,
+    linePlayed,
+    computing,
+}: Props) =>
     <div className={style.container}>
         <div className={style.caseLeft} />
         <div className={style.caseRight} />
@@ -42,14 +48,19 @@ export const Board = ({ board, setDiff, submitDiff, linePlayed }: Props) =>
                     key={i}
                     i={i}
                     line={board[i] && board[i].line}
-                    diff={board[i] && board[i].diff}
-                    selected={board.length - 1 === i && linePlayed}
+                    diff={
+                        board[i] &&
+                        (board[i + 1] || !linePlayed) &&
+                        board[i].diff
+                    }
+                    selected={board.length - 1 === i && linePlayed && false}
                     setDiff={board.length - 1 === i && setDiff}
                 />
             )}
         </div>
 
         <Banners
+            computing={computing}
             submitDiff={submitDiff}
             linePlayed={linePlayed}
             y={7 - board.length}

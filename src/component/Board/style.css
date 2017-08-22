@@ -35,6 +35,8 @@
     flex-direction: row;
     flex-basis: 30%;
     justify-content: center;
+    transform-style: preserve-3d;
+    transform: translateZ(1px);
 }
 
 .board {
