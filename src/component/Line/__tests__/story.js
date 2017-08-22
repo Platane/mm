@@ -11,5 +11,6 @@ storiesOf('Line', module).add('default', () =>
         }}
     >
         <Line line={[1, 2, 3, 4]} animated />
+        <Line line={[5, 6, 3, 4]} animated />
     </div>
 )

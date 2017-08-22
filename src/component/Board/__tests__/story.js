@@ -5,7 +5,7 @@ import { Board } from '../index'
 
 const board = [
     { line: [1, 2, 3, 4], diff: { black: 1, white: 0 } },
-    // { line: [1, 3, 2, 4], diff: { black: 1, white: 1 } },
+    { line: [5, 6, 2, 5], diff: { black: 2, white: 1 } },
 ]
 
 storiesOf('Board', module)
