@@ -1,7 +1,11 @@
 const getConfig = (env) => {
   const plugins = [];
 
-  const presets = ["@babel/preset-typescript", "@babel/preset-react"];
+  const presets = [
+    "@babel/preset-typescript",
+    "@babel/preset-react",
+    ["@emotion/babel-preset-css-prop", { sourceMap: false }],
+  ];
 
   if (env === "test") {
     plugins.push("@babel/plugin-transform-modules-commonjs");
