@@ -15,3 +15,4 @@ jobs:
       - run: yarn type
       - run: yarn lint
       - run: yarn test --ci
+      - run: ( cd packages/benchmark ; yarn start 60 )
