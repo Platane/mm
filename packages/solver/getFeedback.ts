@@ -1,9 +1,6 @@
-import type { ImcompleteLine, Line, Feedback } from "./type";
+import type { Line, Feedback } from "./type";
 
-export const getFeedback = (
-  solution: Line,
-  candidate: ImcompleteLine
-): Feedback => {
+export const getFeedback = (solution: Line, candidate: Line): Feedback => {
   const permutation = [-1, -1, -1, -1];
 
   // correct

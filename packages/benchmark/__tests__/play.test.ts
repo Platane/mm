@@ -1,5 +1,5 @@
 import { play, generateLine } from "../play";
-import { toEmoji } from "@mm/solver/emojis";
+import { lineToEmoji } from "@mm/solver/emojis";
 import { Line } from "@mm/solver/type";
 
 const samples: Line[] = [
@@ -12,10 +12,11 @@ const samples: Line[] = [
   generateLine(),
   generateLine(),
   generateLine(),
+  generateLine(),
 ];
 
 samples.forEach((solution) => {
-  it(`should resolve ${toEmoji(solution)}`, () => {
+  it(`should resolve ${lineToEmoji(solution)}`, () => {
     expect(play(solution)).toEqual(solution);
   });
 });

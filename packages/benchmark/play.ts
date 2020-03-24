@@ -1,9 +1,9 @@
-import { createRandom } from "./createRand";
 import { getBestLine } from "@mm/solver/getBestLine";
 import { getFeedback } from "@mm/solver/getFeedback";
 import { isValidSolutionForRow } from "@mm/solver/isValidSolution";
 import { allLines } from "@mm/solver/allLines";
 import { Line, Peg } from "@mm/solver/type";
+import { createRandom } from "@mm/utils/createRand";
 
 const random = createRandom();
 
@@ -17,10 +17,10 @@ export const play = (solution: Line) => {
   for (let k = 100; k--; ) {
     const candidate =
       allLines.length === possibleLines.length
-        ? ([1, 2, 3, 4] as Line)
+        ? ([1, 1, 3, 4] as Line)
         : getBestLine(possibleLines);
 
-    if (!candidate) return undefined;
+    if (!candidate) return;
 
     const feedback = getFeedback(solution, candidate);
 

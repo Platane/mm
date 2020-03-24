@@ -1,5 +1,5 @@
 import { generateLine, play } from "./play";
-import { toEmoji } from "@mm/solver/emojis";
+import { lineToEmoji } from "@mm/solver/emojis";
 
 const mean = (arr: number[]) => arr.reduce((s, x) => s + x, 0) / arr.length;
 
@@ -19,7 +19,12 @@ export const run = async (n: number) => {
     const solution = generateLine();
     const found = play(solution);
 
-    console.log("---\n", toEmoji(solution), "\n", found && toEmoji(found));
+    console.log(
+      "---\n",
+      lineToEmoji(solution),
+      "\n",
+      found && lineToEmoji(found)
+    );
 
     const delta = Date.now() - start;
 

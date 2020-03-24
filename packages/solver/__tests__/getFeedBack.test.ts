@@ -1,10 +1,10 @@
 import { getFeedback } from "../getFeedback";
-import { toEmoji, feedbackToEmoji } from "../emojis";
-import { Line, ImcompleteLine, Feedback } from "../type";
+import { lineToEmoji, feedbackToEmoji } from "../emojis";
+import { Line, Feedback } from "../type";
 
 const samples: {
   solution: Line;
-  candidate: ImcompleteLine;
+  candidate: Line;
   feedback: Feedback;
 }[] = [
   {
@@ -16,16 +16,6 @@ const samples: {
     solution: [1, 2, 3, 4],
     candidate: [1, 2, 3, 4],
     feedback: { correct: 4, badPosition: 0 },
-  },
-  {
-    solution: [1, 2, 3, 4],
-    candidate: [],
-    feedback: { correct: 0, badPosition: 0 },
-  },
-  {
-    solution: [1, 2, 3, 4],
-    candidate: [1, 2],
-    feedback: { correct: 2, badPosition: 0 },
   },
   {
     solution: [1, 2, 3, 4],
@@ -45,9 +35,9 @@ const samples: {
 ];
 
 samples.forEach(({ solution, candidate, feedback }) => {
-  it(`should compute feedback for ${toEmoji(candidate)} against ${toEmoji(
-    solution
-  )} -> ${feedbackToEmoji(feedback)}`, () => {
+  it(`should compute feedback for ${lineToEmoji(
+    candidate
+  )} against ${lineToEmoji(solution)} -> ${feedbackToEmoji(feedback)}`, () => {
     expect(getFeedback(solution, candidate)).toEqual(feedback);
   });
 });

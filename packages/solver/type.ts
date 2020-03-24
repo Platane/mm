@@ -7,11 +7,4 @@ export type Feedback = {
   badPosition: number;
 };
 
-export type ImcompleteLine =
-  | [Peg, Peg, Peg, Peg]
-  | [Peg, Peg, Peg]
-  | [Peg, Peg]
-  | [Peg]
-  | [];
-
 export type Row = { line: Line; feedback: Feedback };
