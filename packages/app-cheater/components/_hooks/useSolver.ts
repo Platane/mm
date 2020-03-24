@@ -1,11 +1,13 @@
 import { useState, useEffect, useMemo } from "react";
 import { allLines } from "@mm/solver/allLines";
-import { getBestLine } from "../../services/getBestLine";
 import { Line, Feedback, Row } from "@mm/solver/type";
 import {
   isValidSolutionForRow,
   isValidSolution,
 } from "@mm/solver/isValidSolution";
+import { getBestLine } from "../../services/solver/getBestLine";
+
+const defaultSolution: Line = [5, 5, 3, 6];
 
 export const useSolver = (initialRows: Row[] = []) => {
   const initialLines = useMemo(
@@ -14,7 +16,7 @@ export const useSolver = (initialRows: Row[] = []) => {
   );
   const [rows, setRows] = useState(initialRows);
   const [lines, setLines] = useState(initialLines);
-  const [candidate, setCandidate] = useState([1, 1, 3, 2] as Line | null);
+  const [candidate, setCandidate] = useState<Line | null>(defaultSolution);
 
   useEffect(() => {
     if (allLines.length === lines.length) return;
