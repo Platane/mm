@@ -16,13 +16,15 @@ import { isValidSolutionForRow } from "./isValidSolution";
 
 export const getScore = (possibleLines: Line[], candidate: Line) => {
   const getNextPossibleLineNumber = (feedback: Feedback) =>
-    possibleLines.filter((l) =>
-      isValidSolutionForRow({ feedback, line: candidate }, l)
-    ).length;
+    possibleLines.reduce(
+      (sum, l) =>
+        sum + (isValidSolutionForRow({ feedback, line: candidate }, l) ? 1 : 0),
+      0
+    );
 
   const getNextPossibleLineNumberMemo = createMemo(
     getNextPossibleLineNumber,
-    ({ correct, badPosition }) => correct + "." + badPosition
+    ({ correct, badPosition }) => correct * 5 + badPosition
   );
 
   return possibleLines.reduce((sum, solution) => {
@@ -40,9 +42,9 @@ export const getScore = (possibleLines: Line[], candidate: Line) => {
 
 const createMemo = <I, O>(
   fn: (i: I) => O,
-  serialize: (i: I) => string
+  serialize: (i: I) => string | number
 ): ((i: I) => O) => {
-  const memo: Record<string, O> = {};
+  const memo: Record<string | number, O> = {};
 
   return (i: I) => {
     const key = serialize(i);
