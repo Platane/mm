@@ -6,7 +6,7 @@ import { useSolver } from "./_hooks/useSolver";
 import { SwitchColorScheme } from "./SwitchColorScheme";
 
 export const App = () => {
-  const { candidate, nextTurn } = useSolver();
+  const { candidate, computing, nextTurn } = useSolver(6, 4);
 
   const [feedback, setFeedback] = useState({
     correct: 0,
@@ -15,9 +15,8 @@ export const App = () => {
 
   return (
     <Container>
-      <SwitchColorScheme />
       <Line>
-        {!candidate && <span>computing ...</span>}
+        {computing && <span>computing ...</span>}
         {candidate &&
           candidate.map((peg, i) => (
             <Peg key={i} peg={peg} style={{ margin: "16px" }} />

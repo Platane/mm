@@ -1,22 +1,23 @@
 import { play, generateLine } from "../play";
 import { lineToEmoji } from "@mm/solver/emojis";
-import { Line } from "@mm/solver/type";
 
-const samples: Line[] = [
+const samples = [
   //
 
-  [3, 3, 3, 3],
-  [3, 4, 1, 2],
-  [6, 2, 2, 6],
+  { solution: [0, 0], p: 2 },
+  { solution: [0, 1], p: 2 },
+  { solution: [0, 1, 2, 3], p: 4 },
+  { solution: [0, 1, 2, 3], p: 6 },
+  { solution: [0, 1, 0, 0], p: 2 },
+  { solution: [0, 1, 0, 0, 1, 1, 0], p: 2 },
 
-  generateLine(),
-  generateLine(),
-  generateLine(),
-  generateLine(),
+  { solution: generateLine(6, 4), p: 6 },
+  { solution: generateLine(6, 4), p: 6 },
+  { solution: generateLine(6, 4), p: 6 },
 ];
 
-samples.forEach((solution) => {
-  it(`should resolve ${lineToEmoji(solution)}`, () => {
-    expect(play(solution)).toEqual(solution);
+samples.forEach(({ solution, p }) => {
+  it(`should resolve ${p}/${solution.length} ${lineToEmoji(solution)}`, () => {
+    expect(play(p, solution)).toEqual(solution);
   });
 });

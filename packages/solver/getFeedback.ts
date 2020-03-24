@@ -1,7 +1,7 @@
 import type { Line, Feedback } from "./type";
 
 export const getFeedback = (solution: Line, candidate: Line): Feedback => {
-  const permutation = [-1, -1, -1, -1];
+  const permutation = solution.map(() => -1);
 
   // correct
   solution.forEach((dot, i) => {

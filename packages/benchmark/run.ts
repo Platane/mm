@@ -11,13 +11,13 @@ const q = (a: number, b: number, arr: number[]) =>
       .slice(Math.floor(arr.length * a), Math.ceil(arr.length * b))
   );
 
-export const run = async (n: number) => {
+export const run = async (p: number, n: number, k: number) => {
   const stats = [];
-  for (let k = n; k--; ) {
+  for (; k--; ) {
     const start = Date.now();
 
-    const solution = generateLine();
-    const found = play(solution);
+    const solution = generateLine(p, n);
+    const found = play(p, solution);
 
     console.log(
       "---\n",

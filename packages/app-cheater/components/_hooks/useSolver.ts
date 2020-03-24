@@ -1,32 +1,41 @@
 import { useState, useEffect, useMemo } from "react";
-import { allLines } from "@mm/solver/allLines";
 import { Line, Feedback, Row } from "@mm/solver/type";
 import {
   isValidSolutionForRow,
   isValidSolution,
 } from "@mm/solver/isValidSolution";
 import { getBestLine } from "../../services/solver/getBestLine";
+import { getBestDefaultLine } from "@mm/solver/getBestDefaultLine";
+import { getAllLines } from "@mm/solver/getAllLines";
 
-const defaultSolution: Line = [5, 5, 3, 6];
+const computing = Symbol("pending");
 
-export const useSolver = (initialRows: Row[] = []) => {
+export const useSolver = (p: number, n: number, initialRows: Row[] = []) => {
+  const allLines = useMemo(() => getAllLines(p, n), [p, n]);
+  const defaultSolution = useMemo(() => getBestDefaultLine(p, n), [p, n]);
+
   const initialLines = useMemo(
     () => allLines.filter((l) => isValidSolution(initialRows, l)),
-    [initialRows]
+    [initialRows, allLines]
   );
+
   const [rows, setRows] = useState(initialRows);
   const [lines, setLines] = useState(initialLines);
-  const [candidate, setCandidate] = useState<Line | null>(defaultSolution);
+  const [candidate, setCandidate] = useState<Line | null | typeof computing>(
+    computing
+  );
 
   useEffect(() => {
-    if (allLines.length === lines.length) return;
-
     let cancel = false;
 
-    setCandidate(null);
-    getBestLine(lines).then((candidate) => {
-      if (!cancel) setCandidate(candidate);
-    });
+    if (allLines.length === lines.length) {
+      setCandidate(defaultSolution);
+    } else {
+      setCandidate(computing);
+      getBestLine(lines).then((candidate) => {
+        if (!cancel) setCandidate(candidate);
+      });
+    }
 
     return () => {
       cancel = true;
@@ -40,5 +49,11 @@ export const useSolver = (initialRows: Row[] = []) => {
     setLines(lines.filter((l) => isValidSolutionForRow(row, l)));
   };
 
-  return { candidate, rows, nextTurn, availableLines: lines };
+  return {
+    computing: candidate === computing,
+    candidate: candidate === computing ? null : candidate,
+    rows,
+    nextTurn,
+    availableLines: lines,
+  };
 };

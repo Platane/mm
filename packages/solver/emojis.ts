@@ -1,9 +1,33 @@
 import { Feedback, Line } from "./type";
 
-const emojis = [" 🖤", " 🧡", " 💛", " 💚", " 💙", " 💜"];
+const emojis = [
+  //  " 🖤", " 🧡", " 💛", " 💚", " 💙", " 💜"
+
+  " ⚪️ ",
+  " ⚫️ ",
+  " 🔴 ",
+  " 🔵 ",
+  " ⛎ ",
+  " 🉐 ",
+  " ㊙️ ",
+  " ㊗️ ",
+  " 🉑 ",
+  " ♈️ ",
+  " ♉️ ",
+  " ♊️ ",
+  " ♋️ ",
+  " ♌️ ",
+  " ♍️ ",
+  " ♎️ ",
+  " ♏️ ",
+  " ♐️ ",
+  " ♑️ ",
+  " ♒️ ",
+  " ♓️ ",
+];
 
 export const lineToEmoji = (line: Line) =>
-  (line as number[]).map((i) => emojis[i - 1]).join("") + " ";
+  (line as number[]).map((i) => emojis[i]).join("") + " ";
 
 export const feedbackToEmoji = ({ correct, badPosition }: Feedback) =>
-  (" ⚫️".repeat(correct) + " ⚪️".repeat(badPosition)).padEnd(8);
+  "◾️".repeat(correct) + "◽️".repeat(badPosition);

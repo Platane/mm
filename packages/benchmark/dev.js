@@ -7,4 +7,4 @@ require("@babel/register")({
   rootMode: "upward",
 });
 
-require("./run").run(+process.argv[2]);
+require("./run").run(+process.argv[2], +process.argv[3], +process.argv[4]);

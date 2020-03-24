@@ -1,6 +1,6 @@
-export type Peg = 1 | 2 | 3 | 4 | 5 | 6;
+export type Peg = number;
 
-export type Line = [Peg, Peg, Peg, Peg];
+export type Line = Peg[];
 
 export type Feedback = {
   correct: number;
