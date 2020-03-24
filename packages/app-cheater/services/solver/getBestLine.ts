@@ -3,7 +3,7 @@ import Worker from "workerize-loader!./getBestLine-worker";
 import { Line } from "@mm/solver/type";
 
 const workers = Array.from(
-  { length: window.navigator.hardwareConcurrency - 1 },
+  { length: Math.max(1, +window.navigator.hardwareConcurrency) },
   () => new Worker()
 );
 
@@ -15,7 +15,7 @@ const batch = <T>(arr: T[], length = 1) => {
 export const getBestLine = async (
   possibleLines: Line[]
 ): Promise<Line | null> => {
-  const lineGroups = batch(possibleLines, workers.length);
+  const lineGroups = batch(possibleLines.slice(0, 600), workers.length);
 
   const resultByGroup = await Promise.all(
     lineGroups.map((lines, i) => workers[i].getBestLine(possibleLines, lines))
