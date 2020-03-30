@@ -11,6 +11,8 @@ const { GenerateSW } = require("workbox-webpack-plugin");
 const mode =
   ("production" === process.env.NODE_ENV && "production") || "development";
 
+const basePathname = process.env.BASE_PATHNAME || "";
+
 module.exports = {
   mode,
   entry: { app: "./index" },
@@ -19,7 +21,13 @@ module.exports = {
     path: path.join(__dirname, "dist"),
     filename: "[hash].js",
     chunkFilename: "[name].[contenthash].js",
-    publicPath: "/assets/",
+    publicPath:
+      "/" +
+      basePathname
+        .split("/")
+        .filter(Boolean)
+        .map((x) => x + "/")
+        .join(""),
   },
   module: {
     rules: [
@@ -64,7 +72,7 @@ module.exports = {
 
     new AppManifestWebpackPlugin({
       logo: path.resolve(__dirname, "assets", "images", "icon192.png"),
-      prefix: "/assets",
+      prefix: "/" + basePathname.split("/").filter(Boolean).join("/"),
       inject: true,
       config: {
         appName: pkg.description.split("__")[1] || pkg.name,
@@ -75,7 +83,7 @@ module.exports = {
         theme_color: "#fff",
         display: "standalone",
         orientation: "portrait",
-        start_url: "/",
+        start_url: "/" + basePathname.split("/").filter(Boolean).join("/"),
         version: pkg.version,
         logging: false,
         icons: {

@@ -6,6 +6,8 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const mode =
   ("production" === process.env.NODE_ENV && "production") || "development";
 
+const basePathname = process.env.BASE_PATHNAME || "";
+
 module.exports = {
   mode,
   entry: { app: "./index" },
@@ -14,7 +16,13 @@ module.exports = {
     path: path.join(__dirname, "dist"),
     filename: "[hash].js",
     chunkFilename: "[name].[contenthash].js",
-    publicPath: "/assets/",
+    publicPath:
+      "/" +
+      basePathname
+        .split("/")
+        .filter(Boolean)
+        .map((x) => x + "/")
+        .join(""),
   },
   module: {
     rules: [
