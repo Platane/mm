@@ -1,4 +1,4 @@
-import { getAllLines } from "../allLines";
+import { getAllLines } from "../getAllLines";
 
 it("should generate all the lines", () => {
   const lines = getAllLines(1, 3);
