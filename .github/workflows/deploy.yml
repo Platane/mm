@@ -1,0 +1,21 @@
+name: deploy
+
+on: push
+
+# on:
+#   push:
+#     branches:
+#       - master
+
+jobs:
+  delpoy-github:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn install --frozen-lockfile
+      - run: ( cd packages/app-game ; yarn build )
+      - run: ( cd packages/app-cheater ; yarn build )
