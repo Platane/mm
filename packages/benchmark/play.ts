@@ -2,14 +2,8 @@ import { getBestLine } from "@mm/solver/getBestLine";
 import { getFeedback } from "@mm/solver/getFeedback";
 import { isValidSolutionForRow } from "@mm/solver/isValidSolution";
 import { Line } from "@mm/solver/type";
-import { createRandom } from "@mm/utils/createRand";
 import { getBestDefaultLine } from "@mm/solver/getBestDefaultLine";
 import { getAllLines } from "@mm/solver/getAllLines";
-
-const random = createRandom();
-
-export const generateLine = (p: number, n: number) =>
-  Array.from({ length: n }, () => Math.floor(random() * p)) as Line;
 
 export const play = (p: number, solution: Line) => {
   const allLines = getAllLines(p, solution.length);

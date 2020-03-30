@@ -1,5 +1,9 @@
-import { play, generateLine } from "../play";
+import { play } from "../play";
 import { lineToEmoji } from "@mm/solver/emojis";
+import { createRandom } from "@mm/utils/createRand";
+import { getRandomLine } from "@mm/solver/getRandomtLine";
+
+const random = createRandom();
 
 const samples = [
   //
@@ -11,9 +15,9 @@ const samples = [
   { solution: [0, 1, 0, 0], p: 2 },
   { solution: [0, 1, 0, 0, 1, 1, 0], p: 2 },
 
-  { solution: generateLine(6, 4), p: 6 },
-  { solution: generateLine(6, 4), p: 6 },
-  { solution: generateLine(6, 4), p: 6 },
+  { solution: getRandomLine(6, 4, random), p: 6 },
+  { solution: getRandomLine(6, 4, random), p: 6 },
+  { solution: getRandomLine(6, 4, random), p: 6 },
 ];
 
 samples.forEach(({ solution, p }) => {

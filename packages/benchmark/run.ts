@@ -1,5 +1,7 @@
-import { generateLine, play } from "./play";
+import { play } from "./play";
 import { lineToEmoji } from "@mm/solver/emojis";
+import { createRandom } from "@mm/utils/createRand";
+import { getRandomLine } from "@mm/solver/getRandomtLine";
 
 const mean = (arr: number[]) => arr.reduce((s, x) => s + x, 0) / arr.length;
 
@@ -11,12 +13,14 @@ const q = (a: number, b: number, arr: number[]) =>
       .slice(Math.floor(arr.length * a), Math.ceil(arr.length * b))
   );
 
+const random = createRandom();
+
 export const run = async (p: number, n: number, k: number) => {
   const stats = [];
   for (; k--; ) {
     const start = Date.now();
 
-    const solution = generateLine(p, n);
+    const solution = getRandomLine(p, n, random);
     const found = play(p, solution);
 
     console.log(
