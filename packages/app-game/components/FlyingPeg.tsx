@@ -17,8 +17,8 @@ export const FlyingPeg = ({
   onHover: (destination: HitDestination) => void;
   onDrop: (destination: HitDestination) => void;
 }) => {
-  const ref = useRef<HTMLElement>();
-  const ref2 = useRef<HTMLElement>();
+  const ref = useRef<HTMLDivElement | null>(null);
+  const ref2 = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let pointer = { ...initialPointer };
@@ -112,12 +112,12 @@ export const FlyingPeg = ({
 
       el.style.display = destination ? "none" : "block";
 
-      {
-        const body = el.querySelector("[data-body]");
-        body.style.transform =
-          `translateZ(${13}px) ` + `rotateZ(${0}deg) ` + `rotateX(90deg) `;
-        body.style.display = "none";
-      }
+      // {
+      //   const body = el.querySelector("[data-body]");
+      //   body.style.transform =
+      //     `translateZ(${13}px) ` + `rotateZ(${0}deg) ` + `rotateX(90deg) `;
+      //   body.style.display = "none";
+      // }
 
       // ref2.current.style.transform =
       //   `translate3d(${op.x}px,${op.y}px,${op.z}px) ` +
@@ -209,7 +209,7 @@ const Container = styled(Object3d)`
   //   z-index: 10000;
   //   border-radius: 2px;
   // }
-` as any;
+`;
 
 export const getHit = (stringHit: string | null) => {
   if (!stringHit) return;

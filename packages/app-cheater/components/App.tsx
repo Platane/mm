@@ -3,7 +3,6 @@ import styled from "@emotion/styled";
 import { Peg } from "./Peg";
 import { Feedback } from "@mm/solver/type";
 import { useSolver } from "./_hooks/useSolver";
-import { SwitchColorScheme } from "./SwitchColorScheme";
 
 export const App = () => {
   const { candidate, computing, nextTurn } = useSolver(6, 4);
@@ -19,7 +18,7 @@ export const App = () => {
         {computing && <span>computing ...</span>}
         {candidate &&
           candidate.map((peg, i) => (
-            <Peg key={i} peg={peg} style={{ margin: "16px" }} />
+            <Peg key={i} peg={peg} size={28} style={{ margin: "16px" }} />
           ))}
       </Line>
     </Container>
