@@ -13,18 +13,17 @@
     "@emotion/core": "10.0.28",
     "@emotion/styled": "10.0.27",
     "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-spring": "^8.0.27"
+    "react-dom": "16.13.1"
   },
   "devDependencies": {
-    "app-manifest-webpack-plugin": "^1.2.0",
+    "app-manifest-webpack-plugin": "1.2.0",
     "babel-loader": "8.1.0",
-    "html-webpack-inline-source-plugin": "^0.0.10",
-    "html-webpack-plugin": "4.0.2",
+    "html-webpack-inline-source-plugin": "0.0.10",
+    "html-webpack-plugin": "4.0.3",
     "webpack": "4.42.1",
     "webpack-cli": "3.3.11",
     "webpack-dev-server": "3.10.3",
-    "workbox-webpack-plugin": "^5.1.2",
+    "workbox-webpack-plugin": "5.1.2",
     "workerize-loader": "1.1.0"
   },
   "scripts": {

@@ -1,41 +1,52 @@
 import { useState, useEffect } from "react";
-import { FlyingPeg } from "./FlyingPeg";
+import {
+  FlyingPeg,
+  getHitOrigin,
+  Hit,
+  HitOrigin,
+  HitDestination,
+} from "./FlyingPeg";
+import { generateId } from "@mm/utils/generateId";
 
-type Origin = {
-  type: "source";
-  peg: number;
-  p: Point;
-};
 export type Point = { x: number; y: number };
 export type Tracker = {
-  peg: number;
-  origin: Origin;
+  id: string;
+  origin: Exclude<Hit, { type: "empty" } | undefined>;
   pointerId: number;
-  originalPointer: Point;
+  initialPointer: Point;
+  initialPosition: Point;
 };
 
-export const FlyingPegManager = ({}: any) => {
+export const FlyingPegManager = ({
+  onHover,
+  onDrop,
+}: {
+  onHover: (id: string, origin: HitOrigin, destination: HitDestination) => void;
+  onDrop: (id: string, origin: HitOrigin, destination: HitDestination) => void;
+}) => {
   const [trackers, setTrackers] = useState<Tracker[]>([]);
 
   useEffect(() => {
     const onPointerDown = (event: PointerEvent) => {
-      const hit = (event.target as Element).getAttribute("data-hit");
+      const hit = getHitOrigin(
+        (event.target as Element).getAttribute("data-hit")
+      );
 
       if (!hit) return;
 
+      event.preventDefault();
+      const id = generateId();
+
       const box = (event.target as Element).getBoundingClientRect();
-
-      const origin = (hit.startsWith("source-") && {
-        type: "source",
-        p: { x: (box.left + box.right) / 2, y: (box.top + box.bottom) / 2 },
-        peg: +hit.split("source-")[1],
-      }) || { peg: 0 };
-
       const t = {
-        origin: origin as Origin,
-        peg: origin.peg,
+        id,
+        origin: hit,
         pointerId: event.pointerId,
-        originalPointer: { x: event.pageX, y: event.pageY },
+        initialPointer: { x: event.pageX, y: event.pageY },
+        initialPosition: {
+          x: (box.left + box.right) / 2,
+          y: (box.top + box.bottom) / 2,
+        },
       };
 
       setTrackers((ts) => [...ts, t]);
@@ -50,11 +61,13 @@ export const FlyingPegManager = ({}: any) => {
 
   return (
     <>
-      {trackers.map((t, i) => (
+      {trackers.map((t) => (
         <FlyingPeg
           {...t}
-          key={t.pointerId + "-" + i}
+          key={t.id}
           onFinish={() => setTrackers((ts) => ts.filter((x) => x !== t))}
+          onHover={(destination) => onHover(t.id, t.origin, destination)}
+          onDrop={(destination) => onDrop(t.id, t.origin, destination)}
         />
       ))}
     </>

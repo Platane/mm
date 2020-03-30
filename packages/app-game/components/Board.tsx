@@ -1,19 +1,21 @@
 import styled from "@emotion/styled";
 import { Row as IRow } from "@mm/solver/type";
-import { getRandomLine } from "@mm/solver/getRandomtLine";
 import { Object3d } from "@mm/app-cheater/components/Object3d";
 import { BoardRow } from "./BoardRow";
+import { keyframes } from "@emotion/core";
 
 export const Board = ({
   p,
   n,
   rows,
   candidate,
+  onSubmit,
 }: {
   p: number;
   n: number;
   rows: IRow[];
   candidate: (number | null)[];
+  onSubmit?: () => void;
 }) => {
   const m = 4;
   const dropZone = (
@@ -21,9 +23,12 @@ export const Board = ({
       {Array.from({ length: n }, (_, i) => (
         <div
           key={i}
-          data-hit={`candidate-${i}`}
+          data-hit={
+            candidate[i] === null
+              ? `empty-${i}`
+              : `candidate-${i}-${candidate[i]}`
+          }
           style={{
-            background: "rgba(0,0,0,0.2)",
             position: "absolute",
             borderRadius: "40%",
             top: `${m}px`,
@@ -33,6 +38,8 @@ export const Board = ({
           }}
         />
       ))}
+
+      {onSubmit && <Submit onClick={onSubmit}>submit</Submit>}
     </>
   );
 
@@ -67,7 +74,7 @@ export const Board = ({
 const boardColor = "#aaa";
 const sideH = 50;
 const Container = styled(Object3d)`
-  width: calc(100% - 50px);
+  width: calc(100% - 100px);
   max-width: 400px;
   min-width: 200px;
 
@@ -115,4 +122,29 @@ const SideBottom = styled(Object3d)`
 
   background-color: ${boardColor};
   filter: brightness(1.15);
+`;
+
+const submitAppear = keyframes`
+  0%{ 
+    transform: translate3d(-120px, 0, 2px) rotateX(-26deg) scale(0.9);
+    opacity: 0;
+  }
+  100%{ 
+    transform: translate3d(0, 0, 2px) rotateX(-26deg);
+    opacity: 1;
+  }
+`;
+
+const Submit = styled.button`
+  position: absolute;
+  right: -70px;
+  width: 70px;
+  top: 0;
+  bottom: 0;
+  border: none;
+  background: orange;
+  padding: 10px;
+  transform: translate3d(0, 0, 2px) rotateX(-26deg);
+  transform-origin: 0 100%;
+  animation: ${submitAppear} 180ms cubic-bezier(0.52, 0.58, 0.72, 1.53);
 `;

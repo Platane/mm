@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
 import { useGameConfig } from "@mm/app-cheater/components/_hooks/useGameConfig";
+import { useCandidate } from "./_hooks/useCandidate";
 import { useGame } from "./_hooks/useGame";
 import { Board } from "./Board";
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { getRandomLine } from "@mm/solver/getRandomtLine";
 import { keyframes } from "@emotion/core";
 import { Object3d } from "@mm/app-cheater/components/Object3d";
@@ -11,37 +12,57 @@ import { FlyingPegManager } from "./FlyingPegManager";
 
 export const App = () => {
   const { p, n } = useGameConfig();
-  const { id, rows, playLine, reset } = useGame(p, n);
-  const [candidate, setCandidate] = useState<(number | null)[]>([]);
+  const { id, rows, playLine, reset: resetGame } = useGame(p, n);
+  const {
+    candidate,
+    temporaryCandidate,
+    onHover,
+    onDrop,
+    reset: resetCandidate,
+  } = useCandidate(n);
+
+  console.log(temporaryCandidate);
 
   useEffect(() => {
-    setCandidate(Array.from({ length: n }, () => null));
-    reset();
+    resetCandidate();
+    resetGame();
 
     for (let k = 4; k--; ) playLine(getRandomLine(p, n));
   }, [p, n]);
 
-  const submit = () => {
+  const onSubmit = () => {
     if (!candidate.every((x) => x !== null)) return;
-
     playLine(candidate as Line);
-    setCandidate(Array.from({ length: n }, () => null));
+    resetCandidate();
   };
 
   return (
     <>
-      <World>
+      {[0, 1, 2, 3, 4, 5].map((i) => (
         <div
-          data-hit="source-1"
-          style={{ width: "100px", height: "100px", background: "red" }}
+          key={i}
+          data-hit={`source-${i}`}
+          style={{
+            width: "150px",
+            height: "20px",
+            background: `hsl(${i * 50 + 30}deg,60%,60%)`,
+          }}
         />
+      ))}
 
+      <World>
         <Scene>
-          <Board rows={rows} candidate={candidate} n={n} p={p} />
+          <Board
+            n={n}
+            p={p}
+            rows={rows}
+            candidate={temporaryCandidate}
+            onSubmit={candidate.every((p) => p !== null) ? onSubmit : undefined}
+          />
         </Scene>
       </World>
 
-      <FlyingPegManager />
+      <FlyingPegManager onHover={onHover} onDrop={onDrop} />
     </>
   );
 };

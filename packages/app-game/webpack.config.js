@@ -36,6 +36,8 @@ module.exports = {
 
     new HtmlWebpackPluginInlineStyle({
       inlineStyle: `html{
+        touch-action: none;
+        user-select: none;
         height:100%;
         background-image: radial-gradient(ellipse at center, rgba(99, 36, 40, 0) 0, rgba(99, 36, 40, 0.5) 130%);
         background-color: #f24b55;

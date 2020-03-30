@@ -5,25 +5,31 @@ import styled from "@emotion/styled";
 import { Object3d } from "@mm/app-cheater/components/Object3d";
 
 export const FlyingPeg = ({
-  peg,
   pointerId,
-  originalPointer,
+  initialPointer,
+  initialPosition,
   origin,
   onFinish,
-}: Tracker & { onFinish: () => void }) => {
-  const ref = useRef<Element>();
+  onHover,
+  onDrop,
+}: Tracker & {
+  onFinish: () => void;
+  onHover: (destination: HitDestination) => void;
+  onDrop: (destination: HitDestination) => void;
+}) => {
+  const ref = useRef<HTMLElement>();
 
   useEffect(() => {
-    console.log(origin);
-
-    let cancelAnimation: number;
-    let pointer = { ...originalPointer };
-    let p = { ...origin.p };
+    let pointer = { ...initialPointer };
+    let p = { ...initialPosition };
     let v = { x: 0, y: 0 };
     let finished = false;
+    let destination: Exclude<Hit, { type: "source" }>;
 
+    onHover(destination);
+
+    let cancelAnimation: number;
     let d = Date.now();
-
     const animate = () => {
       cancelAnimationFrame(cancelAnimation);
       cancelAnimation = requestAnimationFrame(animate);
@@ -33,7 +39,8 @@ export const FlyingPeg = ({
       d = now;
 
       const tension = 210;
-      const friction = 20;
+      const friction = 14;
+      // const friction = 20;
 
       let ax = -tension * (p.x - pointer.x) - friction * v.x;
       let ay = -tension * (p.y - pointer.y) - friction * v.y;
@@ -48,6 +55,7 @@ export const FlyingPeg = ({
       if (!el) return;
 
       el.style.transform = `translate3d(${p.x}px,${p.y}px,${0}px)`;
+      el.style.display = destination ? "none" : "block";
     };
     animate();
 
@@ -56,12 +64,23 @@ export const FlyingPeg = ({
 
       pointer.x = event.pageX;
       pointer.y = event.pageY;
+
+      const hit = getHitDestination(
+        (event.target as Element).getAttribute("data-hit")
+      );
+
+      if (JSON.stringify(hit) !== JSON.stringify(destination)) {
+        destination = hit;
+        onHover(destination);
+      }
     };
 
     const onPointerUp = (event: PointerEvent) => {
       if (event.pointerId !== pointerId || finished) return;
+
       finished = true;
 
+      onDrop(destination);
       // onFinish();
     };
 
@@ -77,7 +96,7 @@ export const FlyingPeg = ({
 
   return (
     <Container ref={ref}>
-      <Peg peg={peg} size={28} />
+      <Peg peg={(origin as any).peg} size={28} />
     </Container>
   );
 };
@@ -87,4 +106,34 @@ const Container = styled(Object3d)`
   left: -14px;
   top: -14px;
   transform: translate3d(-100px, -100px, 0);
+  pointer-events: none;
+  user-select: none;
 ` as any;
+
+export const getHit = (stringHit: string | null) => {
+  if (!stringHit) return;
+
+  const [type, ...params] = stringHit.split("-");
+
+  switch (type) {
+    case "source":
+      return { type: "source" as const, peg: +params[0] };
+    case "candidate":
+      return { type: "candidate" as const, k: +params[0], peg: +params[1] };
+    case "empty":
+      return { type: "empty" as const, k: +params[0] };
+  }
+};
+
+export const getHitDestination = (stringHit: string | null) => {
+  const h = getHit(stringHit);
+  return (h && h.type !== "source" && h) || undefined;
+};
+export const getHitOrigin = (stringHit: string | null) => {
+  const h = getHit(stringHit);
+  return (h && h.type !== "empty" && h) || undefined;
+};
+
+export type Hit = ReturnType<typeof getHit>;
+export type HitOrigin = Exclude<Hit, { type: "empty" } | undefined>;
+export type HitDestination = Exclude<Hit, { type: "source" }>;
