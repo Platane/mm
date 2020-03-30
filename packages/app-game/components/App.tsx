@@ -9,6 +9,7 @@ import { keyframes } from "@emotion/core";
 import { Object3d } from "@mm/app-cheater/components/Object3d";
 import { Line } from "@mm/solver/type";
 import { FlyingPegManager } from "./FlyingPegManager";
+import { useColorScheme } from "@mm/app-cheater/components/_hooks/useColorScheme";
 
 export const App = () => {
   const { p, n } = useGameConfig();
@@ -20,8 +21,7 @@ export const App = () => {
     onDrop,
     reset: resetCandidate,
   } = useCandidate(n);
-
-  console.log(temporaryCandidate);
+  const { colorScheme } = useColorScheme();
 
   useEffect(() => {
     resetCandidate();
@@ -38,14 +38,14 @@ export const App = () => {
 
   return (
     <>
-      {[0, 1, 2, 3, 4, 5].map((i) => (
+      {Array.from({ length: p }, (_, i) => (
         <div
           key={i}
           data-hit={`source-${i}`}
           style={{
             width: "150px",
             height: "20px",
-            background: `hsl(${i * 50 + 30}deg,60%,60%)`,
+            background: colorScheme[i][0],
           }}
         />
       ))}

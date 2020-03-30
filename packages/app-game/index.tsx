@@ -1,3 +1,4 @@
+import { StrictMode } from "react";
 import { render } from "react-dom";
 import { App } from "./components/App";
 import { ColorSchemeProvider } from "../app-cheater/components/_hooks/useColorScheme";
@@ -9,12 +10,14 @@ document.body.appendChild(root);
 root.id = "root";
 
 render(
-  <ColorSchemeProvider>
-    <GameConfigProvider>
-      <NormalizeCss />
-      <App />
-    </GameConfigProvider>
-  </ColorSchemeProvider>,
+  <StrictMode>
+    <ColorSchemeProvider>
+      <GameConfigProvider>
+        <NormalizeCss />
+        <App />
+      </GameConfigProvider>
+    </ColorSchemeProvider>
+  </StrictMode>,
   root
 );
 

@@ -19,7 +19,8 @@ export const Peg = ({
       size={size}
       style={{ ...props.style, backgroundColor: c2 }}
     >
-      <Body size={size} style={{ backgroundColor: c2 }} />
+      <Body size={size} data-body style={{ backgroundColor: c2 }} />
+      <Body2 size={size} style={{ backgroundColor: c2 }} />
       <Top size={size} style={{ backgroundColor: c1 }} />
     </Bottom>
   );
@@ -60,6 +61,15 @@ const Body = styled(Object3d)<{ size: number }>`
   bottom: 0;
   left: 0;
   transform: translateZ(${(p) => p.size / 2 - 1}px) rotateX(90deg);
+  width: ${(p) => p.size}px;
+  height: ${(p) => p.size}px;
+`;
+const Body2 = styled(Object3d)<{ size: number }>`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  transform: translateZ(${(p) => p.size / 2 - 1}px) rotateZ(90deg)
+    rotateX(90deg);
   width: ${(p) => p.size}px;
   height: ${(p) => p.size}px;
 `;
