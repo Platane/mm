@@ -1,5 +1,15 @@
 import { createContext, useState, useContext } from "react";
-import { colorSchemes } from "../color";
+
+export const colorSchemes = [
+  [
+    ["#fce514", "#efda21"],
+    ["#2678f4", "#2866c3"],
+    ["#df2525", "#d02727"],
+    ["#6acc14", "#60b516"],
+    ["#bb18c6", "#ab1bb5"],
+    ["#fba106", "#d6911a"],
+  ],
+];
 
 const Context = createContext({
   colorScheme: [],
@@ -14,5 +24,5 @@ export const ColorSchemeProvider = ({ children }: any) => {
 };
 
 export const useColorScheme = () => {
-  return { colors: colorSchemes[0] };
+  return { colorScheme: colorSchemes[0] };
 };

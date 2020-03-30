@@ -1,24 +1,34 @@
 {
-  "name": "@mm/app-cheater",
+  "name": "@mm/app-game",
   "version": "2.0.0",
+  "description": "__game__ The Master Mind game",
+  "author": {
+    "name": "platane",
+    "url": "https://platane.github.io",
+    "twitter": "@platane_"
+  },
   "private": true,
   "sideEffect": true,
   "dependencies": {
     "@emotion/core": "10.0.28",
     "@emotion/styled": "10.0.27",
     "react": "16.13.1",
-    "react-dom": "16.13.1"
+    "react-dom": "16.13.1",
+    "react-spring": "^8.0.27"
   },
   "devDependencies": {
+    "app-manifest-webpack-plugin": "^1.2.0",
     "babel-loader": "8.1.0",
+    "html-webpack-inline-source-plugin": "^0.0.10",
     "html-webpack-plugin": "4.0.2",
     "webpack": "4.42.1",
     "webpack-cli": "3.3.11",
     "webpack-dev-server": "3.10.3",
+    "workbox-webpack-plugin": "^5.1.2",
     "workerize-loader": "1.1.0"
   },
   "scripts": {
     "build": "env NODE_ENV=production webpack",
-    "dev": "webpack-dev-server --port ${PORT-3101}"
+    "dev": "webpack-dev-server --port ${PORT-3102}"
   }
 }

@@ -1,55 +1,65 @@
 import styled from "@emotion/styled";
 import { useColorScheme } from "./_hooks/useColorScheme";
 import { Peg as IPeg } from "@mm/solver/type";
+import { Object3d } from "./Object3d";
 
-export const Peg = ({ peg, ...props }: { peg: IPeg } & { style: any }) => {
-  const { colors } = useColorScheme();
-  const color = colors[peg];
+export const Peg = ({
+  peg,
+  size,
+  ...props
+}: { peg: IPeg | "correct" | "badPosition"; size: number } & {
+  style?: any;
+}) => {
+  const { colorScheme } = useColorScheme();
+  const [c1, c2] = getColor(colorScheme, peg);
 
   return (
-    <Container {...props}>
-      <Top style={{ backgroundColor: color }} />
-      <Body
-        style={{
-          backgroundColor: color,
-          filter: "saturate(0.8) brightness(0.9)",
-        }}
-      />
-      <Bottom
-        style={{
-          backgroundColor: color,
-          filter: "saturate(0.8) brightness(0.9)",
-        }}
-      />
-    </Container>
+    <Bottom
+      {...props}
+      size={size}
+      style={{ ...props.style, backgroundColor: c2 }}
+    >
+      <Body size={size} style={{ backgroundColor: c2 }} />
+      <Top size={size} style={{ backgroundColor: c1 }} />
+    </Bottom>
   );
 };
 
-const Container = styled.div`
+const getColor = (
+  colorScheme: Record<IPeg, string>,
+  peg: IPeg | "correct" | "badPosition"
+) => {
+  switch (peg) {
+    case "correct":
+      return ["#333", "#000"];
+    case "badPosition":
+      return ["#fff", "#ddd"];
+    default:
+      return colorScheme[peg];
+  }
+};
+
+const Bottom = styled(Object3d)<{ size: number }>`
   position: relative;
-  width: 30px;
-  height: 30px;
-  transform-style: preserve-3d;
+  width: ${(p) => p.size}px;
+  height: ${(p) => p.size}px;
+  border-radius: 50%;
+  flex: auto 0 0;
 `;
-const Top = styled.div`
-  transform-style: preserve-3d;
+const Top = styled(Object3d)<{ size: number }>`
   position: absolute;
   top: 0;
   left: 0;
-  transform: translateZ(30px);
-  width: 30px;
-  height: 30px;
+  transform: translateZ(${(p) => p.size}px);
+  width: ${(p) => p.size}px;
+  height: ${(p) => p.size}px;
   border-radius: 50%;
 `;
-const Body = styled.div`
-  transform-style: preserve-3d;
+const Body = styled(Object3d)<{ size: number }>`
   position: absolute;
   bottom: 0;
   left: 0;
-  transform: translateZ(14px) rotateX(90deg);
-  width: 30px;
-  height: 30px;
-`;
-const Bottom = styled(Top)`
-  transform: translateZ(0px);
+  transform: translateZ(${(p) => p.size / 2 - 1}px) rotateX(90deg);
+  width: ${(p) => p.size}px;
+  height: ${(p) => p.size}px;
 `;
