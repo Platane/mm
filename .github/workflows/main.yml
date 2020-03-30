@@ -15,4 +15,30 @@ jobs:
       - run: yarn type
       - run: yarn lint
       - run: yarn test --ci
-      - run: ( cd packages/benchmark ; yarn start 60 )
+      - run: ( cd packages/benchmark ; yarn start 6 4 60 )
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+      - run: yarn install --frozen-lockfile
+
+      - run: ( cd packages/app-game ; yarn build )
+
+      - run: ( cd packages/app-cheater ; yarn build )
+
+      - run: yarn surge ./packages/app-game/dist $SHA.mm-game.surge.sh
+        env:
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          SHA: ${{ github.sha }}
+
+      - run: yarn surge ./packages/app-cheater/dist $SHA.mm-cheater.surge.sh
+        env:
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          SHA: ${{ github.sha }}
