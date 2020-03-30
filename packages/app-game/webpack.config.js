@@ -13,6 +13,12 @@ const mode =
 
 const basePathname = process.env.BASE_PATHNAME || "";
 
+const app = {
+  name: pkg.description.split("__")[1] || pkg.name,
+  description: pkg.description.split("__").slice(-1)[0],
+  developer: pkg.author || {},
+};
+
 module.exports = {
   mode,
   entry: { app: "./index" },
@@ -53,9 +59,22 @@ module.exports = {
     }),
 
     new HtmlWebpackPlugin({
+      title: app.name,
       filename: "index.html",
-      hash: true,
       meta: {
+        description: app.description,
+
+        "og:type": "website",
+        "og:title": app.name,
+        "og:description": app.description,
+        "og:image": "",
+
+        "twitter:card": "summary_large_image",
+        "twitter:title": app.name,
+        "twitter:description": app.description,
+        "twitter:image": "",
+        "twitter:creator": app.developer.twitter,
+
         viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
       },
       minify: mode === "production" && {
@@ -68,17 +87,31 @@ module.exports = {
       },
     }),
 
-    new GenerateSW(),
+    new GenerateSW({
+      exclude: [
+        //
+        /manifest\.json$/,
+        /robots\.txt$/,
+
+        /android-chrome-.*\.png$/,
+        /favicon-.*\.png$/,
+        /favicon\.ico$/,
+
+        /\.cache$/,
+        /iconstats-.*\.json$/,
+        /\.js\.LICENSE$/,
+      ],
+    }),
 
     new AppManifestWebpackPlugin({
       logo: path.resolve(__dirname, "assets", "images", "icon192.png"),
       prefix: "/" + basePathname.split("/").filter(Boolean).join("/"),
       inject: true,
       config: {
-        appName: pkg.description.split("__")[1] || pkg.name,
-        appDescription: pkg.description.split("__").slice(-1)[0],
-        developerName: pkg.author && pkg.author.name,
-        developerURL: pkg.author && pkg.author.url,
+        appName: app.name,
+        appDescription: app.description,
+        developerName: app.developer.name,
+        developerURL: app.developer.url,
         background: "#fff",
         theme_color: "#fff",
         display: "standalone",
