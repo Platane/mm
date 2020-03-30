@@ -12,10 +12,12 @@ export const BoardRow = ({
   i,
   line,
   feedback,
+  lineChildren,
 }: {
   i: number | null;
   line: (number | null)[];
   feedback?: Feedback;
+  lineChildren?: any;
 }) => (
   <Container>
     {i !== null && <Number>{i + 1}</Number>}
@@ -26,6 +28,7 @@ export const BoardRow = ({
           {l !== null && <Peg size={bigPegSize} peg={l} />}
         </Hole>
       ))}
+      {lineChildren}
     </Line>
 
     <FeedbackContainer n={line.length}>
@@ -57,6 +60,8 @@ const Hole = styled(Object3d)<{ size: number }>`
   justify-content: center;
 
   background-color: rgba(0, 0, 0, 0.1);
+
+  pointer-events: none;
 `;
 
 const Number = styled.span`
@@ -77,8 +82,8 @@ const Number = styled.span`
 `;
 
 const Container = styled(Object3d)`
-  position;relative;
   display: flex;
+  position;relative;
   flex-direction: row;
 
   &:nth-of-type(2n) {
@@ -90,10 +95,11 @@ const Container = styled(Object3d)`
 `;
 
 const Line = styled(Object3d)`
+  position;relative;
   display: flex;
   flex-direction: row;
   flex: auto 1 0;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
   transform-style: preserve-3d;
   height: ${lineHeight}px;

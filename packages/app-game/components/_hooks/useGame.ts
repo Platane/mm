@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Line, Row } from "@mm/solver/type";
 import { getRandomLine } from "@mm/solver/getRandomtLine";
 import { getFeedback } from "@mm/solver/getFeedback";
@@ -12,20 +12,11 @@ export const useGame = (p: number, n: number) => {
   });
 
   const playLine = (line: Line) =>
-    setState(({ solution, rows, ...rest }) => {
-      if (solution.join() === line.join())
-        return {
-          rows: [],
-          solution: getRandomLine(p, n),
-          id: generateId(),
-        };
-      else
-        return {
-          rows: [...rows, { line, feedback: getFeedback(solution, line) }],
-          solution,
-          ...rest,
-        };
-    });
+    setState(({ solution, rows, ...rest }) => ({
+      rows: [...rows, { line, feedback: getFeedback(solution, line) }],
+      solution,
+      ...rest,
+    }));
 
   const reset = () =>
     setState({
@@ -33,10 +24,6 @@ export const useGame = (p: number, n: number) => {
       solution: getRandomLine(p, n),
       id: generateId(),
     });
-
-  useEffect(() => {
-    reset();
-  }, [p, n]);
 
   return { ...state, playLine, reset };
 };

@@ -26,7 +26,7 @@ export const Peg = ({
 };
 
 const getColor = (
-  colorScheme: Record<IPeg, string>,
+  colorScheme: string[][],
   peg: IPeg | "correct" | "badPosition"
 ) => {
   switch (peg) {

@@ -8,27 +8,56 @@ export const Board = ({
   p,
   n,
   rows,
-  playLine,
   candidate,
 }: {
   p: number;
   n: number;
   rows: IRow[];
-  playLine: any;
   candidate: (number | null)[];
 }) => {
+  const m = 4;
+  const dropZone = (
+    <>
+      {Array.from({ length: n }, (_, i) => (
+        <div
+          key={i}
+          data-hit={`candidate-${i}`}
+          style={{
+            background: "rgba(0,0,0,0.2)",
+            position: "absolute",
+            borderRadius: "40%",
+            top: `${m}px`,
+            bottom: `${m}px`,
+            width: `calc( ${100 / n}% - ${m * 2}px)`,
+            left: `calc( ${m}px +  ${(i * 100) / n}% )`,
+          }}
+        />
+      ))}
+    </>
+  );
+
   return (
-    <Container onClick={() => playLine(getRandomLine(p, n))}>
+    <Container>
       <SideLeft />
       <SideRight />
       <SideBottom />
 
-      {Array.from({ length: Math.max(rows.length, 8) }).map((_, i) => (
+      {rows.map((row, i) => (
+        <BoardRow i={i} key={i} {...row} />
+      ))}
+
+      <BoardRow
+        i={rows.length}
+        key={rows.length}
+        line={candidate}
+        lineChildren={dropZone}
+      />
+
+      {Array.from({ length: Math.max(0, 7 - rows.length) }, (_, i) => (
         <BoardRow
-          i={i}
-          key={i}
-          feedback={rows[i] && rows[i].feedback}
-          line={rows[i] ? rows[i].line : Array.from({ length: n }, () => null)}
+          i={rows.length + i + 1}
+          key={rows.length + i + 1}
+          line={Array.from({ length: n }, () => null)}
         />
       ))}
     </Container>
