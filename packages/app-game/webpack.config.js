@@ -93,6 +93,7 @@ module.exports = {
         /manifest\.json$/,
         /robots\.txt$/,
 
+        /apple-touch-icon.*\.png$/,
         /android-chrome-.*\.png$/,
         /favicon-.*\.png$/,
         /favicon\.ico$/,
@@ -122,7 +123,7 @@ module.exports = {
         icons: {
           android: true,
           favicons: true,
-          appleIcon: false,
+          appleIcon: true,
           appleStartup: false,
           firefox: false,
           windows: false,
