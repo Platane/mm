@@ -1,11 +1,11 @@
 import styled from "@emotion/styled";
-import { Peg } from "@mm/app-cheater/components/Peg";
+import { css, keyframes } from "@emotion/core";
 import { Feedback } from "@mm/solver/type";
-import { css } from "@emotion/core";
+import { Peg } from "@mm/app-cheater/components/Peg";
 import { Object3d } from "@mm/app-cheater/components/Object3d";
 
 const lineHeight = 60;
-const bigPegSize = 30;
+const bigPegSize = 28;
 const smallPegSize = 14;
 
 export const BoardRow = ({
@@ -36,9 +36,9 @@ export const BoardRow = ({
         let content = null;
 
         if (feedback && i < feedback.correct)
-          content = <Peg size={smallPegSize} peg="correct" />;
+          content = <FeedbackPeg size={smallPegSize} peg="correct" />;
         else if (feedback && i < feedback.correct + feedback.badPosition)
-          content = <Peg size={smallPegSize} peg="badPosition" />;
+          content = <FeedbackPeg size={smallPegSize} peg="badPosition" />;
 
         return (
           <Hole size={smallPegSize} key={i}>
@@ -106,14 +106,9 @@ const Line = styled(Object3d)`
 `;
 
 const FeedbackContainer = styled(Object3d)<{ n: number }>`
-  
-  
   padding: 6px;
-
   flex: auto 0.5 0;
-
   display: grid;
-
   justify-items: center;
   align-items: center;
 
@@ -128,4 +123,15 @@ const FeedbackContainer = styled(Object3d)<{ n: number }>`
       grid-template-row: ${`${100 / y}% `.repeat(y)};
     `;
   }}}
+`;
+
+const dropAnimation = keyframes`
+  0%{ transform: translateZ(100px) scale(0) }
+  80%{ transform: translateZ(100px) scale(0) }
+  81%{ transform: translateZ(100px) scale(0.5) }
+  90%{ transform: translateZ(60px) scale(1) }
+  100%{ transform: translateZ(0px) }
+`;
+const FeedbackPeg = styled(Peg)`
+  animation: ${dropAnimation} 420ms linear;
 `;

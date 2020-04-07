@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
+import { keyframes } from "@emotion/core";
 import { Row as IRow } from "@mm/solver/type";
 import { Object3d } from "@mm/app-cheater/components/Object3d";
 import { BoardRow } from "./BoardRow";
-import { keyframes } from "@emotion/core";
 
 export const Board = ({
   p,
@@ -10,14 +10,17 @@ export const Board = ({
   rows,
   candidate,
   onSubmit,
+  ...props
 }: {
   p: number;
   n: number;
   rows: IRow[];
   candidate: (number | null)[];
   onSubmit?: () => void;
+  style?: any;
 }) => {
-  const m = 4;
+  const mx = 8;
+  const my = 14;
   const dropZone = (
     <>
       {Array.from({ length: n }, (_, i) => (
@@ -31,20 +34,20 @@ export const Board = ({
           style={{
             position: "absolute",
             borderRadius: "40%",
-            top: `${m}px`,
-            bottom: `${m}px`,
-            width: `calc( ${100 / n}% - ${m * 2}px)`,
-            left: `calc( ${m}px +  ${(i * 100) / n}% )`,
+            top: `${my}px`,
+            bottom: `${my}px`,
+            width: `calc( ${100 / n}% - ${mx * 2}px)`,
+            left: `calc( ${mx}px +  ${(i * 100) / n}% )`,
+            backgroundColor: "rgba(0,0,0,0.0)",
           }}
         />
       ))}
-
       {onSubmit && <Submit onClick={onSubmit}>submit</Submit>}
     </>
   );
 
   return (
-    <Container>
+    <Container {...props}>
       <SideLeft />
       <SideRight />
       <SideBottom />
@@ -83,6 +86,8 @@ const Container = styled(Object3d)`
   background-color: ${boardColor};
 
   position: relative;
+
+  transition: transform 180ms linear 500ms;
 `;
 const SideLeft = styled(Object3d)`
   position: absolute;

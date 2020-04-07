@@ -1,8 +1,8 @@
 import { useEffect, useRef } from "react";
-import { Peg } from "@mm/app-cheater/components/Peg";
-import { Tracker } from "./FlyingPegManager";
 import styled from "@emotion/styled";
+import { Peg } from "@mm/app-cheater/components/Peg";
 import { Object3d } from "@mm/app-cheater/components/Object3d";
+import { Tracker } from "./FlyingPegManager";
 
 export const FlyingPeg = ({
   pointerId,
@@ -151,7 +151,7 @@ export const FlyingPeg = ({
       released = true;
 
       onDrop(destination);
-      // onFinish();
+      onFinish();
     };
 
     document.body.addEventListener("pointermove", onPointerMove);

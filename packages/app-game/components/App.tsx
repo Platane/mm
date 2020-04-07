@@ -1,15 +1,15 @@
+import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
+import { keyframes } from "@emotion/core";
+import { Line } from "@mm/solver/type";
 import { useGameConfig } from "@mm/app-cheater/components/_hooks/useGameConfig";
+import { usePulse } from "@mm/app-cheater/components/_hooks/usePulse";
+import { Object3d } from "@mm/app-cheater/components/Object3d";
 import { useCandidate } from "./_hooks/useCandidate";
 import { useGame } from "./_hooks/useGame";
 import { Board } from "./Board";
-import { useEffect } from "react";
-import { getRandomLine } from "@mm/solver/getRandomtLine";
-import { keyframes } from "@emotion/core";
-import { Object3d } from "@mm/app-cheater/components/Object3d";
-import { Line } from "@mm/solver/type";
 import { FlyingPegManager } from "./FlyingPegManager";
-import { useColorScheme } from "@mm/app-cheater/components/_hooks/useColorScheme";
+import { PegPools } from "./PegPools";
 
 export const App = () => {
   const { p, n } = useGameConfig();
@@ -21,13 +21,11 @@ export const App = () => {
     onDrop,
     reset: resetCandidate,
   } = useCandidate(n);
-  const { colorScheme } = useColorScheme();
+  const [hover, setHover] = useState(false);
 
   useEffect(() => {
     resetCandidate();
     resetGame();
-
-    for (let k = 4; k--; ) playLine(getRandomLine(p, n));
   }, [p, n]);
 
   const onSubmit = () => {
@@ -36,33 +34,40 @@ export const App = () => {
     resetCandidate();
   };
 
+  const newLinePulse = usePulse(id + "-" + rows.length, 300);
+
   return (
     <>
-      {Array.from({ length: p }, (_, i) => (
-        <div
-          key={i}
-          data-hit={`source-${i}`}
-          style={{
-            width: "150px",
-            height: "20px",
-            background: colorScheme[i][0],
-          }}
-        />
-      ))}
-
-      <World>
+      <World pop={newLinePulse}>
         <Scene>
+          <PegPools p={p} disabled={hover} />
+
           <Board
             n={n}
             p={p}
             rows={rows}
             candidate={temporaryCandidate}
             onSubmit={candidate.every((p) => p !== null) ? onSubmit : undefined}
+            // style={{
+            //   transform: `translateY(${Math.max(
+            //     rows.length * 80 - 200,
+            //     -80
+            //   )}px)`,
+            // }}
           />
         </Scene>
       </World>
 
-      <FlyingPegManager onHover={onHover} onDrop={onDrop} />
+      <FlyingPegManager
+        onHover={(id, a, b) => {
+          onHover(id, a, b);
+          setHover(true);
+        }}
+        onDrop={(id, a, b) => {
+          onDrop(id, a, b);
+          setHover(false);
+        }}
+      />
     </>
   );
 };
@@ -70,15 +75,23 @@ export const App = () => {
 /*
  */
 
-const World = styled.div`
+const wobble = keyframes`
+ 0%{ transform: rotateY(20deg) rotateX(35deg) }
+ 50%{ transform: rotateY(-10deg) rotateX(35deg) }
+ 100%{ transform: rotateY(20deg) rotateX(35deg) }
+ `;
+
+const popAnimation = keyframes`
+  0%{ transform: scale(1) }
+  40%{ transform: scale(1.1) }
+  100%{ transform: scale(1) }
+ `;
+
+const World = styled.div<{ pop: boolean }>`
   perspective: 1000px;
+  animation: ${(p) => (p.pop ? popAnimation : "none")} 220ms linear;
 `;
 
-const wobble = keyframes`
-0%{ transform: rotateY(20deg) rotateX(35deg) }
-50%{ transform: rotateY(-10deg) rotateX(35deg) }
-100%{ transform: rotateY(20deg) rotateX(35deg) }
-`;
 const Scene = styled(Object3d)`
   // animation: ${wobble} 2000ms linear infinite;
   transform: rotateY(10deg) rotateX(35deg);
