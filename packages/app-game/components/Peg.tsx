@@ -36,7 +36,7 @@ const getColor = (
     case "badPosition":
       return ["#fff", "#ddd"];
     default:
-      return colorScheme[peg];
+      return colorScheme[peg] || [];
   }
 };
 

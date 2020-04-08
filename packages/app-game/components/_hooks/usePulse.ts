@@ -13,7 +13,5 @@ export const usePulse = (key: any, delay = 0) => {
     return () => clearTimeout(timeout);
   }, [key]);
 
-  console.log(key, pulse);
-
   return pulse;
 };

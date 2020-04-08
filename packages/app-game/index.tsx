@@ -1,9 +1,10 @@
 import { StrictMode } from "react";
 import { render } from "react-dom";
 import { App } from "./components/App";
-import { ColorSchemeProvider } from "../app-cheater/components/_hooks/useColorScheme";
-import { GameConfigProvider } from "../app-cheater/components/_hooks/useGameConfig";
-import { NormalizeCss } from "../app-cheater/components/NormalizeCss";
+import { RouterProvider } from "./components/_hooks/useRouter";
+import { GameConfigProvider } from "./components/_hooks/useGameConfig";
+import { ColorSchemeProvider } from "./components/_hooks/useColorScheme";
+import { NormalizeCss } from "./components/NormalizeCss";
 
 const root = document.createElement("div");
 document.body.appendChild(root);
@@ -11,12 +12,14 @@ root.id = "root";
 
 render(
   <StrictMode>
-    <ColorSchemeProvider>
-      <GameConfigProvider>
-        <NormalizeCss />
-        <App />
-      </GameConfigProvider>
-    </ColorSchemeProvider>
+    <GameConfigProvider>
+      <ColorSchemeProvider>
+        <RouterProvider>
+          <NormalizeCss />
+          <App />
+        </RouterProvider>
+      </ColorSchemeProvider>
+    </GameConfigProvider>
   </StrictMode>,
   root
 );

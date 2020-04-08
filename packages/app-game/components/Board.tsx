@@ -1,8 +1,9 @@
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/core";
 import { Row as IRow } from "@mm/solver/type";
-import { Object3d } from "@mm/app-cheater/components/Object3d";
+import { Object3d } from "./Object3d";
 import { BoardRow } from "./BoardRow";
+import { boardColor } from "./theme";
 
 export const Board = ({
   p,
@@ -74,7 +75,6 @@ export const Board = ({
   );
 };
 
-const boardColor = "#aaa";
 const sideH = 50;
 const Container = styled(Object3d)`
   width: calc(100% - 100px);

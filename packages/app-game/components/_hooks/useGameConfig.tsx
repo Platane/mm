@@ -1,17 +1,17 @@
 import { createContext, useState, useContext } from "react";
 
 const context = createContext({
-  n: 4,
   p: 6,
+  n: 4,
 
-  setGameConfig: (n: number, p: number) => {},
+  setGameConfig: (_p: number, _n: number) => {},
 });
 
 const P = context.Provider as any;
 
 export const GameConfigProvider = ({ children }: any) => {
-  const [config, setConfig] = useState({ n: 4, p: 6 });
-  const setGameConfig = (n: number, p: number) => setConfig({ n, p });
+  const [config, setConfig] = useState({ p: 6, n: 4 });
+  const setGameConfig = (p: number, n: number) => setConfig({ p, n });
 
   return <P value={{ ...config, setGameConfig }}>{children}</P>;
 };

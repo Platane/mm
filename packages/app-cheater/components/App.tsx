@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
-import { Peg } from "./Peg";
 import { Feedback } from "@mm/solver/type";
 import { useSolver } from "./_hooks/useSolver";
+import { Peg } from "../../app-game/components/Peg";
 
 export const App = () => {
   const { candidate, computing, nextTurn } = useSolver(6, 4);

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { css } from "@emotion/core";
-import { Object3d } from "@mm/app-cheater/components/Object3d";
-import { Peg } from "@mm/app-cheater/components/Peg";
+import { Object3d } from "./Object3d";
+import { Peg } from "./Peg";
 
 export const PegPools = ({
   p,

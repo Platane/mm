@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import styled from "@emotion/styled";
-import { Peg } from "@mm/app-cheater/components/Peg";
-import { Object3d } from "@mm/app-cheater/components/Object3d";
+import { Peg } from "./Peg";
+import { Object3d } from "./Object3d";
 import { Tracker } from "./FlyingPegManager";
 
 export const FlyingPeg = ({

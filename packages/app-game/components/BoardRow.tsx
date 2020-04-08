@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { css, keyframes } from "@emotion/core";
 import { Feedback } from "@mm/solver/type";
-import { Peg } from "@mm/app-cheater/components/Peg";
-import { Object3d } from "@mm/app-cheater/components/Object3d";
+import { Peg } from "./Peg";
+import { Object3d } from "./Object3d";
 
 const lineHeight = 60;
 const bigPegSize = 28;
@@ -59,7 +59,7 @@ const Hole = styled(Object3d)<{ size: number }>`
   align-items: center;
   justify-content: center;
 
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.04);
 
   pointer-events: none;
 `;

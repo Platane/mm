@@ -4,9 +4,9 @@ import {
   isValidSolutionForRow,
   isValidSolution,
 } from "@mm/solver/isValidSolution";
-import { getBestLine } from "../../services/solver/getBestLine";
 import { getBestDefaultLine } from "@mm/solver/getBestDefaultLine";
 import { getAllLines } from "@mm/solver/getAllLines";
+import { getBestLine } from "../../services/solver/getBestLine";
 
 const computing = Symbol("pending");
 

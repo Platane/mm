@@ -17,6 +17,11 @@ const normalized = css`
     height: 100%;
     overflow: hidden;
   }
+  input,
+  label {
+    font-family: helvetica;
+    font-size: 20px;
+  }
 `;
 
 export const NormalizeCss = () => <Global styles={normalized} />;
