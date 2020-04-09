@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "@emotion/styled";
-import { Feedback } from "@mm/solver/type";
+import { Feedback, Row as IRow } from "@mm/solver/type";
 import { useSolver } from "./_hooks/useSolver";
 import { Peg } from "@mm/app-game/components/Peg";
 import { useTranslate } from "./_hooks/useTranslate";
@@ -10,17 +10,24 @@ import { Object3d } from "@mm/app-game/components/Object3d";
 import { Content, Container } from "./Layout";
 import { Board } from "@mm/app-game/components/Board";
 
-export const Game = ({ p, n }: { p: number; n: number }) => {
+export const Game = ({
+  p,
+  n,
+  initialRows,
+}: {
+  p: number;
+  n: number;
+  initialRows: IRow[];
+}) => {
   const [step, setStep] = useState<"play" | "feedback">("play");
   const { t } = useTranslate();
 
-  const { candidate, computing, nextTurn, rows } = useSolver(p, n);
+  const { candidate, computing, nextTurn, rows } = useSolver(p, n, initialRows);
 
   const [feedback, setFeedback] = useState<Feedback>({
     correct: 0,
     badPosition: 0,
   });
-
 
   return (
     <Container>

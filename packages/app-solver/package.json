@@ -1,7 +1,7 @@
 {
-  "name": "@mm/app-cheater",
+  "name": "@mm/app-solver",
   "version": "2.0.0",
-  "description": "__Master Mind Solver__ The Master Mind solver",
+  "description": "__Master Mind Solver__ The Master Mind Solver",
   "author": {
     "name": "platane",
     "url": "https://platane.github.io",
@@ -24,7 +24,8 @@
     "webpack": "4.42.1",
     "webpack-cli": "3.3.11",
     "webpack-dev-server": "3.10.3",
-    "workerize-loader": "1.1.0"
+    "workerize-loader": "1.1.0",
+    "worker-plugin": "4.0.2"
   },
   "scripts": {
     "build": "env NODE_ENV=production webpack",

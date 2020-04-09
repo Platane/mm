@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/core";
 import { Line } from "@mm/solver/type";
@@ -9,6 +9,26 @@ import { useGame } from "./_hooks/useGame";
 import { Board } from "./Board";
 import { FlyingPegManager } from "./FlyingPegManager";
 import { PegPools } from "./PegPools";
+import { createSharedCommunication } from "../services/communication/createSharedCommunication";
+
+const useSharedCommunication = (
+  id: string,
+  p: number,
+  n: number,
+  rows: any[]
+) => {
+  const ref = useRef<any>();
+
+  useEffect(() => {
+    const c = createSharedCommunication();
+    ref.current = c;
+    return () => c.dispose();
+  }, []);
+
+  useEffect(() => {
+    ref.current.setGame(id, p, n, rows);
+  }, [id, p, n, rows]);
+};
 
 export const Game = ({ p, n }: { p: number; n: number }) => {
   const { id, rows, playLine, reset: resetGame } = useGame(p, n);
@@ -20,6 +40,8 @@ export const Game = ({ p, n }: { p: number; n: number }) => {
     reset: resetCandidate,
   } = useCandidate(n);
   const [hover, setHover] = useState(false);
+
+  useSharedCommunication(id, p, n, rows);
 
   useEffect(() => {
     resetCandidate();

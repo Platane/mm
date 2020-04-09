@@ -62,7 +62,6 @@ export const ConfigPage = ({
       </BoardContainer>
       <ConfigContainer
         onSubmit={(e) => {
-          console.log("yolo");
           e.preventDefault();
           if (step >= 3) {
             setPage("game");

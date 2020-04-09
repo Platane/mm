@@ -43,6 +43,14 @@ module.exports = {
         loader: "babel-loader",
         options: { rootMode: "upward" },
       },
+      {
+        exclude: /./,
+        loader: "workerize-loader",
+      },
+      {
+        exclude: /./,
+        loader: "worker-plugin",
+      },
     ],
   },
   plugins: [

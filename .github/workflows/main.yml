@@ -27,18 +27,11 @@ jobs:
           node-version: 12
       - run: yarn install --frozen-lockfile
 
-      - run: ( cd packages/app-game ; yarn build )
-
-      - run: ( cd packages/app-cheater ; yarn build )
-
-      - run: yarn surge ./packages/app-game/dist $SHA-mm-game.surge.sh
+      - run: BASE_PATHNAME="" yarn build
+        
+      - run: yarn surge ./dist $SHA-mm.surge.sh
         env:
           SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
           SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
           SHA: ${{ github.sha }}
 
-      - run: yarn surge ./packages/app-cheater/dist $SHA-mm-cheater.surge.sh
-        env:
-          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
-          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
-          SHA: ${{ github.sha }}
