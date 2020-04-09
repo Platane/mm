@@ -6,6 +6,5 @@ export default {
   write_the_result: "Write the result",
   correct_position: "Correct position",
   bad_position: "Bad position",
-  next: "Next",
   ok: "ok",
 } as const;

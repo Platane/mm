@@ -13,8 +13,6 @@
     "@babel/preset-typescript": "7.9.0",
     "@emotion/babel-preset-css-prop": "10.0.27",
     "@types/jest": "25.2.1",
-    "@types/react": "16.9.33",
-    "@types/react-dom": "16.9.6",
     "jest": "25.3.0",
     "prettier": "2.0.4",
     "surge": "0.21.3",
@@ -28,6 +26,7 @@
     "type": "tsc --noEmit",
     "lint": "yarn prettier -c '**/*.{ts,tsx,js,jsx,json,md}' '!**/dist/**'",
     "test": "NODE_ENV=test jest --verbose",
-    "build": "mkdir dist ; ( cd packages/app-game ; BASE_PATHNAME=$BASE_PATHNAME/game yarn build ; cp -r dist ../../dist/game ) ; ( cd packages/app-solver ; BASE_PATHNAME=$BASE_PATHNAME/solver yarn build ; cp -r dist ../../dist/solver )"
+    "build": "( cd packages/builder ; yarn build )",
+    "dev": "( cd packages/builder ; yarn dev )"
   }
 }
