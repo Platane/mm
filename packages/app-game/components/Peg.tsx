@@ -6,12 +6,17 @@ import { Object3d } from "./Object3d";
 export const Peg = ({
   peg,
   size,
+  color,
   ...props
-}: { peg: IPeg | "correct" | "badPosition"; size: number } & {
+}: {
+  peg?: IPeg | "correct" | "badPosition";
+  size: number;
+  color?: [string, string];
+} & {
   style?: any;
 }) => {
   const { colorScheme } = useColorScheme();
-  const [c1, c2] = getColor(colorScheme, peg);
+  const [c1, c2] = color || getColor(colorScheme, peg);
 
   return (
     <Bottom
@@ -28,13 +33,15 @@ export const Peg = ({
 
 const getColor = (
   colorScheme: string[][],
-  peg: IPeg | "correct" | "badPosition"
+  peg?: IPeg | "correct" | "badPosition"
 ) => {
   switch (peg) {
     case "correct":
       return ["#333", "#000"];
     case "badPosition":
       return ["#fff", "#ddd"];
+    case undefined:
+      return [];
     default:
       return colorScheme[peg] || [];
   }

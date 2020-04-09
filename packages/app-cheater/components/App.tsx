@@ -1,34 +1,26 @@
-import { useState } from "react";
-import styled from "@emotion/styled";
-import { Feedback } from "@mm/solver/type";
-import { useSolver } from "./_hooks/useSolver";
-import { Peg } from "../../app-game/components/Peg";
+import { useState, useEffect } from "react";
+import { useGameConfig } from "@mm/app-game/components/_hooks/useGameConfig";
+import { colorSchemes } from "@mm/app-game/components/theme";
+import { useColorScheme } from "@mm/app-game/components/_hooks/useColorScheme";
+import { OnBoarding } from "./OnBoarding";
+import { Game } from "./Game";
 
 export const App = () => {
-  const { candidate, computing, nextTurn } = useSolver(6, 4);
+  const [started, setStarted] = useState(false);
+  const { p, n, setGameConfig } = useGameConfig();
+  const { setColorScheme, colorScheme } = useColorScheme();
 
-  const [feedback, setFeedback] = useState({
-    correct: 0,
-    badPosition: 0,
-  } as Feedback);
-
-  return (
-    <Container>
-      <Line>
-        {computing && <span>computing ...</span>}
-        {candidate &&
-          candidate.map((peg, i) => (
-            <Peg key={i} peg={peg} size={28} style={{ margin: "16px" }} />
-          ))}
-      </Line>
-    </Container>
-  );
+  if (!started)
+    return (
+      <OnBoarding
+        p={p}
+        n={n}
+        colorScheme={colorScheme}
+        colorSchemes={colorSchemes}
+        setGameConfig={setGameConfig}
+        setColorScheme={setColorScheme}
+        onStartGame={() => setStarted(true)}
+      />
+    );
+  else return <Game key={p + "/" + n} p={p} n={n} />;
 };
-
-const Container = styled.div``;
-const Line = styled.div`
-  transform-style: preserve-3d;
-  transform: rotateX(45deg);
-  display: flex;
-  flex-direction: row;
-`;

@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
-import { css, keyframes } from "@emotion/core";
 import { Feedback } from "@mm/solver/type";
 import { Peg } from "./Peg";
 import { Object3d } from "./Object3d";
+import { FeedbackBox } from "./FeedbackBox";
 
 const lineHeight = 60;
 const bigPegSize = 28;
@@ -13,11 +13,13 @@ export const BoardRow = ({
   line,
   feedback,
   lineChildren,
+  disableAnimation = false,
 }: {
   i: number | null;
   line: (number | null)[];
   feedback?: Feedback;
   lineChildren?: any;
+  disableAnimation?: boolean;
 }) => (
   <Container>
     {i !== null && <Number>{i + 1}</Number>}
@@ -31,22 +33,12 @@ export const BoardRow = ({
       {lineChildren}
     </Line>
 
-    <FeedbackContainer n={line.length}>
-      {line.map((_, i) => {
-        let content = null;
-
-        if (feedback && i < feedback.correct)
-          content = <FeedbackPeg size={smallPegSize} peg="correct" />;
-        else if (feedback && i < feedback.correct + feedback.badPosition)
-          content = <FeedbackPeg size={smallPegSize} peg="badPosition" />;
-
-        return (
-          <Hole size={smallPegSize} key={i}>
-            {content}
-          </Hole>
-        );
-      })}
-    </FeedbackContainer>
+    <FeedbackBox
+      n={line.length}
+      feedback={feedback}
+      pegSize={smallPegSize}
+      disableAnimation={disableAnimation}
+    />
   </Container>
 );
 
@@ -103,35 +95,4 @@ const Line = styled(Object3d)`
   align-items: center;
   transform-style: preserve-3d;
   height: ${lineHeight}px;
-`;
-
-const FeedbackContainer = styled(Object3d)<{ n: number }>`
-  padding: 6px;
-  flex: auto 0.5 0;
-  display: grid;
-  justify-items: center;
-  align-items: center;
-
-  ${(p) => {
-    const x = Math.ceil(Math.sqrt(p.n));
-    const y = Math.ceil(p.n / x);
-
-    return css`
-      max-width: ${(lineHeight / y) * x * 1.2}px;
-
-      grid-template-columns: ${`${100 / x}% `.repeat(x)};
-      grid-template-row: ${`${100 / y}% `.repeat(y)};
-    `;
-  }}}
-`;
-
-const dropAnimation = keyframes`
-  0%{ transform: translateZ(100px) scale(0) }
-  80%{ transform: translateZ(100px) scale(0) }
-  81%{ transform: translateZ(100px) scale(0.5) }
-  90%{ transform: translateZ(60px) scale(1) }
-  100%{ transform: translateZ(0px) }
-`;
-const FeedbackPeg = styled(Peg)`
-  animation: ${dropAnimation} 420ms linear;
 `;

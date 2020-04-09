@@ -18,7 +18,7 @@ export const App = () => {
             <label>game</label>
           </a>
         )}
-        {page !== "config" && (
+        {page !== "onboarding" && page !== "config" && (
           <a href="#" onClick={() => setPage("config")}>
             <label>config</label>
           </a>
@@ -34,6 +34,8 @@ const Content = ({ page, ...props }: any) => {
       return <Game {...props} />;
     case "config":
       return <ConfigPage {...props} />;
+    case "onboarding":
+      return <ConfigPage onboarding {...props} />;
     default:
       return null;
   }

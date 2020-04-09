@@ -1,68 +1,84 @@
 import { useEffect, useState, useMemo } from "react";
 import styled from "@emotion/styled";
-import { keyframes } from "@emotion/core";
-import { Peg } from "./Peg";
+import { keyframes, css } from "@emotion/core";
 import { useColorScheme } from "./_hooks/useColorScheme";
 import { Board } from "./Board";
 import { getRandomLine } from "@mm/solver/getRandomtLine";
 import { useTranslate } from "./_hooks/useTranslate";
-import { ConfigPageColorScheme } from "./ConfigPageColorScheme";
+import { ColorSchemeRadio } from "./ColorSchemeRadio";
 import { colorSchemes } from "./theme";
+import { useRouter } from "./_hooks/useRouter";
+import { usePulse } from "./_hooks/usePulse";
+import { Object3d } from "./Object3d";
+import { InputNumber } from "./InputNumber";
+
+const generateGame = (p: number, n: number) => ({
+  candidate: Array.from({ length: n }, () => null),
+  rows: [
+    Array.from({ length: n }, (_, i) => i % p),
+    Array.from({ length: n }, (_, i) => (i + n) % p),
+    ...Array.from({ length: 3 }, () => getRandomLine(p, n)),
+    Array.from({ length: n }, (_, i) => (i + n * 2) % p),
+  ].map((line) => ({
+    line,
+    feedback: {
+      correct: Math.floor(Math.random() * 3),
+      badPosition: Math.floor(Math.random() * 3),
+    },
+  })),
+});
 
 export const ConfigPage = ({
   n,
   p,
   setGameConfig,
+  onboarding = false,
 }: {
   n: number;
   p: number;
   setGameConfig: (p: number, n: number) => void;
+  onboarding?: false;
 }) => {
+  const { setPage } = useRouter();
   const { colorScheme, setColorScheme } = useColorScheme();
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(onboarding ? 1 : 3);
 
-  const rows = useMemo(
-    () =>
-      [
-        Array.from({ length: n }, (_, i) => i % p),
-        Array.from({ length: n }, (_, i) => (i + n) % p),
-        ...Array.from({ length: 3 }, () => getRandomLine(p, n)),
-        Array.from({ length: n }, (_, i) => (i + n * 2) % p),
-      ].map((line) => ({
-        line,
-        feedback: {
-          correct: Math.floor(Math.random() * 3),
-          badPosition: Math.floor(Math.random() * 3),
-        },
-      })),
-    [p, n]
-  );
+  const pulse = usePulse(p + colorScheme.map((a) => a.join()).join() + n, 100);
 
-  const candidate = useMemo(() => Array.from({ length: n }, () => null), [n]);
+  const { rows, candidate } = useMemo(() => generateGame(p, n), [p, n]);
 
   const { t } = useTranslate();
 
   return (
     <Container>
       <BoardContainer>
-        <Board
+        <SmallBoard
           n={n}
           p={p}
           rows={rows}
           candidate={candidate}
-          style={{ transform: `scale(0.4) rotateY(24deg) rotateX(44deg)` }}
+          rotateAnimation={pulse}
         />
       </BoardContainer>
-      <ConfigContainer>
+      <ConfigContainer
+        onSubmit={(e) => {
+          console.log("yolo");
+          e.preventDefault();
+          if (step >= 3) {
+            setPage("game");
+          } else {
+            setStep((s) => s + 1);
+          }
+        }}
+      >
         {step > 0 && (
           <Section>
             <Label>{t("configPage.how_many_slots")}</Label>
-            <Input
-              type="number"
+            <InputNumber
               min={2}
               max={8}
               value={n}
-              onChange={(e) => setGameConfig(p, +e.target.value)}
+              onChange={(n: number) => setGameConfig(p, +n)}
             />
           </Section>
         )}
@@ -70,12 +86,11 @@ export const ConfigPage = ({
         {step > 1 && (
           <Section>
             <Label>{t("configPage.how_many_colors")}</Label>
-            <Input
-              type="number"
+            <InputNumber
               min={2}
               max={8}
               value={p}
-              onChange={(e) => setGameConfig(+e.target.value, n)}
+              onChange={(p: number) => setGameConfig(+p, n)}
             />
           </Section>
         )}
@@ -87,7 +102,7 @@ export const ConfigPage = ({
               {colorSchemes
                 .filter((cs) => cs.length === p)
                 .map((cs, i) => (
-                  <ConfigPageColorScheme
+                  <ColorSchemeRadio
                     key={i}
                     colorScheme={cs}
                     onChange={() => setColorScheme(cs)}
@@ -99,10 +114,37 @@ export const ConfigPage = ({
             </ColorSchemes>
           </Section>
         )}
+
+        {(step < 3 || onboarding) && (
+          <Button type="submit">
+            <label style={{ pointerEvents: "none" }}>
+              {step === 3 ? t("configPage.start_game") : t("configPage.next")}
+            </label>
+          </Button>
+        )}
       </ConfigContainer>
     </Container>
   );
 };
+
+const wobbleFrames = Array.from({ length: 11 }).map((_, i, arr) => {
+  const n = i / (arr.length - 1);
+  return `${Math.round(n * 100)}%{transform: rotateX(${
+    Math.cos(n * Math.PI * 2) * 0.2
+  }deg) rotateY(${Math.sin(n * Math.PI * 2) * 1.3}deg)}`;
+});
+const wobble = keyframes`${wobbleFrames.join("\n")}`;
+
+const rotateAnimation = keyframes`
+  0% { transform: scale(0.35) rotateY(-20deg) rotateX(44deg) }
+  100% { transform: scale(0.4) rotateY(24deg) rotateX(44deg) }
+`;
+const SmallBoard = styled(Board)<{ rotateAnimation: boolean }>`
+  transform: scale(0.4) rotateY(24deg) rotateX(44deg);
+  animation: ${(p) => (p.rotateAnimation ? rotateAnimation : "none")} 100ms
+    ease-out;
+`;
+
 const ColorSchemes = styled.div`
   display: flex;
   flex-direction: row;
@@ -110,14 +152,6 @@ const ColorSchemes = styled.div`
 `;
 
 const Label = styled.label``;
-const Input = styled.input`
-  border: none;
-  border-radius: 4px;
-  background: none;
-  background-color: #fff;
-  padding: 6px 10px;
-  margin-left: auto;
-`;
 const Section = styled.section`
   padding: 10px;
   display: flex;
@@ -127,7 +161,7 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const BoardContainer = styled.div`
+const BoardContainer = styled(Object3d)`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -135,8 +169,14 @@ const BoardContainer = styled.div`
   width: 100%;
   height: 300px;
   perspective: 600px;
+  animation ${wobble} 5000ms linear infinite;
 `;
-const ConfigContainer = styled.div`
+const ConfigContainer = styled.form`
   margin: 0 auto;
   max-width: 480px;
+`;
+const Button = styled.button`
+  border: none;
+  background: orange;
+  padding: 10px;
 `;

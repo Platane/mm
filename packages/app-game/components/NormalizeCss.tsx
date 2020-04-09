@@ -10,12 +10,13 @@ const normalized = css`
   *:after {
     box-sizing: inherit;
   }
+  #root,
   html,
   body {
     margin: 0;
     min-height: 100%;
     height: 100%;
-    overflow: hidden;
+    overflow-x: hidden;
   }
   input,
   label {

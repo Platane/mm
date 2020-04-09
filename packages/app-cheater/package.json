@@ -1,6 +1,12 @@
 {
   "name": "@mm/app-cheater",
   "version": "2.0.0",
+  "description": "__Master Mind Solver__ The Master Mind solver",
+  "author": {
+    "name": "platane",
+    "url": "https://platane.github.io",
+    "twitter": "@platane_"
+  },
   "private": true,
   "sideEffect": true,
   "dependencies": {

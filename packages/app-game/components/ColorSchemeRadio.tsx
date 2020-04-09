@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { boardColor } from "./theme";
 
-export const ConfigPageColorScheme = ({
+export const ColorSchemeRadio = ({
   colorScheme,
   name,
   checked,
