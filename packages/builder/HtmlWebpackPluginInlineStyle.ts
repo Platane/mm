@@ -1,19 +1,30 @@
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const { createHtmlTagObject } = require("html-webpack-plugin/lib/html-tags");
+import type { Compiler, Plugin } from "webpack";
+import * as HtmlWebpackPlugin from "html-webpack-plugin";
+
+// @ts-ignore
+import { createHtmlTagObject } from "html-webpack-plugin/lib/html-tags";
+
+type Options = {
+  inlineStyle: string;
+  inject?: ((a: any) => boolean) | boolean | undefined;
+};
 
 class HtmlWebpackPluginInlineStyle {
-  constructor({ inlineStyle, inject }) {
+  inlineStyle = "";
+  inject: Options["inject"];
+
+  constructor({ inlineStyle, inject }: Options) {
     this.inlineStyle = inlineStyle;
     this.inject = inject;
   }
 
-  apply(compiler) {
+  apply(compiler: Compiler) {
     compiler.hooks.compilation.tap(
       "HtmlWebpackPluginInlineStyle",
       (compilation) => {
-        HtmlWebpackPlugin.getHooks(compilation).alterAssetTags.tap(
+        HtmlWebpackPlugin.getHooks(compilation as any).alterAssetTags.tap(
           "HtmlWebpackPluginInlineStyle",
-          (data) => {
+          (data: any) => {
             if (
               this.inject === true ||
               this.inject === undefined ||
@@ -31,4 +42,5 @@ class HtmlWebpackPluginInlineStyle {
     );
   }
 }
-module.exports = HtmlWebpackPluginInlineStyle;
+
+export default HtmlWebpackPluginInlineStyle;

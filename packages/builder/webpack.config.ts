@@ -1,14 +1,21 @@
-const fs = require("fs");
-const path = require("path");
-const webpack = require("webpack");
-const pkgGame = require("../app-game/package.json");
-const pkgSolver = require("../app-solver/package.json");
-const TerserPlugin = require("terser-webpack-plugin");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const HtmlWebpackPluginInlineStyle = require("./HtmlWebpackPluginInlineStyle");
-const { GenerateSW } = require("workbox-webpack-plugin");
-const { CleanWebpackPlugin } = require("clean-webpack-plugin");
-const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
+import * as path from "path";
+import * as webpack from "webpack";
+import * as HtmlWebpackPlugin from "html-webpack-plugin";
+import SetManifestIconsPurpose from "./SetManifestIconsPurpose";
+import HtmlWebpackPluginInlineStyle from "./HtmlWebpackPluginInlineStyle";
+import { CleanWebpackPlugin } from "clean-webpack-plugin";
+
+// @ts-ignore
+import { GenerateSW } from "workbox-webpack-plugin";
+// @ts-ignore
+import * as TerserPlugin from "terser-webpack-plugin";
+// @ts-ignore
+import * as RobotstxtPlugin from "robotstxt-webpack-plugin";
+// @ts-ignore
+import * as FaviconsWebpackPlugin from "favicons-webpack-plugin";
+
+import * as pkgGame from "../app-game/package.json";
+import * as pkgSolver from "../app-solver/package.json";
 
 const mode =
   ("production" === process.env.NODE_ENV && "production") || "development";
@@ -17,17 +24,17 @@ const basePathname = (process.env.BASE_PATHNAME || "")
   .split("/")
   .filter(Boolean);
 
-const extractApp = (pkg) => ({
+const extractApp = (pkg: any) => ({
   name: pkg.description.split("__")[1] || pkg.name,
   description: pkg.description.split("__").slice(-1)[0],
   developer: pkg.author || {},
   version: pkg.version,
 });
 
-const appGame = extractApp(require("../app-game/package.json"));
-const appSolver = extractApp(require("../app-solver/package.json"));
+const appGame = extractApp(pkgGame);
+const appSolver = extractApp(pkgSolver);
 
-module.exports = {
+const config: webpack.Configuration = {
   mode,
   entry: { game: "../app-game/index", solver: "../app-solver/index" },
   resolve: { extensions: [".tsx", ".ts", ".js"] },
@@ -87,6 +94,10 @@ module.exports = {
         useShortDoctype: true,
       },
     }),
+    new SetManifestIconsPurpose({
+      inject: (htmlPlugin) => htmlPlugin.options.filename.includes("game"),
+      purpose: "any maskable",
+    }),
     new HtmlWebpackPluginInlineStyle({
       inject: (htmlPlugin) => htmlPlugin.options.filename.includes("game"),
       inlineStyle: `html{
@@ -98,9 +109,9 @@ module.exports = {
       }`,
     }),
     new FaviconsWebpackPlugin({
+      // @ts-ignore
       logo: path.resolve(__dirname, "../app-game/assets/images/icon192.png"),
       prefix: "/" + [...basePathname, "game"].join("/"),
-      output: "game/",
       inject: (htmlPlugin) => htmlPlugin.options.filename.includes("game"),
       favicons: {
         appName: appGame.name,
@@ -112,7 +123,7 @@ module.exports = {
         theme_color: "#f24b55",
         display: "standalone",
         orientation: "portrait",
-        start_url: "/" + [...basePathname, "game"].join("/"),
+        start_url: "/" + [...basePathname, "game"].join("/") + "/",
         logging: false,
         icons: {
           android: true,
@@ -155,7 +166,8 @@ module.exports = {
       },
     }),
     new HtmlWebpackPluginInlineStyle({
-      inject: (htmlPlugin) => htmlPlugin.options.filename.includes("solver"),
+      inject: (htmlPlugin: any) =>
+        htmlPlugin.options.filename.includes("solver"),
       inlineStyle: `html{
         touch-action: none;
         user-select: none;
@@ -164,10 +176,13 @@ module.exports = {
         background-color: #aa4bf2;
       }`,
     }),
+    new SetManifestIconsPurpose({
+      inject: (htmlPlugin) => htmlPlugin.options.filename.includes("solver"),
+      purpose: "any maskable",
+    }),
     new FaviconsWebpackPlugin({
       logo: path.resolve(__dirname, "../app-solver/assets/images/icon192.png"),
       prefix: "/" + [...basePathname, "solver"].join("/"),
-      output: "solver/",
       inject: (htmlPlugin) => htmlPlugin.options.filename.includes("solver"),
       favicons: {
         appName: appSolver.name,
@@ -179,7 +194,7 @@ module.exports = {
         theme_color: "#aa4bf2",
         display: "standalone",
         orientation: "portrait",
-        start_url: "/" + [...basePathname, "solver"].join("/"),
+        start_url: "/" + [...basePathname, "solver"].join("/") + "/",
         logging: false,
         icons: {
           android: true,
@@ -211,6 +226,16 @@ module.exports = {
         /\.js\.LICENSE$/,
       ],
     }),
+
+    new RobotstxtPlugin({
+      policy: [
+        {
+          userAgent: "*",
+          disallow: "/",
+          crawlDelay: 10,
+        },
+      ],
+    }),
   ],
   optimization:
     mode === "production"
@@ -221,3 +246,5 @@ module.exports = {
       : {},
   devtool: false,
 };
+
+export default config;
