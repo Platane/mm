@@ -3,6 +3,7 @@ import styled from "@emotion/styled";
 import { Peg } from "./Peg";
 import { Object3d } from "./Object3d";
 import { Tracker } from "./FlyingPegManager";
+import type { ColorScheme } from "../services/colorScheme";
 
 export const FlyingPeg = ({
   pointerId,
@@ -14,7 +15,7 @@ export const FlyingPeg = ({
   onHover,
   onDrop,
 }: Tracker & {
-  colorScheme: [string, string][];
+  colorScheme: ColorScheme;
   onFinish: () => void;
   onHover: (destination: HitDestination) => void;
   onDrop: (destination: HitDestination) => void;

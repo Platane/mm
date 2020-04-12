@@ -2,10 +2,12 @@
 import Worker from "workerize-loader!./getBestLine-worker";
 import { Line } from "@mm/solver/type";
 
-const workers = Array.from(
-  { length: Math.max(1, +window.navigator.hardwareConcurrency) },
-  () => new Worker()
+const n = Math.max(
+  1,
+  Math.floor((+window.navigator.hardwareConcurrency / 3) * 2)
 );
+
+const workers = Array.from({ length: n }, () => new Worker());
 
 const batch = <T>(arr: T[], length = 1) => {
   const u = Math.ceil(arr.length / length);

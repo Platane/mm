@@ -4,6 +4,7 @@ import { Row as IRow } from "@mm/solver/type";
 import { Object3d } from "./Object3d";
 import { BoardRow } from "./BoardRow";
 import { boardColor } from "./theme";
+import type { ColorScheme } from "../services/colorScheme";
 
 export const Board = ({
   p,
@@ -18,7 +19,7 @@ export const Board = ({
   p: number;
   n: number;
   rows: IRow[];
-  colorScheme: [string, string][];
+  colorScheme: ColorScheme;
   candidate: (number | null)[];
   disableAnimation?: boolean;
   onSubmit?: () => void;

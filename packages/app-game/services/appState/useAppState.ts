@@ -1,81 +1,60 @@
-import * as storage from "../localStorage";
-import { reduce } from "./reducer";
 import { useReducer, useEffect, useCallback } from "react";
+import { reduce } from "./reducer";
 import { useConstant } from "../../components/_hooks/useConstant";
-import { colorSchemes } from "../../components/theme";
 import { createSharedCommunication } from "../communication/createSharedCommunication";
-import type { State, Page } from "./reducer";
+import { getInitialState, write } from "./initialState";
 import type { Line } from "@mm/solver/type";
+import type { Page, Action } from "./reducer";
+import type { ColorScheme } from "../colorScheme";
 
-const storageKey = "game-config";
-
-const getInitialState = (): State => {
-  const c = storage.read(storageKey);
-
-  const state0 = {
-    n: 0,
-    p: 0,
-    colorScheme: [],
-    game: { id: "", rows: [], solution: [] },
-    page: "onboarding",
-  } as State;
-
-  let state = reduce(state0, { type: "game:config:set", p: 6, n: 4 } as any);
-
-  if (c && c.p && c.n) {
-    state = reduce(state, { type: "page:set", page: "game" });
-    state = reduce(state, { type: "game:config:set", ...c });
-  }
-
-  if (c && c.colorScheme) {
-    const colorScheme = colorSchemes.find(
-      (cs) => JSON.stringify(cs) === JSON.stringify(c.colorScheme)
-    );
-    if (colorScheme)
-      state = reduce(state, { type: "colorScheme:set", colorScheme });
-  }
-
-  return state;
-};
+const state0 = getInitialState();
 
 export const useAppState = () => {
-  const [state, dispatch] = useReducer(reduce, getInitialState());
+  const [state, internalDispatch] = useReducer(reduce, state0);
 
-  const com = useConstant(() => createSharedCommunication(dispatch));
-  useEffect(() => {
-    com.dispose();
+  const com = useConstant(() =>
+    createSharedCommunication(internalDispatch as any)
+  );
+  useEffect(() => () => com.dispose(), []);
+
+  const dispatch = useCallback((action: Action) => {
+    internalDispatch(action);
+    com.publish(action);
   }, []);
 
   useEffect(() => {
-    storage.write(storageKey, state);
+    write(state);
   }, [state.n, state.p, state.colorScheme]);
 
   useEffect(() => {
-    com.setGame({
-      n: state.n,
-      p: state.p,
-      rows: state.game.rows,
-      colorScheme: state.colorScheme,
+    dispatch({
+      type: "session:updated",
+      session: {
+        date: Date.now(),
+        clientId: com.clientId,
+        n: state.n,
+        p: state.p,
+        colorScheme: state.colorScheme,
+        game: { rows: state.game.rows, id: state.game.id },
+      },
     });
   }, [state.game]);
 
-  const play = useCallback(
-    (line: Line) => dispatch({ type: "game:play", line }),
-    []
-  );
-  const setPage = useCallback(
-    (page: Page) => dispatch({ type: "page:set", page }),
-    []
-  );
-  const setColorScheme = useCallback(
-    (colorScheme: [string, string][]) =>
-      dispatch({ type: "colorScheme:set", colorScheme }),
-    []
-  );
-  const setGameConfig = useCallback(
-    (p: number, n: number) => dispatch({ type: "game:config:set", p, n }),
-    []
-  );
+  const setPage = useCallback((page: Page) => {
+    internalDispatch({ type: "page:set", page });
+  }, []);
+  const play = useCallback((line: Line) => {
+    dispatch({ type: "game:play", line });
+  }, []);
+  const reset = useCallback(() => {
+    dispatch({ type: "game:reset" });
+  }, []);
+  const setColorScheme = useCallback((colorScheme: ColorScheme) => {
+    dispatch({ type: "colorScheme:set", colorScheme });
+  }, []);
+  const setGameConfig = useCallback((p: number, n: number) => {
+    dispatch({ type: "game:config:set", p, n });
+  }, []);
 
-  return { ...state, setPage, setColorScheme, setGameConfig, play };
+  return { ...state, setPage, setColorScheme, setGameConfig, reset, play };
 };

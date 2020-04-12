@@ -3,6 +3,7 @@ import { Feedback } from "@mm/solver/type";
 import { Peg } from "./Peg";
 import { Object3d } from "./Object3d";
 import { FeedbackBox } from "./FeedbackBox";
+import type { ColorScheme } from "../services/colorScheme";
 
 const lineHeight = 60;
 const bigPegSize = 28;
@@ -19,7 +20,7 @@ export const BoardRow = ({
   i: number | null;
   line: (number | null)[];
   feedback?: Feedback;
-  colorScheme: [string, string][];
+  colorScheme: ColorScheme;
   lineChildren?: any;
   disableAnimation?: boolean;
 }) => (

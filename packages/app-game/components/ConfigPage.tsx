@@ -5,11 +5,11 @@ import { Board } from "./Board";
 import { getRandomLine } from "@mm/solver/getRandomtLine";
 import { useTranslate } from "./_hooks/useTranslate";
 import { ColorSchemeRadio } from "./ColorSchemeRadio";
-import { colorSchemes } from "./theme";
 import { usePulse } from "./_hooks/usePulse";
 import { Object3d } from "./Object3d";
 import { InputNumber } from "./InputNumber";
 import { useAppState } from "../services/appState/useAppState";
+import { colorSchemes } from "../services/colorScheme";
 
 const generateGame = (p: number, n: number) => ({
   candidate: Array.from({ length: n }, () => null),

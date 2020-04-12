@@ -7,6 +7,7 @@ import {
   HitDestination,
 } from "./FlyingPeg";
 import { generateId } from "@mm/utils/generateId";
+import type { ColorScheme } from "../services/colorScheme";
 
 export type Point = { x: number; y: number };
 export type Tracker = {
@@ -22,7 +23,7 @@ export const FlyingPegManager = ({
   onDrop,
   colorScheme,
 }: {
-  colorScheme: [string, string][];
+  colorScheme: ColorScheme;
   onHover: (id: string, origin: HitOrigin, destination: HitDestination) => void;
   onDrop: (id: string, origin: HitOrigin, destination: HitDestination) => void;
 }) => {

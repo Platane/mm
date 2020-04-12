@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { Feedback, Row as IRow } from "@mm/solver/type";
 import { useSolver } from "./_hooks/useSolver";
@@ -10,20 +10,27 @@ import { Object3d } from "@mm/app-game/components/Object3d";
 import { Content, Container } from "./Layout";
 import { Board } from "@mm/app-game/components/Board";
 import { useAppState } from "../services/appState/useAppState";
+import { Delayed } from "@mm/app-game/components/Delayed";
 
 export const Game = ({
   p,
   n,
   game,
-  linePlayed,
   colorScheme,
   page,
-  played,
+  play,
   report,
 }: Omit<ReturnType<typeof useAppState>, "setPage">) => {
   const { t } = useTranslate();
 
   const { candidate, computing, nextTurn, rows } = useSolver(p, n, game.rows);
+
+  useEffect(() => {
+    if (game.rows.length > rows.length) {
+      const { line, feedback } = game.rows[rows.length];
+      nextTurn(line, feedback);
+    }
+  }, [game.rows.length > rows.length]);
 
   const [feedback, setFeedback] = useState<Feedback>({
     correct: 0,
@@ -32,18 +39,22 @@ export const Game = ({
 
   return (
     <Container>
-      {page === "instruction" && (
+      {page === "game-instruction" && (
         <Content_>
           <form
             style={{ width: "100%" }}
             onSubmit={(e) => {
               e.preventDefault();
-              if (candidate) played(candidate);
+              if (candidate) play(candidate);
             }}
           >
             <label>{t("play_this_line")}</label>
             <Line>
-              {computing && <span>computing ...</span>}
+              {computing && (
+                <Delayed delay={200}>
+                  <label>computing ...</label>
+                </Delayed>
+              )}
               {candidate &&
                 candidate.map((peg, i) => (
                   <Peg
@@ -55,22 +66,26 @@ export const Game = ({
                 ))}
             </Line>
 
-            <Button type="submit">
-              <label style={{ pointerEvents: "none" }}>{t("ok")}</label>
-            </Button>
+            {candidate && (
+              <Button type="submit">
+                <label style={{ pointerEvents: "none" }}>{t("ok")}</label>
+              </Button>
+            )}
           </form>
         </Content_>
       )}
 
-      {page === "report" && (
+      {page === "game-report" && (
         <Content_>
           <form
             style={{ width: "100%" }}
             onSubmit={(e) => {
               e.preventDefault();
-              nextTurn(linePlayed, feedback);
-              report(feedback);
-              setFeedback({ correct: 0, badPosition: 0 });
+              if (candidate) {
+                nextTurn(candidate, feedback);
+                report(candidate, feedback);
+                setFeedback({ correct: 0, badPosition: 0 });
+              }
             }}
           >
             <label>{t("write_the_result")}</label>
@@ -127,7 +142,9 @@ export const Game = ({
           n={n}
           colorScheme={colorScheme}
           rows={
-            page === "report" ? [...rows, { line: linePlayed, feedback }] : rows
+            page === "game-report" && candidate
+              ? [...rows, { line: candidate, feedback }]
+              : rows
           }
           candidate={Array.from({ length: n }, () => null)}
           disableAnimation
@@ -178,6 +195,9 @@ const Line = styled(Object3d)`
   transform: rotateX(45deg);
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 80px;
 `;
 const Button = styled.button`
   border: none;

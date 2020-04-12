@@ -4,6 +4,7 @@ import { useTranslate } from "./_hooks/useTranslate";
 import { InputNumber } from "@mm/app-game/components/InputNumber";
 import { ColorSchemeRadio } from "@mm/app-game/components/ColorSchemeRadio";
 import { Container, Content } from "./Layout";
+import type { ColorScheme } from "@mm/app-game/services/colorScheme";
 
 export const OnBoarding = ({
   p,
@@ -17,9 +18,9 @@ export const OnBoarding = ({
   p: number;
   n: number;
   setGameConfig: (p: number, n: number) => void;
-  setColorScheme: (cs: [string, string][]) => void;
-  colorSchemes: [string, string][][];
-  colorScheme: [string, string][];
+  setColorScheme: (cs: ColorScheme) => void;
+  colorSchemes: ColorScheme[];
+  colorScheme: ColorScheme;
   onStartGame: () => void;
 }) => {
   const [step, setStep] = useState<"intro" | "n" | "p">("n");

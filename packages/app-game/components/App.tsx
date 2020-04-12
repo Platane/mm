@@ -5,7 +5,7 @@ import { Separator } from "./Separator";
 import { useAppState } from "../services/appState/useAppState";
 
 export const App = () => {
-  const { page, setPage, ...ctx } = useAppState();
+  const { page, setPage, reset, ...ctx } = useAppState();
 
   return (
     <>
@@ -32,6 +32,14 @@ export const App = () => {
             <Separator />
             <a href="#" onClick={() => setPage("config")}>
               <label>config</label>
+            </a>
+          </>
+        )}
+        {page === "game" && (
+          <>
+            <Separator />
+            <a href="#" onClick={reset}>
+              <label>reset</label>
             </a>
           </>
         )}

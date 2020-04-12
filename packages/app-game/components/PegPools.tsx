@@ -2,6 +2,7 @@ import styled from "@emotion/styled";
 import { css } from "@emotion/core";
 import { Object3d } from "./Object3d";
 import { Peg } from "./Peg";
+import type { ColorScheme } from "../services/colorScheme";
 
 export const PegPools = ({
   p,
@@ -10,7 +11,7 @@ export const PegPools = ({
   ...props
 }: {
   p: number;
-  colorScheme: [string, string][];
+  colorScheme: ColorScheme;
   disabled: boolean;
 }) => {
   return (

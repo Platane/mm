@@ -1,9 +1,10 @@
 import produce from "immer";
-import { Row, Line } from "@mm/solver/type";
-import { getRandomLine } from "@mm/solver/getRandomtLine";
-import { generateId } from "@mm/utils/generateId";
-import { colorSchemes } from "../../components/theme";
 import { getFeedback } from "@mm/solver/getFeedback";
+import { createGame } from "./createGame";
+import { colorSchemes } from "../colorScheme";
+import type { ColorScheme } from "../colorScheme";
+import type { Row, Line, Feedback } from "@mm/solver/type";
+import type { Session } from "../communication/session";
 
 export type Page = "game" | "config" | "onboarding";
 
@@ -15,36 +16,33 @@ export type Game = {
 export type State = {
   p: number;
   n: number;
-  colorScheme: [string, string][];
-
+  colorScheme: ColorScheme;
   game: Game;
-
   page: Page;
 };
 
 export type Action =
   | { type: "game:config:set"; n?: number; p?: number }
+  | { type: "colorScheme:set"; colorScheme: ColorScheme }
   | { type: "game:reset" }
   | { type: "game:play"; line: Line }
-  | { type: "colorScheme:set"; colorScheme: [string, string][] }
+  | { type: "game:played"; line: Line }
+  | { type: "game:report"; line: Line; feedback: Feedback }
+  | { type: "session:updated"; session: Session }
+  | { type: "session:list"; sessions: Session[] }
   | { type: "page:set"; page: Page };
-
-export const createGame = (p: number, n: number) => ({
-  rows: [],
-  solution: getRandomLine(p, n),
-  id: generateId(),
-});
 
 const reduce_ = (state: State, action: Action): State => {
   switch (action.type) {
     case "colorScheme:set":
       return { ...state, colorScheme: action.colorScheme };
-    case "game:config:set": {
-      const { p, n } = { ...state, ...action };
-      return { ...state, p, n };
-    }
+
+    case "game:config:set":
+      return { ...state, n: action.n || state.n, p: action.p || state.p };
+
     case "game:reset":
       return { ...state, game: createGame(state.p, state.n) };
+
     case "game:play":
       return produce(state, ({ game: { solution, rows } }) => {
         rows.push({
@@ -52,6 +50,7 @@ const reduce_ = (state: State, action: Action): State => {
           feedback: getFeedback(solution, action.line),
         });
       });
+
     case "page:set":
       return { ...state, page: action.page };
 
@@ -67,10 +66,9 @@ const ensureColorScheme = (reduce: Reduce): Reduce => (state, action) => {
 
   return {
     ...nextState,
-    colorScheme: colorSchemes.find((cs) => cs.length === nextState.p) as [
-      string,
-      string
-    ][],
+    colorScheme: colorSchemes.find(
+      (cs) => cs.length === nextState.p
+    ) as ColorScheme,
   };
 };
 

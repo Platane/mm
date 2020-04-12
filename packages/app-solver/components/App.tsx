@@ -1,7 +1,7 @@
 import { Game } from "./Game";
+import { colorSchemes } from "@mm/app-game/services/colorScheme";
 import { useAppState } from "../services/appState/useAppState";
 import { OnBoarding } from "./OnBoarding";
-import { colorSchemes } from "@mm/app-game/components/theme";
 
 export const App = () => {
   const { setPage, ...ctx } = useAppState();
@@ -11,7 +11,7 @@ export const App = () => {
       <OnBoarding
         {...ctx}
         colorSchemes={colorSchemes}
-        onStartGame={() => setPage("instruction")}
+        onStartGame={() => setPage("game-instruction")}
       />
     );
 
