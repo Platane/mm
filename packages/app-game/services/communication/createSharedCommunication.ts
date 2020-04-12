@@ -13,15 +13,11 @@ export const createSharedCommunication = (
   const clientId = generateId();
 
   const handle = ({ data }: any) => {
-    console.log("received", clientId, data);
-
     if (onMessage && data && data.type && data.clientId !== clientId)
       onMessage(data);
   };
 
   const publish = (message: { type: string } & any) => {
-    console.log("publish", clientId, message);
-
     worker.port.postMessage({ ...message, clientId });
   };
 

@@ -87,4 +87,21 @@ const ensureGameConfig = (reduce: Reduce): Reduce => (state, action) => {
   };
 };
 
-export const reduce = ensureColorScheme(ensureGameConfig(reduce_));
+const ensureGameConfigLimit = (reduce: Reduce): Reduce => (state, action) => {
+  const nextState = reduce(state, action);
+
+  const l = 10;
+
+  if (nextState.p > l || nextState.n > l)
+    return {
+      ...nextState,
+      n: Math.min(10, nextState.n),
+      p: Math.min(10, nextState.p),
+    };
+
+  return nextState;
+};
+
+export const reduce = ensureColorScheme(
+  ensureGameConfig(ensureGameConfigLimit(reduce_))
+);
