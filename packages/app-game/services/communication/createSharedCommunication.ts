@@ -1,7 +1,17 @@
 // @ts-ignore
 import workerUrl from "worker-plugin/dist/loader!./communication-worker";
+import { Row } from "@mm/solver/type";
+import { createRPC } from "./utils";
+import { Message } from "./communication-worker";
 
-export const createSharedCommunication = () => {
+export const createSharedCommunication = (
+  onAction?: (
+    m: Extract<
+      Message,
+      { type: "game:play" | "game:reset" | "colorScheme:set" }
+    >
+  ) => void
+) => {
   // @ts-ignore
   const worker = new SharedWorker(workerUrl);
 
@@ -9,52 +19,51 @@ export const createSharedCommunication = () => {
 
   worker.port.start();
 
-  const getGame = createRPC(worker.port, "game:get");
-  const getLastGame = createRPC(worker.port, "game:last:get");
+  const getGameList = createRPC(worker.port, "game:list");
+  const getGame: (param: { id: string }) => Promise<any> = createRPC(
+    worker.port,
+    "game:get"
+  );
 
-  const setGame = (id: string, p: number, n: number, rows: any[]) => {
-    worker.port.postMessage({ type: "game:set", id, p, n, rows });
+  const setGame: (m: {
+    rows: Row[];
+    n: number;
+    p: number;
+    colorScheme: string[][];
+  }) => void = createRPC(worker.port, "game:set");
+
+  const subscribe = (id: string, onCallback: (g: any) => void) => {
+    const handle = ({ type, ...data }: any) => {
+      if (type === "game:set@res" && data && data.id === id) onCallback(data);
+    };
+
+    worker.port.addEventListener("message", handle);
+    worker.port.postMessage({ type: "subscribe", id });
+
+    createRPC(worker.port, "subscribe")({ id });
+
+    return () => {
+      worker.port.removeEventListener("message", handle);
+      worker.port.postMessage({ type: "unsubscribe", id });
+    };
   };
+
+  const handle = ({ data }: any) => {
+    if (
+      onAction &&
+      data &&
+      data.type &&
+      ["game:play", "game:reset", "colorScheme:set"].includes(data.type)
+    )
+      onAction(data);
+  };
+
+  worker.port.addEventListener("message", handle);
 
   const dispose = () => {
     worker.port.close();
+    worker.port.removeEventListener("message", handle);
   };
 
-  const subscribe = (fn: (game: any) => void) => {
-    let id = "";
-
-    const handler = ({ type, key, ...data }: any) => {
-      if (data.key === "game:get" && data.game && data.game.id === id)
-        fn(data.game);
-    };
-
-    getLastGame().then(({ game }: any) => {
-      fn(game);
-
-      if (!game) return;
-
-      id = game.id;
-
-      worker.port.postMessage({ type: "game:subscribe", id });
-      worker.port.addEventListener("message", handler);
-    });
-
-    return () => {
-      worker.port.postMessage({ type: "game:unsubscribe", id });
-      worker.port.removeEventListener("message", handler);
-    };
-  };
-
-  return { dispose, setGame, subscribe };
+  return { dispose, setGame, getGame, getGameList, subscribe };
 };
-
-const createRPC = (port: any, type: string) => (param?: any) =>
-  new Promise((resolve, reject) => {
-    const key = Math.random().toString(16);
-
-    port.addEventListener("message", ({ type, key, ...data }: any) => {
-      if (data.key === key) return resolve(data);
-    });
-
-    port.postMessage({ type, key, ...param });
-  });

@@ -1,27 +1,39 @@
-import { useEffect, useState } from "react";
 import styled from "@emotion/styled";
 import { ConfigPage } from "./ConfigPage";
 import { Game } from "./Game";
-import { useGameConfig } from "./_hooks/useGameConfig";
-import { useRouter } from "./_hooks/useRouter";
+import { Separator } from "./Separator";
+import { useAppState } from "../services/appState/context";
 
 export const App = () => {
-  const { page, setPage } = useRouter();
-  const { p, n, setGameConfig } = useGameConfig();
+  const { page, setPage, ...ctx } = useAppState();
 
   return (
     <>
-      <Content p={p} n={n} setGameConfig={setGameConfig} page={page} />
+      <Content page={page} {...ctx} />
       <Footer>
+        {page === "game" && (
+          <>
+            <Separator />
+            <a href="/solver" target="_blank">
+              <label>open solver</label>
+            </a>
+          </>
+        )}
         {page !== "game" && (
-          <a href="#" onClick={() => setPage("game")}>
-            <label>game</label>
-          </a>
+          <>
+            <Separator />
+            <a href="#" onClick={() => setPage("game")}>
+              <label>game</label>
+            </a>
+          </>
         )}
         {page !== "onboarding" && page !== "config" && (
-          <a href="#" onClick={() => setPage("config")}>
-            <label>config</label>
-          </a>
+          <>
+            <Separator />
+            <a href="#" onClick={() => setPage("config")}>
+              <label>config</label>
+            </a>
+          </>
         )}
       </Footer>
     </>

@@ -10,6 +10,7 @@
   "private": true,
   "sideEffect": true,
   "dependencies": {
+    "immer": "6.0.3",
     "@emotion/core": "10.0.28",
     "@emotion/styled": "10.0.27",
     "@mm/solver": "2.0.0",

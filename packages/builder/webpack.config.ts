@@ -245,6 +245,14 @@ const config: webpack.Configuration = {
         }
       : {},
   devtool: false,
+
+  // @ts-ignore
+  devServer: {
+    https: true,
+    useLocalIp: false,
+    open: true,
+    openPage: "game",
+  },
 };
 
 export default config;

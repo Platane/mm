@@ -5,33 +5,13 @@ import { Line } from "@mm/solver/type";
 import { usePulse } from "./_hooks/usePulse";
 import { Object3d } from "./Object3d";
 import { useCandidate } from "./_hooks/useCandidate";
-import { useGame } from "./_hooks/useGame";
 import { Board } from "./Board";
 import { FlyingPegManager } from "./FlyingPegManager";
 import { PegPools } from "./PegPools";
-import { createSharedCommunication } from "../services/communication/createSharedCommunication";
+import { useAppState } from "../services/appState/context";
 
-const useSharedCommunication = (
-  id: string,
-  p: number,
-  n: number,
-  rows: any[]
-) => {
-  const ref = useRef<any>();
-
-  useEffect(() => {
-    const c = createSharedCommunication();
-    ref.current = c;
-    return () => c.dispose();
-  }, []);
-
-  useEffect(() => {
-    ref.current.setGame(id, p, n, rows);
-  }, [id, p, n, rows]);
-};
-
-export const Game = ({ p, n }: { p: number; n: number }) => {
-  const { id, rows, playLine, reset: resetGame } = useGame(p, n);
+export const Game = () => {
+  const { n, p, game, play } = useAppState();
   const {
     candidate,
     temporaryCandidate,
@@ -41,20 +21,13 @@ export const Game = ({ p, n }: { p: number; n: number }) => {
   } = useCandidate(n);
   const [hover, setHover] = useState(false);
 
-  useSharedCommunication(id, p, n, rows);
-
-  useEffect(() => {
-    resetCandidate();
-    resetGame();
-  }, [p, n]);
-
   const onSubmit = () => {
     if (!candidate.every((x) => x !== null)) return;
-    playLine(candidate as Line);
+    play(candidate as Line);
     resetCandidate();
   };
 
-  const newLinePulse = usePulse(id + "-" + rows.length, 300);
+  const newLinePulse = usePulse(game.id + "-" + game.rows.length, 300);
 
   return (
     <>
@@ -65,7 +38,7 @@ export const Game = ({ p, n }: { p: number; n: number }) => {
           <Board
             n={n}
             p={p}
-            rows={rows}
+            rows={game.rows}
             candidate={temporaryCandidate}
             onSubmit={candidate.every((p) => p !== null) ? onSubmit : undefined}
             // style={{
@@ -92,15 +65,6 @@ export const Game = ({ p, n }: { p: number; n: number }) => {
   );
 };
 
-/*
- */
-
-const wobble = keyframes`
- 0%{ transform: rotateY(20deg) rotateX(35deg) }
- 50%{ transform: rotateY(-10deg) rotateX(35deg) }
- 100%{ transform: rotateY(20deg) rotateX(35deg) }
- `;
-
 const popAnimation = keyframes`
   0%{ transform: scale(1) }
   40%{ transform: scale(1.1) }
@@ -113,7 +77,6 @@ const World = styled.div<{ pop: boolean }>`
 `;
 
 const Scene = styled(Object3d)`
-  // animation: ${wobble} 2000ms linear infinite;
   transform: rotateY(10deg) rotateX(35deg);
   display: flex;
   justify-content: center;

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
-import { useColorScheme } from "./_hooks/useColorScheme";
 import { Peg as IPeg } from "@mm/solver/type";
 import { Object3d } from "./Object3d";
+import { useColorScheme } from "../services/appState/context";
 
 export const Peg = ({
   peg,
