@@ -4,7 +4,10 @@ import { useTranslate } from "./_hooks/useTranslate";
 import { InputNumber } from "@mm/app-game/components/InputNumber";
 import { ColorSchemeRadio } from "@mm/app-game/components/ColorSchemeRadio";
 import { Container, Content } from "./Layout";
-import type { ColorScheme } from "@mm/app-game/services/colorScheme";
+import {
+  ColorScheme,
+  colorSchemeEquals,
+} from "@mm/app-game/services/colorScheme";
 
 export const OnBoarding = ({
   p,
@@ -74,8 +77,8 @@ export const OnBoarding = ({
                     key={i}
                     colorScheme={cs}
                     onChange={() => setColorScheme(cs)}
-                    name="xxx"
-                    checked={cs === colorScheme}
+                    name="color scheme"
+                    checked={colorSchemeEquals(cs, colorScheme)}
                     style={{ margin: "10px" }}
                   />
                 ))}

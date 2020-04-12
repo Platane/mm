@@ -23,6 +23,14 @@ const normalized = css`
     font-family: helvetica;
     font-size: 20px;
   }
+  html,
+  a {
+    color: #333;
+  }
+  a:hover {
+    transition: color 120ms;
+    color: #454455;
+  }
 `;
 
 export const NormalizeCss = () => <Global styles={normalized} />;

@@ -9,7 +9,7 @@ import { usePulse } from "./_hooks/usePulse";
 import { Object3d } from "./Object3d";
 import { InputNumber } from "./InputNumber";
 import { useAppState } from "../services/appState/useAppState";
-import { colorSchemes } from "../services/colorScheme";
+import { colorSchemes, colorSchemeEquals } from "../services/colorScheme";
 
 const generateGame = (p: number, n: number) => ({
   candidate: Array.from({ length: n }, () => null),
@@ -103,8 +103,8 @@ export const ConfigPage = ({
                     key={i}
                     colorScheme={cs}
                     onChange={() => setColorScheme(cs)}
-                    name="xxx"
-                    checked={cs === colorScheme}
+                    name="color scheme"
+                    checked={colorSchemeEquals(cs, colorScheme)}
                     style={{ margin: "10px" }}
                   />
                 ))}
