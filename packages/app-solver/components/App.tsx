@@ -1,50 +1,19 @@
-import { useState, useEffect, useCallback } from "react";
-import { useGameConfig } from "@mm/app-game/components/_hooks/useGameConfig";
-import { colorSchemes } from "@mm/app-game/components/theme";
-import { useColorScheme } from "@mm/app-game/components/_hooks/useColorScheme";
-import { createSharedCommunication } from "@mm/app-game/services/communication/createSharedCommunication";
-import { OnBoarding } from "./OnBoarding";
 import { Game } from "./Game";
+import { useAppState } from "../services/appState/useAppState";
+import { OnBoarding } from "./OnBoarding";
+import { colorSchemes } from "@mm/app-game/components/theme";
 
 export const App = () => {
-  const [started, setStarted] = useState(false);
-  const { p, n, setGameConfig } = useGameConfig();
-  const [initialRows, setInitialRows] = useState([]);
-  const { setColorScheme, colorScheme } = useColorScheme();
+  const { setPage, ...ctx } = useAppState();
 
-  const onUpdate = useCallback((game?: any) => {
-    if (game) {
-      setInitialRows(game.rows);
-      setGameConfig(game.p, game.n);
-      console.log(game.rows);
-    }
-  }, []);
-
-  useSharedCommunication(onUpdate);
-
-  if (!started)
+  if (ctx.page === "onboarding")
     return (
       <OnBoarding
-        p={p}
-        n={n}
-        colorScheme={colorScheme}
+        {...ctx}
         colorSchemes={colorSchemes}
-        setGameConfig={setGameConfig}
-        setColorScheme={setColorScheme}
-        onStartGame={() => setStarted(true)}
+        onStartGame={() => setPage("instruction")}
       />
     );
-  else return <Game key={p + "/" + n} p={p} n={n} initialRows={initialRows} />;
-};
 
-const useSharedCommunication = (onUpdate: (a: any) => void) => {
-  useEffect(() => {
-    const c = createSharedCommunication();
-    const unsubscribe = c.subscribe(onUpdate);
-
-    return () => {
-      unsubscribe();
-      c.dispose();
-    };
-  }, []);
+  return <Game key={ctx.game.id} {...ctx} />;
 };

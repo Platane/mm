@@ -1,51 +1,42 @@
 import styled from "@emotion/styled";
-import { Peg as IPeg } from "@mm/solver/type";
 import { Object3d } from "./Object3d";
-import { useColorScheme } from "../services/appState/context";
 
 export const Peg = ({
-  peg,
   size,
   color,
   ...props
 }: {
-  peg?: IPeg | "correct" | "badPosition";
   size: number;
-  color?: [string, string];
-} & {
+  color: [string, string];
   style?: any;
-}) => {
-  const { colorScheme } = useColorScheme();
-  const [c1, c2] = color || getColor(colorScheme, peg);
+}) => (
+  <Bottom
+    {...props}
+    size={size}
+    style={{ ...props.style, backgroundColor: color[1] }}
+  >
+    <Body size={size} data-body style={{ backgroundColor: color[1] }} />
+    <Body2 size={size} style={{ backgroundColor: color[1] }} />
+    <Top size={size} style={{ backgroundColor: color[0] }} />
+  </Bottom>
+);
 
-  return (
-    <Bottom
-      {...props}
-      size={size}
-      style={{ ...props.style, backgroundColor: c2 }}
-    >
-      <Body size={size} data-body style={{ backgroundColor: c2 }} />
-      <Body2 size={size} style={{ backgroundColor: c2 }} />
-      <Top size={size} style={{ backgroundColor: c1 }} />
-    </Bottom>
-  );
-};
-
-const getColor = (
-  colorScheme: string[][],
-  peg?: IPeg | "correct" | "badPosition"
-) => {
-  switch (peg) {
-    case "correct":
-      return ["#333", "#000"];
-    case "badPosition":
-      return ["#fff", "#ddd"];
-    case undefined:
-      return [];
-    default:
-      return colorScheme[peg] || [];
-  }
-};
+export const PegFeedback = ({
+  peg,
+  ...props
+}: {
+  size: number;
+  peg: "correct" | "badPosition";
+  style?: any;
+}) => (
+  <Peg
+    color={
+      ((peg === "correct" && ["#333", "#000"]) ||
+        (peg === "badPosition" && ["#fff", "#ddd"])) as any
+    }
+    {...props}
+  />
+);
 
 const Bottom = styled(Object3d)<{ size: number }>`
   position: relative;

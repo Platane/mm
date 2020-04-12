@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { ConfigPage } from "./ConfigPage";
 import { Game } from "./Game";
 import { Separator } from "./Separator";
-import { useAppState } from "../services/appState/context";
+import { useAppState } from "../services/appState/useAppState";
 
 export const App = () => {
   const { page, setPage, ...ctx } = useAppState();

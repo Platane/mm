@@ -1,6 +1,6 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import styled from "@emotion/styled";
-import { keyframes, css } from "@emotion/core";
+import { keyframes } from "@emotion/core";
 import { Board } from "./Board";
 import { getRandomLine } from "@mm/solver/getRandomtLine";
 import { useTranslate } from "./_hooks/useTranslate";
@@ -9,6 +9,7 @@ import { colorSchemes } from "./theme";
 import { usePulse } from "./_hooks/usePulse";
 import { Object3d } from "./Object3d";
 import { InputNumber } from "./InputNumber";
+import { useAppState } from "../services/appState/useAppState";
 
 const generateGame = (p: number, n: number) => ({
   candidate: Array.from({ length: n }, () => null),
@@ -34,13 +35,7 @@ export const ConfigPage = ({
   setPage,
   setGameConfig,
   onboarding = false,
-}: {
-  n: number;
-  p: number;
-  colorScheme: string[][];
-  setPage: (page: "game") => void;
-  setColorScheme: (cs: string[][]) => void;
-  setGameConfig: (p: number, n: number) => void;
+}: ReturnType<typeof useAppState> & {
   onboarding?: false;
 }) => {
   const [step, setStep] = useState(onboarding ? 1 : 3);
@@ -58,6 +53,7 @@ export const ConfigPage = ({
           n={n}
           p={p}
           rows={rows}
+          colorScheme={colorScheme}
           candidate={candidate}
           rotateAnimation={pulse}
         />

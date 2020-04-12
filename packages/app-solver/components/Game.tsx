@@ -9,20 +9,21 @@ import { FeedbackBox } from "@mm/app-game/components/FeedbackBox";
 import { Object3d } from "@mm/app-game/components/Object3d";
 import { Content, Container } from "./Layout";
 import { Board } from "@mm/app-game/components/Board";
+import { useAppState } from "../services/appState/useAppState";
 
 export const Game = ({
   p,
   n,
-  initialRows,
-}: {
-  p: number;
-  n: number;
-  initialRows: IRow[];
-}) => {
-  const [step, setStep] = useState<"play" | "feedback">("play");
+  game,
+  linePlayed,
+  colorScheme,
+  page,
+  played,
+  report,
+}: Omit<ReturnType<typeof useAppState>, "setPage">) => {
   const { t } = useTranslate();
 
-  const { candidate, computing, nextTurn, rows } = useSolver(p, n, initialRows);
+  const { candidate, computing, nextTurn, rows } = useSolver(p, n, game.rows);
 
   const [feedback, setFeedback] = useState<Feedback>({
     correct: 0,
@@ -31,13 +32,13 @@ export const Game = ({
 
   return (
     <Container>
-      {step === "play" && (
+      {page === "instruction" && (
         <Content_>
           <form
             style={{ width: "100%" }}
             onSubmit={(e) => {
               e.preventDefault();
-              if (!computing) setStep("feedback");
+              if (candidate) played(candidate);
             }}
           >
             <label>{t("play_this_line")}</label>
@@ -45,7 +46,12 @@ export const Game = ({
               {computing && <span>computing ...</span>}
               {candidate &&
                 candidate.map((peg, i) => (
-                  <Peg key={i} peg={peg} size={28} style={{ margin: "16px" }} />
+                  <Peg
+                    key={i}
+                    color={colorScheme[peg]}
+                    size={28}
+                    style={{ margin: "16px" }}
+                  />
                 ))}
             </Line>
 
@@ -56,14 +62,14 @@ export const Game = ({
         </Content_>
       )}
 
-      {step === "feedback" && (
+      {page === "report" && (
         <Content_>
           <form
             style={{ width: "100%" }}
             onSubmit={(e) => {
               e.preventDefault();
-              nextTurn(candidate as number[], feedback);
-              setStep("play");
+              nextTurn(linePlayed, feedback);
+              report(feedback);
               setFeedback({ correct: 0, badPosition: 0 });
             }}
           >
@@ -119,10 +125,9 @@ export const Game = ({
         <SmallBoard
           p={p}
           n={n}
+          colorScheme={colorScheme}
           rows={
-            step === "feedback"
-              ? [...rows, { line: candidate as any, feedback }]
-              : rows
+            page === "report" ? [...rows, { line: linePlayed, feedback }] : rows
           }
           candidate={Array.from({ length: n }, () => null)}
           disableAnimation
@@ -151,7 +156,7 @@ const BoardPlaceholder = styled.div`
 
 const Content_ = styled(Content)``;
 const BoardContainer = styled.div`
-  min-width: 110px;
+  min-width: 130px;
   width: calc(50% - 120px);
   display: flex;
   flex-direction: column;
@@ -164,7 +169,7 @@ const BoardContainer = styled.div`
 `;
 
 const SmallBoard = styled(Board)`
-  width: 200px;
+  width: 240px;
   transform: scale(0.5);
 `;
 

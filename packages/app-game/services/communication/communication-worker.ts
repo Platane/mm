@@ -1,5 +1,5 @@
 import type { Row } from "@mm/solver/type";
-import { Action } from "../state";
+import type { Action } from "../appState/reducer";
 import { createHandler } from "./utils";
 
 type Port = any;

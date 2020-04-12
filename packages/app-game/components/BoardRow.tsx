@@ -13,11 +13,13 @@ export const BoardRow = ({
   line,
   feedback,
   lineChildren,
+  colorScheme,
   disableAnimation = false,
 }: {
   i: number | null;
   line: (number | null)[];
   feedback?: Feedback;
+  colorScheme: [string, string][];
   lineChildren?: any;
   disableAnimation?: boolean;
 }) => (
@@ -27,7 +29,7 @@ export const BoardRow = ({
     <Line>
       {line.map((l, i) => (
         <Hole size={smallPegSize} key={i}>
-          {l !== null && <Peg size={bigPegSize} peg={l} />}
+          {l !== null && <Peg color={colorScheme[l]} size={bigPegSize} />}
         </Hole>
       ))}
       {lineChildren}

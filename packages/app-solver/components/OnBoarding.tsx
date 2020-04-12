@@ -17,9 +17,9 @@ export const OnBoarding = ({
   p: number;
   n: number;
   setGameConfig: (p: number, n: number) => void;
-  setColorScheme: (cs: string[][]) => void;
-  colorSchemes: string[][][];
-  colorScheme: string[][];
+  setColorScheme: (cs: [string, string][]) => void;
+  colorSchemes: [string, string][][];
+  colorScheme: [string, string][];
   onStartGame: () => void;
 }) => {
   const [step, setStep] = useState<"intro" | "n" | "p">("n");

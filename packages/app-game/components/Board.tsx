@@ -10,6 +10,7 @@ export const Board = ({
   n,
   rows,
   candidate,
+  colorScheme,
   disableAnimation = false,
   onSubmit,
   ...props
@@ -17,6 +18,7 @@ export const Board = ({
   p: number;
   n: number;
   rows: IRow[];
+  colorScheme: [string, string][];
   candidate: (number | null)[];
   disableAnimation?: boolean;
   onSubmit?: () => void;
@@ -56,12 +58,19 @@ export const Board = ({
       <SideBottom />
 
       {rows.map((row, i) => (
-        <BoardRow i={i} key={i} disableAnimation={disableAnimation} {...row} />
+        <BoardRow
+          i={i}
+          key={i}
+          colorScheme={colorScheme}
+          disableAnimation={disableAnimation}
+          {...row}
+        />
       ))}
 
       <BoardRow
         i={rows.length}
         key={rows.length}
+        colorScheme={colorScheme}
         line={candidate}
         lineChildren={dropZone}
         disableAnimation={disableAnimation}
@@ -71,6 +80,7 @@ export const Board = ({
         <BoardRow
           i={rows.length + i + 1}
           key={rows.length + i + 1}
+          colorScheme={colorScheme}
           line={Array.from({ length: n }, () => null)}
         />
       ))}

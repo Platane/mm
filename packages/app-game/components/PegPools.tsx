@@ -6,9 +6,11 @@ import { Peg } from "./Peg";
 export const PegPools = ({
   p,
   disabled,
+  colorScheme,
   ...props
 }: {
   p: number;
+  colorScheme: [string, string][];
   disabled: boolean;
 }) => {
   return (
@@ -18,7 +20,7 @@ export const PegPools = ({
           {Array.from({ length: 3 }, (_, j) => (
             <Peg
               key={j}
-              peg={i}
+              color={colorScheme[i]}
               size={20}
               style={{
                 margin: "2px",

@@ -20,7 +20,9 @@ export type Tracker = {
 export const FlyingPegManager = ({
   onHover,
   onDrop,
+  colorScheme,
 }: {
+  colorScheme: [string, string][];
   onHover: (id: string, origin: HitOrigin, destination: HitDestination) => void;
   onDrop: (id: string, origin: HitOrigin, destination: HitDestination) => void;
 }) => {
@@ -64,6 +66,7 @@ export const FlyingPegManager = ({
       {trackers.map((t) => (
         <FlyingPeg
           {...t}
+          colorScheme={colorScheme}
           key={t.id}
           onFinish={() => setTrackers((ts) => ts.filter((x) => x !== t))}
           onHover={(destination) => onHover(t.id, t.origin, destination)}

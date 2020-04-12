@@ -1,7 +1,7 @@
 // export const primary =
 export const boardColor = "#aaa";
 
-export const colorSchemes = [
+export const colorSchemes: [string, string][][] = [
   [
     ["#fef4dd", "#cdbfa6"],
     ["#966848", "#6c503b"],

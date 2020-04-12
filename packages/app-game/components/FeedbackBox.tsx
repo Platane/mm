@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { css, keyframes } from "@emotion/core";
 import { Feedback } from "@mm/solver/type";
-import { Peg } from "./Peg";
+import { PegFeedback } from "./Peg";
 import { Object3d } from "./Object3d";
 
 const lineHeight = 60;
@@ -89,6 +89,6 @@ const dropAnimation = keyframes`
   90%{ transform: translateZ(60px) scale(1) }
   100%{ transform: translateZ(0px) }
 `;
-const FeedbackPeg = styled(Peg)<{ disableAnimation: boolean }>`
+const FeedbackPeg = styled(PegFeedback)<{ disableAnimation: boolean }>`
   animation: ${(p) => (p.disableAnimation ? "" : dropAnimation)} 420ms linear;
 `;

@@ -1,8 +1,9 @@
 // @ts-ignore
 import workerUrl from "worker-plugin/dist/loader!./communication-worker";
-import { Row } from "@mm/solver/type";
 import { createRPC } from "./utils";
-import { Message } from "./communication-worker";
+import type { Row } from "@mm/solver/type";
+import type { Message } from "./communication-worker";
+import type { Action } from "../appState/reducer";
 
 export const createSharedCommunication = (
   onAction?: (
@@ -48,6 +49,14 @@ export const createSharedCommunication = (
     };
   };
 
+  const pushAction = (
+    id: string,
+    action: Extract<
+      Action,
+      { type: "game:play" | "game:reset" | "colorScheme:set" }
+    >
+  ) => worker.port.postMessage({ ...action, id });
+
   const handle = ({ data }: any) => {
     if (
       onAction &&
@@ -65,5 +74,5 @@ export const createSharedCommunication = (
     worker.port.removeEventListener("message", handle);
   };
 
-  return { dispose, setGame, getGame, getGameList, subscribe };
+  return { dispose, setGame, getGame, getGameList, pushAction, subscribe };
 };

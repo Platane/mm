@@ -6,6 +6,7 @@ import { Tracker } from "./FlyingPegManager";
 
 export const FlyingPeg = ({
   pointerId,
+  colorScheme,
   initialPointer,
   initialPosition,
   origin,
@@ -13,6 +14,7 @@ export const FlyingPeg = ({
   onHover,
   onDrop,
 }: Tracker & {
+  colorScheme: [string, string][];
   onFinish: () => void;
   onHover: (destination: HitDestination) => void;
   onDrop: (destination: HitDestination) => void;
@@ -181,7 +183,7 @@ export const FlyingPeg = ({
       />
       <Container ref={ref}>
         <Peg
-          peg={origin.peg}
+          color={colorScheme[origin.peg]}
           size={30}
           style={{ transform: `translate3d(0,0,-28px)` }}
         />

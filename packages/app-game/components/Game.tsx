@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useState } from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/core";
 import { Line } from "@mm/solver/type";
@@ -8,10 +8,15 @@ import { useCandidate } from "./_hooks/useCandidate";
 import { Board } from "./Board";
 import { FlyingPegManager } from "./FlyingPegManager";
 import { PegPools } from "./PegPools";
-import { useAppState } from "../services/appState/context";
+import { useAppState } from "../services/appState/useAppState";
 
-export const Game = () => {
-  const { n, p, game, play } = useAppState();
+export const Game = ({
+  n,
+  p,
+  game,
+  play,
+  colorScheme,
+}: ReturnType<typeof useAppState>) => {
   const {
     candidate,
     temporaryCandidate,
@@ -33,12 +38,13 @@ export const Game = () => {
     <>
       <World pop={newLinePulse}>
         <Scene>
-          <PegPools p={p} disabled={hover} />
+          <PegPools colorScheme={colorScheme} p={p} disabled={hover} />
 
           <Board
             n={n}
             p={p}
             rows={game.rows}
+            colorScheme={colorScheme}
             candidate={temporaryCandidate}
             onSubmit={candidate.every((p) => p !== null) ? onSubmit : undefined}
             // style={{
@@ -52,6 +58,7 @@ export const Game = () => {
       </World>
 
       <FlyingPegManager
+        colorScheme={colorScheme}
         onHover={(id, a, b) => {
           onHover(id, a, b);
           setHover(true);
