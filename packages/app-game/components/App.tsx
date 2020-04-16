@@ -3,7 +3,6 @@ import { ConfigPage } from "./ConfigPage";
 import { Game } from "./Game";
 import { Separator } from "./Separator";
 import { useAppState } from "../services/appState/useAppState";
-import { useEffect } from "react";
 
 export const App = () => {
   const { page, setPage, reset, ...ctx } = useAppState();
@@ -11,7 +10,7 @@ export const App = () => {
   return (
     <>
       <ContentContainer>
-        <Content page={page} {...ctx} />
+        <Content page={page} setPage={setPage} {...ctx} />
       </ContentContainer>
       <Footer>
         {page === "game" && (

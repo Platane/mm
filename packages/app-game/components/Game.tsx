@@ -87,4 +87,5 @@ const Scene = styled(Object3d)`
   display: flex;
   justify-content: center;
   align-items: center;
+  touch-action: none;
 `;

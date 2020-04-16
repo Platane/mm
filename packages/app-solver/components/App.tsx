@@ -7,8 +7,6 @@ import { Delayed } from "@mm/app-game/components/Delayed";
 export const App = () => {
   const { setPage, ...ctx } = useAppState();
 
-  console.log(ctx.game);
-
   if (ctx.page === "onboarding")
     return (
       <Delayed delay={50}>

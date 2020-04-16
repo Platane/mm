@@ -21,7 +21,6 @@ export const FlyingPeg = ({
   onDrop: (destination: HitDestination) => void;
 }) => {
   const ref = useRef<HTMLDivElement | null>(null);
-  const ref2 = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     let pointer = { ...initialPointer };
@@ -41,7 +40,8 @@ export const FlyingPeg = ({
       cancelAnimation = requestAnimationFrame(animate);
 
       const now = Date.now();
-      const delta = (now - d) / 1000;
+      const u = (now - d) / 1000;
+      const delta = Math.min(u, 2 / 60);
       d = now;
 
       {
@@ -68,7 +68,7 @@ export const FlyingPeg = ({
         const dy = op.y - p.y;
         const dz = op.z - 0;
 
-        const l = Math.max(1, Math.sqrt(dx ** 2 + dy ** 2 + dz ** 2));
+        const l = Math.max(1, Math.sqrt(dx * dx + dy * dy + dz * dz));
 
         const ax = -tension * (l - size) * (dx / l) - friction * ov.x;
         const ay = -tension * (l - size) * (dy / l) - friction * ov.y;
@@ -170,7 +170,6 @@ export const FlyingPeg = ({
   return (
     <>
       <div
-        ref={ref2}
         style={{
           zIndex: 5,
           position: "absolute",

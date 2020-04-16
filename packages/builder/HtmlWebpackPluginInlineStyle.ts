@@ -1,4 +1,4 @@
-import type { Compiler, Plugin } from "webpack";
+import type { Compiler } from "webpack";
 import * as HtmlWebpackPlugin from "html-webpack-plugin";
 
 // @ts-ignore
