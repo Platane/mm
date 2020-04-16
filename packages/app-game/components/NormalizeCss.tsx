@@ -20,12 +20,12 @@ const normalized = css`
   }
   input,
   label {
-    font-family: helvetica;
+    font-family: helvetica, arial;
     font-size: 20px;
   }
   html,
   a {
-    color: #333;
+    color: #111;
   }
   a:hover {
     transition: color 120ms;

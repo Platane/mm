@@ -10,9 +10,9 @@ self.onconnect = ({ ports: [port] }) => {
 
   port.addEventListener("message", ({ data }: { data: any }) => {
     if (data.type === "session:updated") {
-      const clientId = data.clientId;
-      const date = (sessions[clientId] || { date: Date.now() }).date;
-      sessions[clientId] = { ...data.session, clientId, date };
+      const sessionId = data.clientId;
+      const date = (sessions[sessionId] || { date: Date.now() }).date;
+      sessions[sessionId] = { ...data.session, sessionId, date };
     }
 
     for (const p of ports.filter((p) => p !== port)) {

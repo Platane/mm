@@ -1,60 +1,72 @@
-import { useReducer, useEffect, useCallback } from "react";
+import { useReducer, useEffect, useMemo, useCallback, useRef } from "react";
+import { useSharedCommunication } from "../communication/useSharedCommunication";
 import { reduce } from "./reducer";
-import { useConstant } from "../../components/_hooks/useConstant";
-import { createSharedCommunication } from "../communication/createSharedCommunication";
 import { getInitialState, write } from "./initialState";
 import type { Line } from "@mm/solver/type";
 import type { Page, Action } from "./reducer";
 import type { ColorScheme } from "../colorScheme";
 
-const state0 = getInitialState();
-
 export const useAppState = () => {
-  const [state, internalDispatch] = useReducer(reduce, state0);
+  const [state, internalDispatch] = useReducer(reduce, null, getInitialState);
 
-  const com = useConstant(() =>
-    createSharedCommunication(internalDispatch as any)
-  );
-  useEffect(() => () => com.dispose(), []);
-
-  const dispatch = useCallback((action: Action) => {
-    internalDispatch(action);
-    com.publish(action);
+  const sessionId = useRef("");
+  const onMessage = useCallback((m: any) => {
+    if (m.sessionId === sessionId.current) internalDispatch(m);
   }, []);
 
+  const { publish, clientId } = useSharedCommunication(onMessage);
+
+  sessionId.current = clientId;
+
+  // persist config
   useEffect(() => {
     write(state);
   }, [state.n, state.p, state.colorScheme]);
 
+  // publish game update
   useEffect(() => {
-    dispatch({
+    publish({
       type: "session:updated",
+      sessionId: sessionId.current,
       session: {
         date: Date.now(),
-        clientId: com.clientId,
+        id: sessionId.current,
         n: state.n,
         p: state.p,
         colorScheme: state.colorScheme,
         game: { rows: state.game.rows, id: state.game.id },
       },
     });
-  }, [state.game]);
+  }, [state.game, publish]);
 
-  const setPage = useCallback((page: Page) => {
-    internalDispatch({ type: "page:set", page });
-  }, []);
-  const play = useCallback((line: Line) => {
-    dispatch({ type: "game:play", line });
-  }, []);
-  const reset = useCallback(() => {
-    dispatch({ type: "game:reset" });
-  }, []);
-  const setColorScheme = useCallback((colorScheme: ColorScheme) => {
-    dispatch({ type: "colorScheme:set", colorScheme });
-  }, []);
-  const setGameConfig = useCallback((p: number, n: number) => {
-    dispatch({ type: "game:config:set", p, n });
-  }, []);
+  const actions = useMemo(() => {
+    const globalDispatch = (action: Action) => {
+      internalDispatch(action);
+      publish({ ...action, sessionId: sessionId.current });
+    };
 
-  return { ...state, setPage, setColorScheme, setGameConfig, reset, play };
+    return {
+      setPage: (page: Page) => {
+        internalDispatch({ type: "page:set", page });
+      },
+
+      play: (line: Line) => {
+        globalDispatch({ type: "game:play", line });
+      },
+
+      reset: () => {
+        globalDispatch({ type: "game:reset" });
+      },
+
+      setColorScheme: (colorScheme: ColorScheme) => {
+        globalDispatch({ type: "colorScheme:set", colorScheme });
+      },
+
+      setGameConfig: (p: number, n: number) => {
+        globalDispatch({ type: "game:config:set", p, n });
+      },
+    };
+  }, [internalDispatch, publish]);
+
+  return { ...state, ...actions };
 };

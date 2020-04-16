@@ -5,7 +5,6 @@ export const Delayed = ({ children, delay = 0 }: any) => {
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      console.log("asas");
       setDisplayed(true);
     }, delay);
 

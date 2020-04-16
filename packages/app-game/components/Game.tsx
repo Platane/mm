@@ -27,7 +27,6 @@ export const Game = ({
   const [hover, setHover] = useState(false);
 
   const onSubmit = () => {
-    if (!candidate.every((x) => x !== null)) return;
     play(candidate as Line);
     resetCandidate();
   };

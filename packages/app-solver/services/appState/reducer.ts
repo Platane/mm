@@ -1,7 +1,9 @@
 import produce from "immer";
 import { generateId } from "@mm/utils/generateId";
+import { MAX_P, MAX_N } from "@mm/app-game/services/config";
+import { colorSchemes } from "@mm/app-game/services/colorScheme";
 import type { Row, Line, Feedback } from "@mm/solver/type";
-import { ColorScheme, colorSchemes } from "@mm/app-game/services/colorScheme";
+import type { ColorScheme } from "@mm/app-game/services/colorScheme";
 import type { Session } from "@mm/app-game/services/communication/session";
 
 export type Page = "game-instruction" | "game-report" | "onboarding";
@@ -11,7 +13,7 @@ export type Game = {
   rows: Row[];
 };
 export type State = {
-  clientId: string | null;
+  sessionId: string | null;
   p: number;
   n: number;
   colorScheme: ColorScheme;
@@ -41,19 +43,25 @@ const reduce_ = (state: State, action: Action): State => {
     case "game:reset":
       return { ...state, game: { id: generateId(), rows: [] } };
 
+    case "game:play":
+      return { ...state, page: "game-report" };
+
+    case "game:report":
+      return produce(state, (state) => {
+        state.page = "game-instruction";
+        state.game.rows.push({ line: action.line, feedback: action.feedback });
+      });
+
     case "session:list": {
       const [session] = action.sessions.sort((a, b) => b.date - a.date);
 
       if (!session) return state;
 
-      return { ...session, page: "game-instruction" };
+      return { ...session, sessionId: session.id, page: "game-instruction" };
     }
 
-    case "session:updated": {
-      if (action.session.clientId !== state.clientId) return state;
-
-      return { ...action.session, page: "game-instruction" };
-    }
+    case "session:updated":
+      return { ...state, ...action.session, page: "game-instruction" };
 
     case "page:set":
       return { ...state, page: action.page };
@@ -95,8 +103,8 @@ const ensureGameConfigLimit = (reduce: Reduce): Reduce => (state, action) => {
   if (nextState.p > l || nextState.n > l)
     return {
       ...nextState,
-      n: Math.min(10, nextState.n),
-      p: Math.min(10, nextState.p),
+      n: Math.min(MAX_N, nextState.n),
+      p: Math.min(MAX_P, nextState.p),
     };
 
   return nextState;

@@ -6,5 +6,7 @@ export default {
   write_the_result: "Write the result",
   correct_position: "Correct position",
   bad_position: "Bad position",
+  error_no_suitable_solution: "Error! no suitable solution",
+  computing: "Computing",
   ok: "ok",
 } as const;

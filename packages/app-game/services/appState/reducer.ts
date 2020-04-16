@@ -2,6 +2,7 @@ import produce from "immer";
 import { getFeedback } from "@mm/solver/getFeedback";
 import { createGame } from "./createGame";
 import { colorSchemes } from "../colorScheme";
+import { MAX_N, MAX_P } from "../config";
 import type { ColorScheme } from "../colorScheme";
 import type { Row, Line, Feedback } from "@mm/solver/type";
 import type { Session } from "../communication/session";
@@ -91,8 +92,8 @@ const ensureGameConfigLimit = (reduce: Reduce): Reduce => (state, action) => {
   if (nextState.p > l || nextState.n > l)
     return {
       ...nextState,
-      n: Math.min(10, nextState.n),
-      p: Math.min(10, nextState.p),
+      n: Math.min(MAX_N, nextState.n),
+      p: Math.min(MAX_P, nextState.p),
     };
 
   return nextState;

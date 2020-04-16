@@ -10,6 +10,7 @@ import { Object3d } from "./Object3d";
 import { InputNumber } from "./InputNumber";
 import { useAppState } from "../services/appState/useAppState";
 import { colorSchemes, colorSchemeEquals } from "../services/colorScheme";
+import { MAX_P, MAX_N } from "../services/config";
 
 const generateGame = (p: number, n: number) => ({
   candidate: Array.from({ length: n }, () => null),
@@ -72,8 +73,9 @@ export const ConfigPage = ({
           <Section>
             <Label>{t("configPage.how_many_slots")}</Label>
             <InputNumber
-              min={2}
-              max={8}
+              autoFocus
+              min={1}
+              max={MAX_N}
               value={n}
               onChange={(n: number) => setGameConfig(p, +n)}
             />
@@ -84,8 +86,9 @@ export const ConfigPage = ({
           <Section>
             <Label>{t("configPage.how_many_colors")}</Label>
             <InputNumber
+              autoFocus
               min={2}
-              max={8}
+              max={MAX_P}
               value={p}
               onChange={(p: number) => setGameConfig(+p, n)}
             />

@@ -1,59 +1,86 @@
-import { useState, useEffect, useMemo } from "react";
-import { Line, Feedback, Row } from "@mm/solver/type";
-import {
-  isValidSolutionForRow,
-  isValidSolution,
-} from "@mm/solver/isValidSolution";
+import { useState, useEffect } from "react";
+import { useForcedUpdate } from "@mm/app-game/components/_hooks/useForcedUpdate";
+import { isValidSolutionForRow } from "@mm/solver/isValidSolution";
 import { getBestDefaultLine } from "@mm/solver/getBestDefaultLine";
 import { getAllLines } from "@mm/solver/getAllLines";
 import { getBestLine } from "../../services/solver/getBestLine";
+import type { Line, Row } from "@mm/solver/type";
 
-const computing = Symbol("pending");
+const rowEquals = (a: Row, b: Row) =>
+  a.line.every((_, i) => a.line[i] === b.line[i]) &&
+  a.feedback.badPosition === b.feedback.badPosition &&
+  a.feedback.correct === b.feedback.correct;
 
-export const useSolver = (p: number, n: number, initialRows: Row[] = []) => {
-  const allLines = useMemo(() => getAllLines(p, n), [p, n]);
-  const defaultSolution = useMemo(() => getBestDefaultLine(p, n), [p, n]);
+const rowsEquals = (a: Row[], b: Row[]) =>
+  a.length === b.length && a.every((_, i) => rowEquals(a[i], b[i]));
 
-  const initialLines = useMemo(
-    () => allLines.filter((l) => isValidSolution(initialRows, l)),
-    [initialRows, allLines]
-  );
+const createSolver = (p: number, n: number) => {
+  const lines0 = getAllLines(p, n);
+  const solution0 = getBestDefaultLine(p, n);
 
-  const [rows, setRows] = useState(initialRows);
-  const [lines, setLines] = useState(initialLines);
-  const [candidate, setCandidate] = useState<Line | null | typeof computing>(
-    computing
-  );
+  let rows: Row[] = [];
+  let solution: Line | null = solution0;
+  let lines = lines0;
+  let promise: Promise<void> | null = null;
 
-  useEffect(() => {
-    let cancel = false;
-
-    if (allLines.length === lines.length) {
-      setCandidate(defaultSolution);
-    } else {
-      setCandidate(computing);
-      getBestLine(lines).then((candidate) => {
-        if (!cancel) setCandidate(candidate);
-      });
+  const update = (nextRows: Row[]) => {
+    if (
+      nextRows.length < rows.length ||
+      !rows.every((_, i) => rowEquals(rows[i], nextRows[i]))
+    ) {
+      rows.length = 0;
+      lines = lines0;
+      solution = solution0;
+      promise = null;
     }
 
-    return () => {
-      cancel = true;
-    };
-  }, [lines]);
+    if (nextRows.length > rows.length) {
+      for (const row of nextRows.slice(rows.length)) {
+        rows.push(row);
+        lines = lines.filter((l) => isValidSolutionForRow(row, l));
+      }
 
-  const nextTurn = (line: Line, feedback: Feedback) => {
-    const row = { feedback, line };
+      const p = getBestLine(lines).then((s) => {
+        if (promise === p) {
+          solution = s;
+          promise = null;
+        }
+      });
+      promise = p;
+      return p;
+    }
 
-    setRows([...rows, row]);
-    setLines(lines.filter((l) => isValidSolutionForRow(row, l)));
+    return Promise.resolve();
   };
 
+  const getRows = () => rows;
+  const getPromise = () => promise;
+  const getSolution = () => solution;
+  const getComputing = () => !!promise;
+
+  return { n, p, getSolution, getComputing, getPromise, getRows, update };
+};
+
+const solver0 = createSolver(0, 0);
+
+export const useSolver = (p: number, n: number, rows: Row[] = []) => {
+  const [solver, setSolver] = useState(solver0);
+  const forceUpdate = useForcedUpdate();
+
+  useEffect(() => {
+    setSolver(createSolver(p, n));
+  }, [p, n]);
+
+  useEffect(() => {
+    if (solver && solver.n === n && solver.p === p)
+      solver.update(rows).then(forceUpdate);
+  }, [solver, rows]);
+
+  if (solver.n !== n || solver.p !== p || !rowsEquals(rows, solver.getRows()))
+    return { computing: true, candidate: null };
+
   return {
-    computing: candidate === computing,
-    candidate: candidate === computing ? null : candidate,
-    rows,
-    nextTurn,
-    availableLines: lines,
+    computing: solver.getComputing(),
+    candidate: solver.getSolution(),
   };
 };

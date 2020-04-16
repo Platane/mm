@@ -6,13 +6,13 @@ import * as storage from "@mm/app-game/services/localStorage";
 import { reduce } from "./reducer";
 import type { State } from "./reducer";
 
-const storageKey = "game-config";
+const storageKey = "game-config__0";
 
 export const getInitialState = (): State => {
   const c = storage.read(storageKey);
 
   const state0 = {
-    clientId: null,
+    sessionId: null,
     n: 0,
     p: 0,
     colorScheme: [],

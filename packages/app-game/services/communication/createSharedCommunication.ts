@@ -3,8 +3,10 @@ import workerUrl from "worker-plugin/dist/loader!./communication-worker";
 import { generateId } from "@mm/utils/generateId";
 
 export const createSharedCommunication = (
-  onMessage: (message: { type: string }) => void
+  onMessage?: (message: { type: string }) => void
 ) => {
+  console.log("createSharedCommunication");
+
   // @ts-ignore
   const worker = new SharedWorker(workerUrl);
 
@@ -13,11 +15,13 @@ export const createSharedCommunication = (
   const clientId = generateId();
 
   const handle = ({ data }: any) => {
+    console.log("received", data);
     if (onMessage && data && data.type && data.clientId !== clientId)
       onMessage(data);
   };
 
   const publish = (message: { type: string } & any) => {
+    console.log("published", message);
     worker.port.postMessage({ ...message, clientId });
   };
 

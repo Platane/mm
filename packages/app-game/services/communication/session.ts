@@ -2,7 +2,7 @@ import type { Row } from "@mm/solver/type";
 import type { ColorScheme } from "../colorScheme";
 
 export type Session = {
-  clientId: string;
+  id: string;
   game: {
     id: string;
     rows: Row[];

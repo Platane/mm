@@ -14,10 +14,11 @@ const getCombinaison = <T>(values: T[], n: number): T[][] => {
 
 const random = createRandom();
 const shuffle = <T>(a: T[]) => {
-  for (let i = a.length - 1; i--; ) {
-    const j = Math.floor(random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
+  if (a.length > 0)
+    for (let i = a.length - 1; i--; ) {
+      const j = Math.floor(random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
   return a;
 };
 

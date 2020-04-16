@@ -4,10 +4,9 @@ import { useTranslate } from "./_hooks/useTranslate";
 import { InputNumber } from "@mm/app-game/components/InputNumber";
 import { ColorSchemeRadio } from "@mm/app-game/components/ColorSchemeRadio";
 import { Container, Content } from "./Layout";
-import {
-  ColorScheme,
-  colorSchemeEquals,
-} from "@mm/app-game/services/colorScheme";
+import { colorSchemeEquals } from "@mm/app-game/services/colorScheme";
+import { MAX_P, MAX_N } from "@mm/app-game/services/config";
+import type { ColorScheme } from "@mm/app-game/services/colorScheme";
 
 export const OnBoarding = ({
   p,
@@ -41,8 +40,9 @@ export const OnBoarding = ({
           <Content>
             <label>{t("how_many_slots")}</label>
             <InputNumber
-              min={2}
-              max={8}
+              autoFocus
+              min={1}
+              max={MAX_N}
               value={n}
               onChange={(n: number) => setGameConfig(p, +n)}
             />
@@ -63,8 +63,9 @@ export const OnBoarding = ({
           <Content>
             <label>{t("how_many_colors")}</label>
             <InputNumber
+              autoFocus
               min={2}
-              max={8}
+              max={MAX_P}
               value={p}
               onChange={(p: number) => setGameConfig(+p, n)}
             />
