@@ -14,6 +14,7 @@
     "@emotion/styled": "10.0.27",
     "@mm/solver": "2.0.0",
     "@mm/utils": "2.0.0",
+    "@wessberg/pointer-events": "1.0.9",
     "immer": "6.0.3",
     "react": "16.13.1",
     "react-dom": "16.13.1"

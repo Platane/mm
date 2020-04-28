@@ -5,6 +5,7 @@ import { Object3d } from "./Object3d";
 import { BoardRow } from "./BoardRow";
 import { boardColor } from "./theme";
 import type { ColorScheme } from "../services/colorScheme";
+import { BoardDropZone } from "./BoardDropZone";
 
 export const Board = ({
   p,
@@ -25,30 +26,9 @@ export const Board = ({
   onSubmit?: () => void;
   style?: any;
 }) => {
-  const mx = 8;
-  const my = 14;
   const dropZone = (
     <>
-      {Array.from({ length: n }, (_, i) => (
-        <div
-          key={i}
-          data-hit={
-            candidate[i] === null
-              ? `empty-${i}`
-              : `candidate-${i}-${candidate[i]}`
-          }
-          style={{
-            pointerEvents: "auto",
-            position: "absolute",
-            borderRadius: "40%",
-            top: `${my}px`,
-            bottom: `${my}px`,
-            width: `calc( ${100 / n}% - ${mx * 2}px)`,
-            left: `calc( ${mx}px +  ${(i * 100) / n}% )`,
-            backgroundColor: "rgba(0,0,0,0.0)",
-          }}
-        />
-      ))}
+      <BoardDropZone n={n} candidate={candidate} />
       {onSubmit && <Submit onClick={onSubmit}>submit</Submit>}
     </>
   );

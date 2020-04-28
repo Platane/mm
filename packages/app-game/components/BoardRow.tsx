@@ -30,7 +30,13 @@ export const BoardRow = ({
     <Line>
       {line.map((l, i) => (
         <Hole size={smallPegSize} key={i}>
-          {l !== null && <Peg color={colorScheme[l]} size={bigPegSize} />}
+          {l !== null && (
+            <Peg
+              color={colorScheme[l]}
+              size={bigPegSize}
+              style={{ transform: "translateZ(1px)" }}
+            />
+          )}
         </Hole>
       ))}
       {lineChildren}

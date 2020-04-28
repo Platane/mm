@@ -9,6 +9,7 @@ const normalized = css`
   *:before,
   *:after {
     box-sizing: inherit;
+    touch-action: none;
   }
   #root,
   html,
@@ -17,6 +18,7 @@ const normalized = css`
     min-height: 100%;
     height: 100%;
     overflow-x: hidden;
+    touch-action: none;
   }
   input,
   label {

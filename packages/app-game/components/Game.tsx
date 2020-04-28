@@ -4,11 +4,37 @@ import { keyframes } from "@emotion/core";
 import { Line } from "@mm/solver/type";
 import { usePulse } from "./_hooks/usePulse";
 import { Object3d } from "./Object3d";
-import { useCandidate } from "./_hooks/useCandidate";
 import { Board } from "./Board";
-import { FlyingPegManager } from "./FlyingPegManager";
 import { PegPools } from "./PegPools";
 import { useAppState } from "../services/appState/useAppState";
+import { FlyingPegManager } from "./FlyingPeg/FlyingPegManager";
+
+type Candidate = (number | null)[];
+type Mutation = {
+  origin: { k: number | null | undefined; peg: number };
+  destination?: { k: number | null | undefined };
+};
+
+const applyMutation = (
+  candidate: Candidate,
+  mutation: Mutation,
+  applyDestination = true
+) =>
+  candidate.map((u, k) => {
+    if (
+      mutation.destination &&
+      mutation.destination.k === k &&
+      applyDestination
+    )
+      return mutation.origin.peg;
+
+    if (mutation.destination && mutation.destination.k === k && u !== null)
+      return null;
+
+    if (mutation.origin.k === k) return null;
+
+    return u;
+  });
 
 export const Game = ({
   n,
@@ -17,27 +43,36 @@ export const Game = ({
   play,
   colorScheme,
 }: ReturnType<typeof useAppState>) => {
-  const {
-    candidate,
-    temporaryCandidate,
-    onHover,
-    onDrop,
-    reset: resetCandidate,
-  } = useCandidate(n);
-  const [hover, setHover] = useState(false);
+  const [temporaryMutations, setTemporaryMutations] = useState<Mutation[]>([]);
+  const [candidate, setCandidate] = useState<Candidate>(
+    Array.from({ length: n }, () => null)
+  );
 
   const onSubmit = () => {
     play(candidate as Line);
-    resetCandidate();
+    setCandidate(Array.from({ length: n }, () => null));
   };
+
+  const temporaryCandidate = temporaryMutations.reduce(
+    (c, m) => applyMutation(c, m, false),
+    candidate
+  );
 
   const newLinePulse = usePulse(game.id + "-" + game.rows.length, 300);
 
   return (
-    <>
+    <FlyingPegManager
+      colorScheme={colorScheme}
+      onTemporaryMutationsChange={setTemporaryMutations}
+      onChange={(m) => setCandidate((c) => applyMutation(c, m))}
+    >
       <World pop={newLinePulse}>
         <Scene>
-          <PegPools colorScheme={colorScheme} p={p} disabled={hover} />
+          <PegPools
+            colorScheme={colorScheme}
+            p={p}
+            disabled={temporaryMutations.length > 0}
+          />
 
           <Board
             n={n}
@@ -55,19 +90,7 @@ export const Game = ({
           />
         </Scene>
       </World>
-
-      <FlyingPegManager
-        colorScheme={colorScheme}
-        onHover={(id, a, b) => {
-          onHover(id, a, b);
-          setHover(true);
-        }}
-        onDrop={(id, a, b) => {
-          onDrop(id, a, b);
-          setHover(false);
-        }}
-      />
-    </>
+    </FlyingPegManager>
   );
 };
 

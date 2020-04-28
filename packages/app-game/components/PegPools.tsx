@@ -3,6 +3,7 @@ import { css } from "@emotion/core";
 import { Object3d } from "./Object3d";
 import { Peg } from "./Peg";
 import type { ColorScheme } from "../services/colorScheme";
+import { useFlyingZone } from "./FlyingPeg/FlyingPegManager";
 
 export const PegPools = ({
   p,
@@ -14,10 +15,12 @@ export const PegPools = ({
   colorScheme: ColorScheme;
   disabled: boolean;
 }) => {
+  const { onPointerDown } = useFlyingZone();
+
   return (
     <Container {...props} disabled={disabled}>
       {Array.from({ length: p }, (_, i) => (
-        <Pool key={i} data-hit={`source-${i}`}>
+        <Pool key={i} onPointerDown={onPointerDown({ type: "source", peg: i })}>
           {Array.from({ length: 3 }, (_, j) => (
             <Peg
               key={j}
