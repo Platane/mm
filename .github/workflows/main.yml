@@ -17,26 +17,44 @@ jobs:
       - run: yarn test --ci
       - run: ( cd packages/benchmark ; yarn start 6 4 60 )
 
-  create-deployment:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
+      - name: generate deploy url
+        id: url
+        run: |
+          echo "$SHA-mm.surge.sh"
+          echo "::set-output name=deploy_origin::$SHA-mm.surge.sh"
+          echo "::set-output name=deploy_url::https://$SHA-mm.surge.sh/game"
+        env:
+          SHA: ${{ github.sha }}
+
+      - uses: chrnorm/deployment-action@releases/v1
+        id: deployment
+        with:
+          token: ${{ github.token }}
+          target_url: ${{ steps.url.outputs.deploy_url }}
+          environment: preview
+          ref: ${{ github.sha }}
+
+      - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
           node-version: 14
+      - run: yarn install --frozen-lockfile
 
-      - run: yarn add @octokit/request@5.4.2
+      - run: BASE_PATHNAME="" yarn build
 
-      - name: create deployment
+      - run: yarn surge ./dist $DEPLOY_ORIGIN
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPOSITORY: ${{ github.repository }}
-          SHA: ${{ github.sha }}
-        run: |
-          node --unhandled-rejections=strict -e "
-            require('@octokit/request').request('POST /repos/$REPOSITORY/deployments', {
-              headers: { authorization: 'token $GITHUB_TOKEN' },
-              ref: '$SHA',
-              environment: 'preview',
-              required_contexts: []
-            });"
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          DEPLOY_ORIGIN: ${{ steps.url.outputs.deploy_origin }}
+
+      - uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: "${{ github.token }}"
+          target_url: ${{ steps.url.outputs.deploy_url }}
+          state: "success"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
