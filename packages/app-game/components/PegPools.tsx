@@ -20,7 +20,7 @@ export const PegPools = ({
   return (
     <Container {...props} disabled={disabled}>
       {Array.from({ length: p }, (_, i) => (
-        <Pool key={i} onPointerDown={onPointerDown({ type: "source", peg: i })}>
+        <Pool key={i} onPointerDown={onPointerDown({ peg: i })}>
           {Array.from({ length: 3 }, (_, j) => (
             <Peg
               key={j}

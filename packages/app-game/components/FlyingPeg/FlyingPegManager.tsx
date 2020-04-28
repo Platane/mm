@@ -2,9 +2,6 @@ import { useState, createContext, useMemo, useContext, useEffect } from "react";
 import { FlyingPeg } from "./FlyingPeg";
 import { generateId } from "@mm/utils/generateId";
 import { ColorScheme } from "../../services/colorScheme";
-import { polyfill } from "./polyfill";
-
-polyfill();
 
 export type Point = { x: number; y: number };
 export type Tracker = {
@@ -27,15 +24,15 @@ type ContextType = {
   onPointerEnter: (
     hit: HitDestination,
     position?: Point
-  ) => undefined | ((e: PointerEvent) => void);
+  ) => undefined | ((e: any) => void);
   onPointerLeave: (
     hit: HitDestination,
     position?: Point
-  ) => undefined | ((e: PointerEvent) => void);
+  ) => undefined | ((e: any) => void);
   onPointerDown: (
-    hit: HitDestination,
+    hit: HitOrigin,
     position?: Point
-  ) => undefined | ((e: PointerEvent) => void);
+  ) => undefined | ((e: any) => void);
 };
 
 const context = createContext({

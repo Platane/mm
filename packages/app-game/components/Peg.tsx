@@ -60,7 +60,7 @@ const m = -2;
 
 const Body1 = styled(Object3d)<{ size: number }>`
   position: absolute;
-  top: ${(p) => -m / 2}px;
+  top: ${-m / 2}px;
   left: 0px;
   transform-origin: center center;
   transform: translateZ(${(p) => p.size / 2}px) rotateZ(-45deg) rotateX(90deg);
@@ -69,7 +69,7 @@ const Body1 = styled(Object3d)<{ size: number }>`
 `;
 const Body2 = styled(Object3d)<{ size: number }>`
   position: absolute;
-  top: ${(p) => -m / 2}px;
+  top: ${-m / 2}px;
   left: 0px;
   transform-origin: center center;
   transform: translateZ(${(p) => p.size / 2}px) rotateZ(45deg) rotateX(90deg);
@@ -78,7 +78,7 @@ const Body2 = styled(Object3d)<{ size: number }>`
 `;
 const Body3 = styled(Object3d)<{ size: number }>`
   position: absolute;
-  top: ${(p) => -m / 2}px;
+  top: ${-m / 2}px;
   left: 0px;
   transform-origin: center center;
   transform: translateZ(${(p) => p.size / 2}px) rotateZ(2deg) rotateX(90deg);

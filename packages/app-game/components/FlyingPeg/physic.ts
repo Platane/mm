@@ -15,8 +15,6 @@ export const createPhysic = ({
   let released = false;
   let destination: Point | undefined;
 
-  const u = Math.random().toString(16).slice(2, 6);
-
   const setPointer = (x: number, y: number) => {
     if (destination) return;
 

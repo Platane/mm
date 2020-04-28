@@ -11,8 +11,8 @@ import { FlyingPegManager } from "./FlyingPeg/FlyingPegManager";
 
 type Candidate = (number | null)[];
 type Mutation = {
-  origin: { k: number | null | undefined; peg: number };
-  destination?: { k: number | null | undefined };
+  origin: { peg: number; k?: number };
+  destination?: { k?: number };
 };
 
 const applyMutation = (

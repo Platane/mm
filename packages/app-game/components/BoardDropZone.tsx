@@ -4,7 +4,6 @@ import { useFlyingZone } from "./FlyingPeg/FlyingPegManager";
 export const BoardDropZone = ({
   n,
   candidate,
-  ...props
 }: {
   n: number;
   candidate: (number | null)[];
@@ -14,13 +13,15 @@ export const BoardDropZone = ({
   return (
     <>
       {Array.from({ length: n }, (_, i) => {
-        const hit = { type: "line", k: i, peg: candidate[i] };
+        const peg = candidate[i];
+        const hit = { k: i, peg };
 
         return (
           <Zone
             key={i}
-            onPointerDown={onPointerDown(hit)}
-            onPointerMove={() => console.warn("move")}
+            onPointerDown={
+              peg === null ? undefined : onPointerDown({ k: i, peg })
+            }
             onPointerMove={onPointerEnter(hit)}
             onPointerOut={onPointerLeave(hit)}
             style={{
