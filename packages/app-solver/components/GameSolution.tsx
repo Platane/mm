@@ -32,14 +32,9 @@ export const GameSolution = ({
       }}
     >
       <label>{t("play_this_line")}</label>
-      <Line>
+      <Line style={{ maxWidth: `${candidate.length * 50}px` }}>
         {candidate.map((peg, i) => (
-          <Peg
-            key={i}
-            color={colorScheme[peg]}
-            size={28}
-            style={{ margin: "16px" }}
-          />
+          <Peg key={i} color={colorScheme[peg]} size={28} />
         ))}
       </Line>
       <Button type="submit">
@@ -56,8 +51,9 @@ const Line = styled(Object3d)`
   transform: rotateX(45deg);
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  margin: 32px 0 10px 0;
 `;
 const Button = styled.button`
   border: none;

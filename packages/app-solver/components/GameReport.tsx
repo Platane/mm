@@ -32,11 +32,11 @@ export const GameReport = ({ n, feedback, setFeedback, onSubmit }: Props) => {
         <label>{t("correct_position")}</label>
         <InputNumber
           min={0}
-          max={4}
+          max={n}
           value={feedback.correct}
           onChange={(correct: number) =>
             setFeedback({
-              badPosition: Math.min(feedback.badPosition, 4 - correct),
+              badPosition: Math.min(feedback.badPosition, n - correct),
               correct,
             })
           }
@@ -47,11 +47,11 @@ export const GameReport = ({ n, feedback, setFeedback, onSubmit }: Props) => {
         <label>{t("bad_position")}</label>
         <InputNumber
           min={0}
-          max={4}
+          max={n}
           value={feedback.badPosition}
           onChange={(badPosition: number) =>
             setFeedback({
-              correct: Math.min(feedback.correct, 4 - badPosition),
+              correct: Math.min(feedback.correct, n - badPosition),
               badPosition,
             })
           }
