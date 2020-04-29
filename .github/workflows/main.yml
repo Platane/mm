@@ -11,7 +11,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14
-      - run: yarn install --frozen-lockfile
+
+      - uses: bahmutov/npm-install@v1
+
       - run: yarn type
       - run: yarn lint
       - run: yarn test --ci
@@ -42,7 +44,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 14
-      - run: yarn install --frozen-lockfile
+
+      - uses: bahmutov/npm-install@v1
 
       - run: BASE_PATHNAME="" yarn build
 
