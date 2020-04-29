@@ -61,8 +61,6 @@ const Hole = styled(Object3d)<{ size: number }>`
   justify-content: center;
 
   background-color: rgba(0, 0, 0, 0.04);
-
-  pointer-events: none;
 `;
 
 const Number = styled.span`
@@ -76,7 +74,6 @@ const Number = styled.span`
   align-items: center;
   justify-content: center;
   font-family: Helvetica, Arial;
-  pointer-events: none;
   user-select: none;
 
   color: rgba(0, 0, 0, 0.1) !important;

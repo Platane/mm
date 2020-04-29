@@ -67,8 +67,6 @@ const Pool = styled(Object3d)`
   align-items: center;
   justify-content: center;
 
-  pointer-events: auto;
-
   & > * {
     pointer-events: none;
   }

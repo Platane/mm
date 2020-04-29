@@ -91,8 +91,6 @@ export const FlyingPegManager = ({
       const pointerId = event.pointerId;
       const destinationPosition = getPosition(event, position);
 
-      console.log("enter", destination);
-
       setTrackers((ts) =>
         ts.map((t) =>
           t.pointerId === pointerId &&
@@ -107,8 +105,6 @@ export const FlyingPegManager = ({
       event: PointerEvent
     ) => {
       const pointerId = event.pointerId;
-
-      console.log("leave", destination);
 
       setTrackers((ts) =>
         ts.map((t) =>
@@ -164,4 +160,7 @@ const getPosition = (event: PointerEvent, position?: Point) => {
 
 export const useFlyingZone = () => useContext(context);
 
-export const hitEquals = (a: any, b: any) => a.type === b.type && a.k === b.k;
+export const hitEquals = (
+  a: HitOrigin | HitDestination,
+  b: HitOrigin | HitDestination
+) => a.k === b.k && (a as any).peg === (b as any).peg;
