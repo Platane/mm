@@ -168,4 +168,5 @@ const Submit = styled.button`
   transform: translate3d(0, 0, 2px) rotateX(-26deg);
   transform-origin: 0 100%;
   animation: ${submitAppear} 180ms cubic-bezier(0.52, 0.58, 0.72, 1.53);
+  pointer-events: auto;
 `;

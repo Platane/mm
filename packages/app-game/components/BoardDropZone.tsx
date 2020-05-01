@@ -94,4 +94,5 @@ const Zone = styled.div`
   top: ${my}px;
   bottom: ${my}px;
   background-color: rgba(0, 0, 0, 0);
+  pointer-events: auto;
 `;

@@ -9,7 +9,6 @@ const normalized = css`
   *:before,
   *:after {
     box-sizing: inherit;
-    touch-action: none;
   }
   #root,
   html,
