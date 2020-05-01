@@ -5,8 +5,8 @@ import { Object3d } from "./Object3d";
 import { FeedbackBox } from "./FeedbackBox";
 import type { ColorScheme } from "../services/colorScheme";
 
-const lineHeight = 60;
-const bigPegSize = 28;
+export const lineHeight = 60;
+export const bigPegSize = 28;
 const smallPegSize = 14;
 
 export const BoardRow = ({

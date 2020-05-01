@@ -87,6 +87,8 @@ export const Game = ({
             }
             candidate={Array.from({ length: n }, () => null)}
             disableAnimation
+            disableSolution
+            solution={null}
           />
         </BoardContainer>
       </BlockAfter>

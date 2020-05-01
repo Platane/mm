@@ -1,28 +1,37 @@
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/core";
-import { Row as IRow } from "@mm/solver/type";
+import { Row as IRow, Line } from "@mm/solver/type";
 import { Object3d } from "./Object3d";
 import { BoardRow } from "./BoardRow";
 import { boardColor } from "./theme";
 import type { ColorScheme } from "../services/colorScheme";
 import { BoardDropZone } from "./BoardDropZone";
+import { BoardSolution } from "./BoardSolution";
 
 export const Board = ({
   p,
   n,
+  id,
   rows,
   candidate,
+  solution,
+  shuffle = false,
   colorScheme,
+  disableSolution = false,
   disableAnimation = false,
   onSubmit,
   ...props
 }: {
   p: number;
   n: number;
+  id?: string;
   rows: IRow[];
   colorScheme: ColorScheme;
   candidate: (number | null)[];
+  solution: Line | null;
   disableAnimation?: boolean;
+  disableSolution?: boolean;
+  shuffle?: boolean;
   onSubmit?: () => void;
   style?: any;
 }) => {
@@ -51,7 +60,7 @@ export const Board = ({
 
       <BoardRow
         i={rows.length}
-        key={rows.length}
+        key={"candidate"}
         colorScheme={colorScheme}
         line={candidate}
         lineChildren={dropZone}
@@ -66,6 +75,18 @@ export const Board = ({
           line={Array.from({ length: n }, () => null)}
         />
       ))}
+
+      {!disableSolution && (
+        <BoardSolution
+          key={"solution" + id}
+          n={n}
+          p={p}
+          solution={solution}
+          shuffle={shuffle}
+          colorScheme={colorScheme}
+          disableAnimation={disableAnimation}
+        />
+      )}
     </Container>
   );
 };

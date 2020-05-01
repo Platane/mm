@@ -1,6 +1,6 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
-import { keyframes } from "@emotion/core";
+import { keyframes, css } from "@emotion/core";
 import { Line } from "@mm/solver/type";
 import { usePulse } from "./_hooks/usePulse";
 import { Object3d } from "./Object3d";
@@ -58,7 +58,11 @@ export const Game = ({
     candidate
   );
 
-  const newLinePulse = usePulse(game.id + "-" + game.rows.length, 300);
+  const win = game.rows.some(({ feedback }) => feedback.correct === n);
+
+  const newLinePulse = !!usePulse(game.id + "-" + game.rows.length, 300);
+  const resetPulse = !!usePulse(game.id, 400, false);
+  const shuffle = !!usePulse(game.id, 2600);
 
   return (
     <FlyingPegManager
@@ -66,7 +70,7 @@ export const Game = ({
       onTemporaryMutationsChange={setTemporaryMutations}
       onChange={(m) => setCandidate((c) => applyMutation(c, m))}
     >
-      <World pop={newLinePulse}>
+      <World resetAnimation={resetPulse} popAnimation={newLinePulse}>
         <Scene>
           <PegPools
             colorScheme={colorScheme}
@@ -77,16 +81,13 @@ export const Game = ({
           <Board
             n={n}
             p={p}
+            id={game.id}
             rows={game.rows}
             colorScheme={colorScheme}
             candidate={temporaryCandidate}
+            solution={win ? game.solution : null}
+            shuffle={shuffle}
             onSubmit={candidate.every((p) => p !== null) ? onSubmit : undefined}
-            // style={{
-            //   transform: `translateY(${Math.max(
-            //     rows.length * 80 - 200,
-            //     -80
-            //   )}px)`,
-            // }}
           />
         </Scene>
       </World>
@@ -99,10 +100,31 @@ const popAnimation = keyframes`
   40%{ transform: scale(1.1) }
   100%{ transform: scale(1) }
  `;
+const resetAnimation = keyframes`
+  0%{ transform: rotateX(0deg) }
+  28%{ transform:  rotateX(60deg) translateZ(-600px) }
+  60%{ transform:  rotateX(-10deg) translateZ(-160px) scale(1,1) }
+  75%{ transform:  rotateX(-12deg) translateZ(-180px) scale(1.13,1.06) }
+  100%{ transform: rotateX(0deg) }
+ `;
 
-const World = styled.div<{ pop: boolean }>`
+const World = styled(Object3d)<{
+  popAnimation: boolean;
+  resetAnimation: boolean;
+}>`
   perspective: 1000px;
-  animation: ${(p) => (p.pop ? popAnimation : "none")} 220ms linear;
+  ${(p) => {
+    if (p.resetAnimation)
+      return css`
+        animation: ${resetAnimation} 330ms linear;
+        transform-origin: center bottom;
+      `;
+    if (p.popAnimation)
+      return css`
+        animation: ${popAnimation} 230ms linear;
+      `;
+    return "";
+  }}
 `;
 
 const Scene = styled(Object3d)`

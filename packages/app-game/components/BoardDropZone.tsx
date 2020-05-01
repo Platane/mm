@@ -85,7 +85,7 @@ export const BoardDropZone = ({
   );
 };
 
-const mx = 10;
+const mx = 2;
 const my = 10;
 
 const Zone = styled.div`

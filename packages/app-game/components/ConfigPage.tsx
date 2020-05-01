@@ -12,21 +12,25 @@ import { useAppState } from "../services/appState/useAppState";
 import { colorSchemes, colorSchemeEquals } from "../services/colorScheme";
 import { MAX_P, MAX_N } from "../services/config";
 
-const generateGame = (p: number, n: number) => ({
-  candidate: Array.from({ length: n }, () => null),
-  rows: [
+const generateGame = (p: number, n: number) => {
+  const candidate = Array.from({ length: n }, () => null);
+
+  const lines = [
     Array.from({ length: n }, (_, i) => i % p),
-    Array.from({ length: n }, (_, i) => (i + n) % p),
-    ...Array.from({ length: 3 }, () => getRandomLine(p, n)),
-    Array.from({ length: n }, (_, i) => (i + n * 2) % p),
-  ].map((line) => ({
+    ...Array.from({ length: n < p ? 1 : 2 }, () => getRandomLine(p, n)),
+    ...(n < p ? [Array.from({ length: n }, (_, i) => (i + n * 2) % p)] : []),
+  ];
+
+  const rows = lines.map((line) => ({
     line,
     feedback: {
       correct: Math.floor(Math.random() * 3),
       badPosition: Math.floor(Math.random() * 3),
     },
-  })),
-});
+  }));
+
+  return { candidate, rows };
+};
 
 export const ConfigPage = ({
   n,
@@ -41,7 +45,10 @@ export const ConfigPage = ({
 }) => {
   const [step, setStep] = useState(onboarding ? 1 : 3);
 
-  const pulse = usePulse(p + colorScheme.map((a) => a.join()).join() + n, 100);
+  const pulse = !!usePulse(
+    p + colorScheme.map((a) => a.join()).join() + n,
+    100
+  );
 
   const { rows, candidate } = useMemo(() => generateGame(p, n), [p, n]);
 
@@ -56,6 +63,7 @@ export const ConfigPage = ({
           rows={rows}
           colorScheme={colorScheme}
           candidate={candidate}
+          solution={null}
           rotateAnimation={pulse}
         />
       </BoardContainer>
