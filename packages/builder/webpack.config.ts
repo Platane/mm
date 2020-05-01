@@ -1,18 +1,20 @@
 import * as path from "path";
 import * as webpack from "webpack";
-import * as HtmlWebpackPlugin from "html-webpack-plugin";
 import SetManifestIconsPurpose from "./SetManifestIconsPurpose";
 import HtmlWebpackPluginInlineStyle from "./HtmlWebpackPluginInlineStyle";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
-
+// @ts-ignore
+import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
+// @ts-ignore
+import HtmlWebpackPlugin from "html-webpack-plugin";
 // @ts-ignore
 import { GenerateSW } from "workbox-webpack-plugin";
 // @ts-ignore
-import * as TerserPlugin from "terser-webpack-plugin";
+import TerserPlugin from "terser-webpack-plugin";
 // @ts-ignore
-import * as RobotstxtPlugin from "robotstxt-webpack-plugin";
+import RobotstxtPlugin from "robotstxt-webpack-plugin";
 // @ts-ignore
-import * as FaviconsWebpackPlugin from "favicons-webpack-plugin";
+import FaviconsWebpackPlugin from "favicons-webpack-plugin";
 
 import * as pkgGame from "../app-game/package.json";
 import * as pkgSolver from "../app-solver/package.json";
@@ -52,10 +54,14 @@ const config: webpack.Configuration = {
         loader: "babel-loader",
         options: { rootMode: "upward" },
       },
+
+      // for webworker
       {
         exclude: /./,
         loader: "workerize-loader",
       },
+
+      // for shared worker
       {
         exclude: /./,
         loader: "worker-plugin",
@@ -112,7 +118,7 @@ const config: webpack.Configuration = {
       // @ts-ignore
       logo: path.resolve(__dirname, "../app-game/assets/images/icon192.png"),
       prefix: "/" + [...basePathname, "game"].join("/"),
-      inject: (htmlPlugin) => htmlPlugin.options.filename.includes("game"),
+      inject: (htmlPlugin: any) => htmlPlugin.options.filename.includes("game"),
       favicons: {
         appName: appGame.name,
         appDescription: appGame.description,
@@ -183,7 +189,8 @@ const config: webpack.Configuration = {
     new FaviconsWebpackPlugin({
       logo: path.resolve(__dirname, "../app-solver/assets/images/icon192.png"),
       prefix: "/" + [...basePathname, "solver"].join("/"),
-      inject: (htmlPlugin) => htmlPlugin.options.filename.includes("solver"),
+      inject: (htmlPlugin: any) =>
+        htmlPlugin.options.filename.includes("solver"),
       favicons: {
         appName: appSolver.name,
         appDescription: appSolver.description,
@@ -236,14 +243,42 @@ const config: webpack.Configuration = {
         },
       ],
     }),
+
+    new BundleAnalyzerPlugin({
+      openAnalyzer: false,
+      reportFilename: "bundle-report.html",
+      analyzerMode: "static",
+    }),
   ],
-  optimization:
-    mode === "production"
-      ? {
-          minimize: true,
-          minimizer: [new TerserPlugin({ extractComments: true })],
-        }
-      : {},
+  optimization: {
+    splitChunks: {
+      chunks: "all",
+      minSize: 30000,
+      maxSize: 0,
+      maxAsyncRequests: 6,
+      maxInitialRequests: 4,
+
+      // @ts-ignore
+      filename: "[contenthash].js",
+
+      cacheGroups: {
+        defaultVendors: {
+          test: /[\\/]node_modules[\\/]/,
+          priority: -10,
+        },
+        default: {
+          priority: -20,
+          reuseExistingChunk: true,
+        },
+      },
+    },
+
+    ...(mode === "production" && {
+      minimize: true,
+      minimizer: [new TerserPlugin({ extractComments: true })],
+    }),
+  },
+
   devtool: false,
 
   // @ts-ignore
