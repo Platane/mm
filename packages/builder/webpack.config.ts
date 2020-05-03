@@ -27,6 +27,7 @@ const basePathname = (process.env.BASE_PATHNAME || "")
   .filter(Boolean);
 
 const extractApp = (pkg: any) => ({
+  url: pkg.homepage,
   name: pkg.description.split("__")[1] || pkg.name,
   description: pkg.description.split("__").slice(-1)[0],
   developer: pkg.author || {},

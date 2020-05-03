@@ -3,6 +3,7 @@ import { ConfigPage } from "./ConfigPage";
 import { Game } from "./Game";
 import { Separator } from "./Separator";
 import { useAppState } from "../services/appState/useAppState";
+import { GithubLogo } from "./GithubLogo";
 
 export const App = () => {
   const { page, setPage, reset, ...ctx } = useAppState();
@@ -45,6 +46,10 @@ export const App = () => {
             </a>
           </>
         )}
+        <Separator />
+        <a title="github" href="https://github.com/platane/mm">
+          <GithubLogo style={{ width: "16px", height: "16px", fill: "#111" }} />
+        </a>
       </Footer>
     </>
   );
