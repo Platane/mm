@@ -18,6 +18,7 @@ import FaviconsWebpackPlugin from "favicons-webpack-plugin";
 
 import * as pkgGame from "../app-game/package.json";
 import * as pkgSolver from "../app-solver/package.json";
+import * as themeGame from "../app-game/components/theme";
 
 const mode =
   ("production" === process.env.NODE_ENV && "production") || "development";
@@ -50,8 +51,13 @@ const config: webpack.Configuration = {
   module: {
     rules: [
       {
+        test: [/\.(bmp|gif|png|jpeg|jpg|svg)$/, /\.(otf|ttf|woff|woff2)$/],
+        loader: "file-loader",
+      },
+
+      {
         exclude: /node_modules/,
-        test: /\.(js)|(ts)|(tsx)$/,
+        test: /\.(js|ts|tsx)$/,
         loader: "babel-loader",
         options: { rootMode: "upward" },
       },
@@ -111,8 +117,8 @@ const config: webpack.Configuration = {
         touch-action: none;
         user-select: none;
         height:100%;
-        background-image: radial-gradient(ellipse at center, rgba(99, 36, 40, 0) 0, rgba(99, 36, 40, 0.5) 130%);
-        background-color: #f24b55;
+        ${themeGame.backgroundStyle.styles}
+      
       }`,
     }),
     new FaviconsWebpackPlugin({
@@ -126,8 +132,8 @@ const config: webpack.Configuration = {
         developerName: appGame.developer.name,
         developerURL: appGame.developer.url,
         version: appGame.version,
-        background: "#f24b55",
-        theme_color: "#f24b55",
+        background: themeGame.background,
+        theme_color: themeGame.theme_color,
         display: "standalone",
         orientation: "portrait",
         start_url: "/" + [...basePathname, "game"].join("/") + "/",

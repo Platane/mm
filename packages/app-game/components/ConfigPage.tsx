@@ -137,9 +137,13 @@ export const ConfigPage = ({
 
 const wobbleFrames = Array.from({ length: 11 }).map((_, i, arr) => {
   const n = i / (arr.length - 1);
-  return `${Math.round(n * 100)}%{transform: rotateX(${
-    Math.cos(n * Math.PI * 2) * 0.2
-  }deg) rotateY(${Math.sin(n * Math.PI * 2) * 1.3}deg)}`;
+  return (
+    `${Math.round(n * 100)}%{` +
+    `transform: ` +
+    `rotateX(${Math.cos(n * Math.PI * 2) * 0.2}deg) ` +
+    `rotateY(${Math.sin(n * Math.PI * 2) * 1.3}deg) ` +
+    `}`
+  );
 });
 const wobble = keyframes`${wobbleFrames.join("\n")}`;
 
@@ -159,15 +163,17 @@ const ColorSchemes = styled.div`
   flex-wrap: wrap;
 `;
 
-const Label = styled.label``;
+const Label = styled.label`
+  margin-right: auto;
+`;
 const Section = styled.section`
   padding: 10px;
   display: flex;
   flex-direction: row;
 `;
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 140px;
+  touch-action: auto;
 `;
 const BoardContainer = styled(Object3d)`
   display: flex;
@@ -175,13 +181,13 @@ const BoardContainer = styled(Object3d)`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 300px;
+  height: 400px;
   perspective: 600px;
   animation ${wobble} 5000ms linear infinite;
 `;
 const ConfigContainer = styled.form`
   margin: 0 auto;
-  max-width: 480px;
+  max-width: 520px;
 `;
 const Button = styled.button`
   border: none;

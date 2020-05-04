@@ -17,20 +17,6 @@ const normalized = css`
     min-height: 100%;
     height: 100%;
     overflow-x: hidden;
-    touch-action: none;
-  }
-  input,
-  label {
-    font-family: helvetica, arial;
-    font-size: 20px;
-  }
-  html,
-  a {
-    color: #111;
-  }
-  a:hover {
-    transition: color 120ms;
-    color: #454455;
   }
 `;
 

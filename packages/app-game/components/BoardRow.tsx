@@ -4,6 +4,7 @@ import { Peg } from "./Peg";
 import { Object3d } from "./Object3d";
 import { FeedbackBox } from "./FeedbackBox";
 import type { ColorScheme } from "../services/colorScheme";
+import { boardColorAlternative } from "./theme";
 
 export const lineHeight = 60;
 export const bigPegSize = 28;
@@ -88,7 +89,7 @@ const Container = styled(Object3d)`
     background-color: transparent;
   }
   &:nth-of-type(2n + 1) {
-    background-color: #9c9c9c;
+    background-color: ${boardColorAlternative};
   }
 `;
 

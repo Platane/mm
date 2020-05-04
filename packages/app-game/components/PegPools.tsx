@@ -11,6 +11,7 @@ export const PegPools = ({
   colorScheme,
   ...props
 }: {
+  style?: any;
   p: number;
   colorScheme: ColorScheme;
   disabled: boolean;
@@ -55,7 +56,7 @@ const Container = styled(Object3d)<{ disabled: boolean }>`
 `;
 
 const Pool = styled(Object3d)`
-  width: 80px;
+  width: 72px;
   height: 60px;
   background-color: rgba(0, 0, 0, 0.2);
   border-radius: 4px;

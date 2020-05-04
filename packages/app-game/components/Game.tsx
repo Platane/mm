@@ -88,6 +88,7 @@ export const Game = ({
             solution={win ? game.solution : null}
             shuffle={shuffle}
             onSubmit={candidate.every((p) => p !== null) ? onSubmit : undefined}
+            style={{ flex: "auto 1 1", marginRight: "30px" }}
           />
         </Scene>
       </World>

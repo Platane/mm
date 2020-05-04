@@ -10,9 +10,7 @@ export const App = () => {
 
   return (
     <>
-      <ContentContainer>
-        <Content page={page} setPage={setPage} {...ctx} />
-      </ContentContainer>
+      <Content page={page} setPage={setPage} {...ctx} />
       <Footer>
         {page === "game" && (
           <>

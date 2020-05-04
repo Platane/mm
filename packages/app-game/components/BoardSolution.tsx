@@ -8,6 +8,7 @@ import type { ColorScheme } from "../services/colorScheme";
 import { getRandomLine } from "@mm/solver/getRandomtLine";
 import { useState, useEffect } from "react";
 import { usePulse } from "./_hooks/usePulse";
+import { boardColorAlternative, boardColor } from "./theme";
 
 export const BoardSolution = ({
   n,
@@ -29,6 +30,8 @@ export const BoardSolution = ({
 
   return (
     <Container {...props}>
+      <Ground />
+
       {shuffleLine &&
         shuffleLine.map((l, i) => (
           <PoppingPeg key={i + ":" + l}>
@@ -87,12 +90,22 @@ const Container = styled(Object3d)`
   margin-bottom: 30px;
   max-width: 300px;
   width: 80%;
-  background-color: #888;
   position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-evenly;
+`;
+const Ground = styled.div`
+  background-color: ${boardColor};
+  filter: brightness(0.95);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
 `;
 
 const hide = keyframes`
@@ -120,7 +133,8 @@ const Cache = styled(Object3d)<{ reveal: boolean; disableAnimation: boolean }>`
   width: calc(100% - 2px);
   margin: 0 auto;
   height: ${lineHeight + 20}px;
-  background-color: #999;
+  background-color: ${boardColor};
+  filter: brightness(1.1);
   transform-origin: center bottom;
 
   ${(p) =>
@@ -181,8 +195,6 @@ const createHappy = (n: number) => {
       transform: scale3d(1, 1,1 );
     }`,
   ];
-
-  console.log(keys);
 
   return keyframes`${keys}`;
 };
