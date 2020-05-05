@@ -1,13 +1,17 @@
 import styled from "@emotion/styled";
 import { useFlyingZone } from "../FlyingPeg/FlyingPegManager";
 import { useEffect } from "react";
+import { bright } from "../theme";
+import { keyframes } from "@emotion/core";
 
 export const BoardDropZone = ({
   n,
   candidate,
+  displayCandidateGhost,
 }: {
   n: number;
   candidate: (number | null)[];
+  displayCandidateGhost: boolean;
 }) => {
   const { onPointerDown, onPointerEnter, onPointerLeave } = useFlyingZone();
 
@@ -78,7 +82,9 @@ export const BoardDropZone = ({
               left: `calc( ${mx}px +  ${(i * 100) / n}% )`,
               width: `calc( ${100 / n}% - ${mx * 2}px)`,
             }}
-          />
+          >
+            {displayCandidateGhost && <Ghost />}
+          </Zone>
         );
       })}
     </>
@@ -95,4 +101,27 @@ const Zone = styled.div`
   bottom: ${my}px;
   background-color: rgba(0, 0, 0, 0);
   pointer-events: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+const ghostWobble = keyframes`
+0%{transform:translateZ(2px)}
+35%{transform:translateZ(30px)}
+70%{transform:translateZ(2px)}
+80%{transform:translateZ(2px) scale(1.2,1.2)}
+100%{transform:translateZ(2px)}
+`;
+
+const Ghost = styled.div`
+  pointer-events: none;
+  transform: translateZ(2px);
+  transform-origin: center;
+  background-color: ${bright}66;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  animation: ${ghostWobble} 600ms linear infinite;
 `;

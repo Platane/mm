@@ -1,6 +1,7 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
-import { keyframes, css } from "@emotion/core";
+import css from "@emotion/css";
+import { keyframes } from "@emotion/core";
 import { Line } from "@mm/solver/type";
 import { usePulse } from "./_hooks/usePulse";
 import { Object3d } from "./Object3d";
@@ -8,6 +9,7 @@ import { Board } from "./Board/Board";
 import { PegPools } from "./PegPools";
 import { useAppState } from "../services/appState/useAppState";
 import { FlyingPegManager } from "./FlyingPeg/FlyingPegManager";
+import { GameInstruction } from "./GameInstruction";
 
 type Candidate = (number | null)[];
 type Mutation = {
@@ -72,7 +74,26 @@ export const Game = ({
     >
       <World resetAnimation={resetPulse} popAnimation={newLinePulse}>
         <Scene>
+          <GameInstruction_
+            step={
+              (win && "win") ||
+              (shuffle && "shuffle") ||
+              (temporaryMutations.length === 0 &&
+                candidate.every((c) => c === null) &&
+                game.rows.length == 0 &&
+                "firstPlay") ||
+              null
+            }
+          />
+
           <PegPools
+            hintAnimation={
+              !win &&
+              !shuffle &&
+              temporaryMutations.length === 0 &&
+              candidate.every((c) => c === null) &&
+              game.rows.length == 0
+            }
             colorScheme={colorScheme}
             p={p}
             disabled={temporaryMutations.length > 0}
@@ -89,6 +110,12 @@ export const Game = ({
             shuffle={shuffle}
             onSubmit={candidate.every((p) => p !== null) ? onSubmit : undefined}
             style={{ flex: "auto 1 1", marginRight: "30px" }}
+            displayCandidateGhost={
+              temporaryMutations.length > 0 &&
+              temporaryMutations.every((m) => !m.destination) &&
+              candidate.every((c) => c === null) &&
+              game.rows.length == 0
+            }
           />
         </Scene>
       </World>
@@ -103,7 +130,7 @@ const popAnimation = keyframes`
  `;
 const resetAnimation = keyframes`
   0%{ transform: rotateX(0deg) }
-  28%{ transform:  rotateX(60deg) translateZ(-600px) }
+  22%{ transform:  rotateX(60deg) translateZ(-600px) }
   60%{ transform:  rotateX(-10deg) translateZ(-160px) scale(1,1) }
   75%{ transform:  rotateX(-12deg) translateZ(-180px) scale(1.13,1.06) }
   100%{ transform: rotateX(0deg) }
@@ -117,7 +144,7 @@ const World = styled(Object3d)<{
   ${(p) => {
     if (p.resetAnimation)
       return css`
-        animation: ${resetAnimation} 330ms linear;
+        animation: ${resetAnimation} 430ms linear;
         transform-origin: center bottom;
       `;
     if (p.popAnimation)
@@ -134,4 +161,10 @@ const Scene = styled(Object3d)`
   justify-content: center;
   align-items: center;
   touch-action: none;
+`;
+
+const GameInstruction_ = styled(GameInstruction)`
+  padding-left: 44px;
+  position: absolute;
+  top: -70px;
 `;

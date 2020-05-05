@@ -11,6 +11,7 @@ import { InputNumber } from "./InputNumber";
 import { useAppState } from "../services/appState/useAppState";
 import { colorSchemes, colorSchemeEquals } from "../services/colorScheme";
 import { MAX_P, MAX_N } from "../services/config";
+import { Button } from "./Button";
 
 const generateGame = (p: number, n: number) => {
   const candidate = Array.from({ length: n }, () => null);
@@ -125,9 +126,7 @@ export const ConfigPage = ({
 
         {(step < 3 || onboarding) && (
           <Button type="submit">
-            <label style={{ pointerEvents: "none" }}>
-              {step === 3 ? t("configPage.start_game") : t("configPage.next")}
-            </label>
+            {step === 3 ? t("configPage.start_game") : t("configPage.next")}
           </Button>
         )}
       </ConfigContainer>
@@ -188,9 +187,4 @@ const BoardContainer = styled(Object3d)`
 const ConfigContainer = styled.form`
   margin: 0 auto;
   max-width: 520px;
-`;
-const Button = styled.button`
-  border: none;
-  background: orange;
-  padding: 10px;
 `;

@@ -98,7 +98,7 @@ const Container = styled(Object3d)`
 `;
 const Ground = styled.div`
   background-color: ${boardColor};
-  filter: brightness(0.95);
+  filter: brightness(0.97);
   position: absolute;
   top: 0;
   left: 0;
@@ -134,7 +134,7 @@ const Cache = styled(Object3d)<{ reveal: boolean; disableAnimation: boolean }>`
   margin: 0 auto;
   height: ${lineHeight + 20}px;
   background-color: ${boardColor};
-  filter: brightness(1.1);
+  filter: brightness(1.05);
   transform-origin: center bottom;
 
   ${(p) =>

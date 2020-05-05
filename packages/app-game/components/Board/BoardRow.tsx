@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { Peg } from "../Peg";
 import { Object3d } from "../Object3d";
 import { FeedbackBox } from "./FeedbackBox";
-import { boardColorAlternative } from "../theme";
+import { boardColor } from "../theme";
 import type { Feedback } from "@mm/solver/type";
 import type { ColorScheme } from "../../services/colorScheme";
 
@@ -84,12 +84,16 @@ const Container = styled(Object3d)`
   display: flex;
   position;relative;
   flex-direction: row;
-
-  &:nth-of-type(2n) {
-    background-color: transparent;
-  }
-  &:nth-of-type(2n + 1) {
-    background-color: ${boardColorAlternative};
+  
+  &:nth-of-type(2n + 1):before {  
+    content:'';
+    position: absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    background-color: ${boardColor};
+    filter: brightness(0.97);
   }
 `;
 

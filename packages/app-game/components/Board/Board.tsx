@@ -7,6 +7,8 @@ import { BoardDropZone } from "./BoardDropZone";
 import { BoardSolution } from "./BoardSolution";
 import type { Row as IRow, Line } from "@mm/solver/type";
 import type { ColorScheme } from "../../services/colorScheme";
+import { titleFont } from "../typography";
+import { useTranslate } from "../_hooks/useTranslate";
 
 export const Board = ({
   p,
@@ -19,6 +21,7 @@ export const Board = ({
   colorScheme,
   disableSolution = false,
   disableAnimation = false,
+  displayCandidateGhost = false,
   onSubmit,
   ...props
 }: {
@@ -31,21 +34,27 @@ export const Board = ({
   solution: Line | null;
   disableAnimation?: boolean;
   disableSolution?: boolean;
+  displayCandidateGhost?: boolean;
   shuffle?: boolean;
   onSubmit?: () => void;
   style?: any;
 }) => {
+  const { t } = useTranslate();
+
   const dropZone = (
     <>
-      <BoardDropZone n={n} candidate={candidate} />
-      {onSubmit && <Submit onClick={onSubmit}>submit</Submit>}
+      <BoardDropZone
+        n={n}
+        candidate={candidate}
+        displayCandidateGhost={displayCandidateGhost}
+      />
+      {onSubmit && <Submit onClick={onSubmit}>{t("submit")}</Submit>}
     </>
   );
 
   return (
     <Container {...props}>
       <SideLeft />
-      {false && <SideRight />}
       <SideBottom />
 
       {rows.map((row, i) => (
@@ -116,20 +125,7 @@ const SideLeft = styled(Object3d)`
   transform-origin: 0 0;
 
   background-color: ${boardColor};
-  filter: brightness(1.1);
-`;
-const SideRight = styled(Object3d)`
-  position: absolute;
-  right: 1px;
-  top: 0;
-  bottom: 0;
-
-  width: ${sideH}px;
-  transform: rotateY(-90deg);
-  transform-origin: 100% 0;
-
-  background-color: ${boardColor};
-  filter: brightness(1.1);
+  filter: brightness(1.035);
 `;
 const SideBottom = styled(Object3d)`
   position: absolute;
@@ -142,31 +138,37 @@ const SideBottom = styled(Object3d)`
   transform-origin: 0 100%;
 
   background-color: ${boardColor};
-  filter: brightness(1.15);
+  filter: brightness(1.05);
 `;
 
 const submitAppear = keyframes`
   0%{ 
-    transform: translate3d(-120px, 0, 2px) rotateX(-26deg) scale(0.9);
+    transform: translate3d(-120px, 0, 32px) rotateX(-26deg) scale(0.8);
     opacity: 0;
   }
   100%{ 
-    transform: translate3d(0, 0, 2px) rotateX(-26deg);
+    transform: translate3d(0, 0, 32px) rotateX(-26deg) scale(0.8);
     opacity: 1;
   }
 `;
 
 const Submit = styled.button`
   position: absolute;
-  right: -70px;
-  width: 70px;
+  right: -110px;
+  width: 120px;
   top: 0;
-  bottom: 0;
+  bottom: 0px;
   border: none;
-  background: orange;
-  padding: 10px;
-  transform: translate3d(0, 0, 2px) rotateX(-26deg);
-  transform-origin: 0 100%;
+  background: transparent;
+  transform: translate3d(0, 0, 32px) rotateX(-26deg) scale(0.8);
+  transform-origin: center;
   animation: ${submitAppear} 180ms cubic-bezier(0.52, 0.58, 0.72, 1.53);
   pointer-events: auto;
+
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  ${titleFont}
 `;

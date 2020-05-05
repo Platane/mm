@@ -2,7 +2,9 @@ import styled from "@emotion/styled";
 import { useTranslate } from "./_hooks/useTranslate";
 import { InputNumber } from "@mm/app-game/components/InputNumber";
 import { FeedbackBox } from "@mm/app-game/components/Board/FeedbackBox";
+import { Button } from "./Button";
 import type { Feedback } from "@mm/solver/type";
+import { Separator } from "@mm/app-game/components/Separator";
 
 type Props = {
   n: number;
@@ -57,9 +59,9 @@ export const GameReport = ({ n, feedback, setFeedback, onSubmit }: Props) => {
         />
       </Row>
 
-      <Button type="submit">
-        <label style={{ pointerEvents: "none" }}>{t("ok")}</label>
-      </Button>
+      <Separator />
+
+      <Button type="submit">{t("ok")}</Button>
     </FormContainer>
   );
 };
@@ -78,11 +80,4 @@ const Row = styled.div`
   margin: 10px 0;
   justify-content: space-between;
   align-items: center;
-`;
-
-const Button = styled.button`
-  border: none;
-  background: orange;
-  padding: 10px;
-  border-radius: 4px;
 `;

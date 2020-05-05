@@ -1,9 +1,11 @@
 import styled from "@emotion/styled";
 import { Peg } from "@mm/app-game/components/Peg";
-import { useTranslate } from "./_hooks/useTranslate";
 import { Object3d } from "@mm/app-game/components/Object3d";
+import { useTranslate } from "./_hooks/useTranslate";
+import { Button } from "./Button";
 import type { ColorScheme } from "@mm/app-game/services/colorScheme";
 import type { Line as ILine } from "@mm/solver/type";
+import { Separator } from "@mm/app-game/components/Separator";
 
 type Props = {
   p: number;
@@ -37,9 +39,10 @@ export const GameSolution = ({
           <Peg key={i} color={colorScheme[peg]} size={28} />
         ))}
       </Line>
-      <Button type="submit">
-        <label style={{ pointerEvents: "none" }}>{t("ok")}</label>
-      </Button>
+
+      <Separator />
+
+      <Button type="submit">{t("ok")}</Button>
     </FormContainer>
   );
 };
@@ -54,10 +57,4 @@ const Line = styled(Object3d)`
   justify-content: space-between;
   align-items: center;
   margin: 32px 0 10px 0;
-`;
-const Button = styled.button`
-  border: none;
-  background: orange;
-  padding: 10px;
-  border-radius: 4px;
 `;

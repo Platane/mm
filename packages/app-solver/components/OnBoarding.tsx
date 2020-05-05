@@ -6,6 +6,7 @@ import { ColorSchemeRadio } from "@mm/app-game/components/ColorSchemeRadio";
 import { Container, Content } from "./Layout";
 import { colorSchemeEquals } from "@mm/app-game/services/colorScheme";
 import { MAX_P, MAX_N } from "@mm/app-game/services/config";
+import { Button } from "./Button";
 import type { ColorScheme } from "@mm/app-game/services/colorScheme";
 
 export const OnBoarding = ({
@@ -46,9 +47,10 @@ export const OnBoarding = ({
               value={n}
               onChange={(n: number) => setGameConfig(p, +n)}
             />
-            <Button type="submit">
-              <label style={{ pointerEvents: "none" }}>{t("ok")}</label>
-            </Button>
+
+            <Separator />
+
+            <Button type="submit">{t("ok")}</Button>
           </Content>
         </form>
       )}
@@ -69,6 +71,9 @@ export const OnBoarding = ({
               value={p}
               onChange={(p: number) => setGameConfig(+p, n)}
             />
+
+            <Separator />
+
             <label>{t("chose_color_scheme")}</label>
             <ColorSchemes>
               {colorSchemes
@@ -85,9 +90,9 @@ export const OnBoarding = ({
                 ))}
             </ColorSchemes>
 
-            <Button type="submit">
-              <label style={{ pointerEvents: "none" }}>{t("ok")}</label>
-            </Button>
+            <Separator />
+
+            <Button type="submit">{t("ok")}</Button>
           </Content>
         </form>
       )}
@@ -99,9 +104,8 @@ const ColorSchemes = styled.div`
   min-height: 200px;
 `;
 
-const Button = styled.button`
-  border: none;
-  background: orange;
-  padding: 10px;
-  border-radius: 4px;
+const Separator = styled.div`
+  display: block;
+  width: 32px;
+  height: 32px;
 `;

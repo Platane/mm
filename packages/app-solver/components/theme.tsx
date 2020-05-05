@@ -1,12 +1,10 @@
 import css from "@emotion/css";
 
-export const boardColor = "#dad2bc";
+export const bright = "#ff9f1c";
+export const brightShade = "#f3722c";
+export const brightLight = "#fff1e6";
 
-export const bright = "#2ec4b6";
-export const brightShade = "#2aa89c";
-export const brightLight = "#fdfffc";
-
-export const background = "#eee4e1";
+export const background = "#ffb4a2";
 export const backgroundShade = "#e6beae";
 
 export const theme_color = bright;

@@ -1,19 +1,23 @@
 import styled from "@emotion/styled";
-import { css } from "@emotion/core";
+import css from "@emotion/css";
+import { keyframes } from "@emotion/core";
 import { Object3d } from "./Object3d";
 import { Peg } from "./Peg";
-import type { ColorScheme } from "../services/colorScheme";
 import { useFlyingZone } from "./FlyingPeg/FlyingPegManager";
+import { bright, boardColor } from "./theme";
+import type { ColorScheme } from "../services/colorScheme";
 
 export const PegPools = ({
   p,
   disabled,
   colorScheme,
+  hintAnimation = false,
   ...props
 }: {
   style?: any;
   p: number;
   colorScheme: ColorScheme;
+  hintAnimation?: boolean;
   disabled: boolean;
 }) => {
   const { onPointerDown } = useFlyingZone();
@@ -21,7 +25,11 @@ export const PegPools = ({
   return (
     <Container {...props} disabled={disabled}>
       {Array.from({ length: p }, (_, i) => (
-        <Pool key={i} onPointerDown={onPointerDown({ peg: i })}>
+        <Pool
+          key={i}
+          hintAnimation={i === p - 1 && hintAnimation}
+          onPointerDown={onPointerDown({ peg: i })}
+        >
           {Array.from({ length: 3 }, (_, j) => (
             <Peg
               key={j}
@@ -55,10 +63,30 @@ const Container = styled(Object3d)<{ disabled: boolean }>`
       : ""}
 `;
 
-const Pool = styled(Object3d)`
+const animateHint = keyframes`
+0%{
+  transform: scale(1,1);
+  background-color: ${boardColor}66;
+}
+84%{
+  transform: scale(1,1);
+  background-color: ${boardColor}66;
+}
+90%{
+  transform: translateZ(16px) scale(1.15,1.15);
+  background-color: ${bright}66;
+}
+100%{
+  transform: scale(1,1);
+  background-color: ${boardColor}66;
+}
+
+`;
+
+const Pool = styled(Object3d)<{ hintAnimation: boolean }>`
   width: 72px;
   height: 60px;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: ${boardColor}66;
   border-radius: 4px;
   margin: 2px;
 
@@ -72,4 +100,11 @@ const Pool = styled(Object3d)`
   & > * {
     pointer-events: none;
   }
+
+  ${(p) =>
+    p.hintAnimation
+      ? css`
+          animation: ${animateHint} 1200ms linear infinite 1200ms;
+        `
+      : ""}
 `;

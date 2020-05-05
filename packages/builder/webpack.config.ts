@@ -17,8 +17,9 @@ import RobotstxtPlugin from "robotstxt-webpack-plugin";
 import FaviconsWebpackPlugin from "favicons-webpack-plugin";
 
 import * as pkgGame from "../app-game/package.json";
-import * as pkgSolver from "../app-solver/package.json";
 import * as themeGame from "../app-game/components/theme";
+import * as pkgSolver from "../app-solver/package.json";
+import * as themeSolver from "../app-solver/components/theme";
 
 const mode =
   ("production" === process.env.NODE_ENV && "production") || "development";
@@ -116,9 +117,8 @@ const config: webpack.Configuration = {
       inlineStyle: `html{
         touch-action: none;
         user-select: none;
-        height:100%;
+        min-height:100%;
         ${themeGame.backgroundStyle.styles}
-      
       }`,
     }),
     new FaviconsWebpackPlugin({
@@ -184,9 +184,8 @@ const config: webpack.Configuration = {
       inlineStyle: `html{
         touch-action: none;
         user-select: none;
-        height:100%;
-        background-image: radial-gradient(ellipse at center, rgba(69, 36, 99, 0) 0, rgba(69, 36, 99, 0.5) 130%);
-        background-color: #aa4bf2;
+        min-height:100%;
+        ${themeSolver.backgroundStyle.styles}
       }`,
     }),
     new SetManifestIconsPurpose({
@@ -204,8 +203,8 @@ const config: webpack.Configuration = {
         developerName: appSolver.developer.name,
         developerURL: appSolver.developer.url,
         version: appSolver.version,
-        background: "#aa4bf2",
-        theme_color: "#aa4bf2",
+        background: themeSolver.background,
+        theme_color: themeSolver.theme_color,
         display: "standalone",
         orientation: "portrait",
         start_url: "/" + [...basePathname, "solver"].join("/") + "/",

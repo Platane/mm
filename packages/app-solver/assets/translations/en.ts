@@ -8,5 +8,5 @@ export default {
   bad_position: "Bad position",
   error_no_suitable_solution: "Error! no suitable solution",
   computing: "Computing",
-  ok: "ok",
+  ok: "Ok",
 } as const;
