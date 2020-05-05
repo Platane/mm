@@ -166,5 +166,5 @@ const Scene = styled(Object3d)`
 const GameInstruction_ = styled(GameInstruction)`
   padding-left: 44px;
   position: absolute;
-  top: -70px;
+  top: -74px;
 `;
