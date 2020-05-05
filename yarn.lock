@@ -2249,6 +2249,11 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
+"@wessberg/pointer-events@1.0.9":
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/@wessberg/pointer-events/-/pointer-events-1.0.9.tgz#9591f2326e3592cdfa52d630217b97ecf7c5d817"
+  integrity sha512-fTOBNzakyi3wBXMmQ1mpAibU3lCbXVWSwgM9nsjtlfbJ5MH1yvteCZgZF+TDQWNtTPg8JWuQUjBF7+8cKoj92A==
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz#eef014a3145ae477a1cbc00cd1e552336dceb790"

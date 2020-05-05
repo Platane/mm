@@ -264,12 +264,8 @@ const config: webpack.Configuration = {
       maxSize: 0,
       maxAsyncRequests: 6,
       maxInitialRequests: 4,
-
-      // @ts-ignore
-      filename: "[contenthash].js",
-
       cacheGroups: {
-        defaultVendors: {
+        vendors: {
           test: /[\\/]node_modules[\\/]/,
           priority: -10,
         },

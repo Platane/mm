@@ -2,6 +2,7 @@ import { useState, createContext, useMemo, useContext, useEffect } from "react";
 import { FlyingPeg } from "./FlyingPeg";
 import { generateId } from "@mm/utils/generateId";
 import { ColorScheme } from "../../services/colorScheme";
+import { usePointerEventPolyfill } from "./polyfill";
 
 export type Point = { x: number; y: number };
 export type Tracker = {
@@ -76,6 +77,8 @@ export const FlyingPegManager = ({
         { id, pointerId, origin, initialPosition, initialPointer },
       ]);
     };
+
+    usePointerEventPolyfill();
 
     if (trackers.length === 0)
       return {
