@@ -1,14 +1,14 @@
+import { useState, useEffect } from "react";
 import styled from "@emotion/styled";
 import { keyframes, css } from "@emotion/core";
-import { Line } from "@mm/solver/type";
-import { Object3d } from "./Object3d";
+import { Object3d } from "../Object3d";
 import { lineHeight, bigPegSize } from "./BoardRow";
-import { Peg } from "./Peg";
-import type { ColorScheme } from "../services/colorScheme";
+import { Peg } from "../Peg";
 import { getRandomLine } from "@mm/solver/getRandomtLine";
-import { useState, useEffect } from "react";
-import { usePulse } from "./_hooks/usePulse";
-import { boardColorAlternative, boardColor } from "./theme";
+import { usePulse } from "../_hooks/usePulse";
+import { boardColor } from "../theme";
+import type { ColorScheme } from "../../services/colorScheme";
+import type { Line } from "@mm/solver/type";
 
 export const BoardSolution = ({
   n,

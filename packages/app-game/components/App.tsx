@@ -66,14 +66,6 @@ const Content = ({ page, ...props }: any) => {
   }
 };
 
-const ContentContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: stretch;
-  height: 100%;
-`;
-
 const Footer = styled.footer`
   position: fixed;
   bottom: 0;

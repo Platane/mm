@@ -4,7 +4,7 @@ import { keyframes, css } from "@emotion/core";
 import { Line } from "@mm/solver/type";
 import { usePulse } from "./_hooks/usePulse";
 import { Object3d } from "./Object3d";
-import { Board } from "./Board";
+import { Board } from "./Board/Board";
 import { PegPools } from "./PegPools";
 import { useAppState } from "../services/appState/useAppState";
 import { FlyingPegManager } from "./FlyingPeg/FlyingPegManager";

@@ -1,8 +1,8 @@
 import styled from "@emotion/styled";
 import { css, keyframes } from "@emotion/core";
 import { Feedback } from "@mm/solver/type";
-import { PegFeedback } from "./Peg";
-import { Object3d } from "./Object3d";
+import { PegFeedback } from "../Peg";
+import { Object3d } from "../Object3d";
 
 const lineHeight = 60;
 

@@ -1,10 +1,10 @@
 import styled from "@emotion/styled";
-import { Feedback } from "@mm/solver/type";
-import { Peg } from "./Peg";
-import { Object3d } from "./Object3d";
+import { Peg } from "../Peg";
+import { Object3d } from "../Object3d";
 import { FeedbackBox } from "./FeedbackBox";
-import type { ColorScheme } from "../services/colorScheme";
-import { boardColorAlternative } from "./theme";
+import { boardColorAlternative } from "../theme";
+import type { Feedback } from "@mm/solver/type";
+import type { ColorScheme } from "../../services/colorScheme";
 
 export const lineHeight = 60;
 export const bigPegSize = 28;

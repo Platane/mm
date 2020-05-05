@@ -1,6 +1,6 @@
 // / <reference path='../builder/assets.d.ts'/>
 
-import { StrictMode } from "react";
+import { StrictMode, Suspense } from "react";
 import { render } from "react-dom";
 import { App } from "./components/App";
 import { NormalizeCss } from "./components/NormalizeCss";
@@ -14,7 +14,9 @@ render(
   <StrictMode>
     <TypographyCss />
     <NormalizeCss />
-    <App />
+    <Suspense fallback={null}>
+      <App />
+    </Suspense>
   </StrictMode>,
   root
 );

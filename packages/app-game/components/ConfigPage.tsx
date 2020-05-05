@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/core";
-import { Board } from "./Board";
+import { Board } from "./Board/Board";
 import { getRandomLine } from "@mm/solver/getRandomtLine";
 import { useTranslate } from "./_hooks/useTranslate";
 import { ColorSchemeRadio } from "./ColorSchemeRadio";

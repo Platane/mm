@@ -9,6 +9,4 @@ export const GithubLogo = (props: any) => (
   </Container>
 );
 
-const Container = styled.svg`
-  fill: #fff;
-`;
+const Container = styled.svg``;

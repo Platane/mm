@@ -1,8 +1,7 @@
 import styled from "@emotion/styled";
 import { useTranslate } from "./_hooks/useTranslate";
 import { InputNumber } from "@mm/app-game/components/InputNumber";
-import { FeedbackBox } from "@mm/app-game/components/FeedbackBox";
-
+import { FeedbackBox } from "@mm/app-game/components/Board/FeedbackBox";
 import type { Feedback } from "@mm/solver/type";
 
 type Props = {

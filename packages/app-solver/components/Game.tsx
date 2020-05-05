@@ -1,15 +1,15 @@
 import { useState } from "react";
 import styled from "@emotion/styled";
 import { Content, Container } from "./Layout";
-import { Board } from "@mm/app-game/components/Board";
+import { Board } from "@mm/app-game/components/Board/Board";
 import { useAppState } from "../services/appState/useAppState";
 import { Delayed } from "@mm/app-game/components/Delayed";
 import { GameSolution } from "./GameSolution";
 import { GameReport } from "./GameReport";
 import { useTranslate } from "./_hooks/useTranslate";
 import { useSolver } from "./_hooks/useSolver";
-import type { Feedback } from "@mm/solver/type";
 import { keyframes } from "@emotion/core";
+import type { Feedback } from "@mm/solver/type";
 
 export const Game = ({
   p,

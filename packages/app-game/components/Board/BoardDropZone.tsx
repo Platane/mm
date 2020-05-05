@@ -1,5 +1,5 @@
 import styled from "@emotion/styled";
-import { useFlyingZone } from "./FlyingPeg/FlyingPegManager";
+import { useFlyingZone } from "../FlyingPeg/FlyingPegManager";
 import { useEffect } from "react";
 
 export const BoardDropZone = ({

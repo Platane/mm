@@ -1,12 +1,12 @@
 import styled from "@emotion/styled";
 import { keyframes } from "@emotion/core";
-import { Row as IRow, Line } from "@mm/solver/type";
-import { Object3d } from "./Object3d";
+import { Object3d } from "../Object3d";
 import { BoardRow } from "./BoardRow";
-import { boardColor } from "./theme";
-import type { ColorScheme } from "../services/colorScheme";
+import { boardColor } from "../theme";
 import { BoardDropZone } from "./BoardDropZone";
 import { BoardSolution } from "./BoardSolution";
+import type { Row as IRow, Line } from "@mm/solver/type";
+import type { ColorScheme } from "../../services/colorScheme";
 
 export const Board = ({
   p,
