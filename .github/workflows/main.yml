@@ -28,7 +28,8 @@ jobs:
         run: |
           echo "$SHA-mm.surge.sh"
           echo "::set-output name=deploy_origin::$SHA-mm.surge.sh"
-          echo "::set-output name=deploy_url::https://$SHA-mm.surge.sh/game"
+          echo "::set-output name=deploy_url::https://$SHA-mm.surge.sh"
+          echo "::set-output name=game_deploy_url::https://$SHA-mm.surge.sh/game"
         env:
           SHA: ${{ github.sha }}
 
@@ -36,7 +37,7 @@ jobs:
         id: deployment
         with:
           token: ${{ github.token }}
-          target_url: ${{ steps.url.outputs.deploy_url }}
+          target_url: ${{ steps.url.outputs.game_deploy_url }}
           environment: preview
           ref: ${{ github.sha }}
 
@@ -47,7 +48,9 @@ jobs:
 
       - uses: bahmutov/npm-install@v1
 
-      - run: BASE_PATHNAME="" yarn build
+      - run: yarn build
+        env:
+          PUBLIC_URL: ${{ steps.url.outputs.deploy_url }}
 
       - run: yarn surge ./dist $DEPLOY_ORIGIN
         env:
@@ -58,7 +61,7 @@ jobs:
       - uses: chrnorm/deployment-status@releases/v1
         with:
           token: ${{ github.token }}
-          target_url: ${{ steps.url.outputs.deploy_url }}
+          target_url: ${{ steps.url.outputs.game_deploy_url }}
           state: "success"
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
 
@@ -67,4 +70,4 @@ jobs:
           token: ${{ github.token }}
           sha: ${{ github.sha }}
           body: |
-            preview url [${{ steps.url.outputs.deploy_origin }}](${{ steps.url.outputs.deploy_url }})
+            preview url [${{ steps.url.outputs.deploy_origin }}/game](${{ steps.url.outputs.game_deploy_url }})

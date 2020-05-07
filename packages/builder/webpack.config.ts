@@ -1,3 +1,4 @@
+import * as url from "url";
 import * as path from "path";
 import * as webpack from "webpack";
 import SetManifestIconsPurpose from "./SetManifestIconsPurpose";
@@ -15,6 +16,8 @@ import TerserPlugin from "terser-webpack-plugin";
 import RobotstxtPlugin from "robotstxt-webpack-plugin";
 // @ts-ignore
 import FaviconsWebpackPlugin from "favicons-webpack-plugin";
+// @ts-ignore
+import CopyPlugin from "copy-webpack-plugin";
 
 import * as pkgGame from "../app-game/package.json";
 import * as themeGame from "../app-game/components/theme";
@@ -24,7 +27,13 @@ import * as themeSolver from "../app-solver/components/theme";
 const mode =
   ("production" === process.env.NODE_ENV && "production") || "development";
 
-const basePathname = (process.env.BASE_PATHNAME || "")
+const publicUrl = process.env.PUBLIC_URL || "";
+
+const basePathname = (
+  process.env.BASE_PATHNAME ||
+  url.parse(publicUrl).pathname ||
+  ""
+)
   .split("/")
   .filter(Boolean);
 
@@ -36,15 +45,21 @@ const extractApp = (pkg: any) => ({
   version: pkg.version,
 });
 
-const appGame = extractApp(pkgGame);
+const appGame = {
+  ...extractApp(pkgGame),
+  screenshot_1800x600:
+    "/" + [...basePathname, "game", "screenshot_1800x600.png"].join("/"),
+};
 const appSolver = extractApp(pkgSolver);
+
+const outputPath = path.join(__dirname, "../../dist");
 
 const config: webpack.Configuration = {
   mode,
   entry: { game: "../app-game/index", solver: "../app-solver/index" },
   resolve: { extensions: [".tsx", ".ts", ".js"] },
   output: {
-    path: path.join(__dirname, "../../dist"),
+    path: outputPath,
     filename: "[name]/[contenthash].js",
     chunkFilename: "[name].[contenthash].js",
     publicPath: "/" + basePathname.map((x) => x + "/").join(""),
@@ -91,12 +106,12 @@ const config: webpack.Configuration = {
         "og:type": "website",
         "og:title": appGame.name,
         "og:description": appGame.description,
-        "og:image": "",
+        "og:image": appGame.screenshot_1800x600,
         "twitter:card": "summary_large_image",
         "twitter:title": appGame.name,
         "twitter:description": appGame.description,
-        "twitter:image": "",
         "twitter:creator": appGame.developer.twitter,
+        "twitter:image": appGame.screenshot_1800x600,
         viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
       },
       minify: mode === "production" && {
@@ -123,8 +138,9 @@ const config: webpack.Configuration = {
     }),
     new FaviconsWebpackPlugin({
       // @ts-ignore
-      logo: path.resolve(__dirname, "../app-game/assets/images/icon192.png"),
-      prefix: "/" + [...basePathname, "game"].join("/"),
+      logo: path.resolve(__dirname, "../app-game/assets/images/icon.png"),
+      publicPath: "/" + [...basePathname, "game"].join("/"),
+      prefix: "game/",
       inject: (htmlPlugin: any) => htmlPlugin.options.filename.includes("game"),
       favicons: {
         appName: appGame.name,
@@ -150,6 +166,15 @@ const config: webpack.Configuration = {
         },
       },
     }),
+    new CopyPlugin([
+      {
+        from: path.resolve(
+          __dirname,
+          "../app-game/assets/images/screenshot_1800x600.png"
+        ),
+        to: "game/",
+      },
+    ]),
 
     // solver
     new HtmlWebpackPlugin({
@@ -194,7 +219,8 @@ const config: webpack.Configuration = {
     }),
     new FaviconsWebpackPlugin({
       logo: path.resolve(__dirname, "../app-solver/assets/images/icon192.png"),
-      prefix: "/" + [...basePathname, "solver"].join("/"),
+      publicPath: "/" + [...basePathname, "solver"].join("/"),
+      prefix: "solver/",
       inject: (htmlPlugin: any) =>
         htmlPlugin.options.filename.includes("solver"),
       favicons: {

@@ -1,7 +1,7 @@
 {
   "name": "@mm/app-game",
   "version": "2.0.0",
-  "description": "__game__ The Master Mind game",
+  "description": "__Master Mind™ Game__ Play the classic Master Mind game.",
   "author": {
     "name": "platane",
     "url": "https://platane.github.io",
