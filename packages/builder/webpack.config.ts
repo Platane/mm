@@ -139,7 +139,7 @@ const config: webpack.Configuration = {
     new FaviconsWebpackPlugin({
       // @ts-ignore
       logo: path.resolve(__dirname, "../app-game/assets/images/icon.png"),
-      publicPath: "/" + [...basePathname, "game"].join("/"),
+      publicPath: "/" + basePathname.join("/"),
       prefix: "game/",
       inject: (htmlPlugin: any) => htmlPlugin.options.filename.includes("game"),
       favicons: {
@@ -219,7 +219,7 @@ const config: webpack.Configuration = {
     }),
     new FaviconsWebpackPlugin({
       logo: path.resolve(__dirname, "../app-solver/assets/images/icon192.png"),
-      publicPath: "/" + [...basePathname, "solver"].join("/"),
+      publicPath: "/" + basePathname.join("/"),
       prefix: "solver/",
       inject: (htmlPlugin: any) =>
         htmlPlugin.options.filename.includes("solver"),
@@ -270,7 +270,7 @@ const config: webpack.Configuration = {
       policy: [
         {
           userAgent: "*",
-          disallow: "/",
+          allow: "/",
           crawlDelay: 10,
         },
       ],

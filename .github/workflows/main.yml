@@ -70,4 +70,4 @@ jobs:
           token: ${{ github.token }}
           sha: ${{ github.sha }}
           body: |
-            preview url [${{ steps.url.outputs.deploy_origin }}/game](${{ steps.url.outputs.game_deploy_url }})
+            preview url [${{ steps.url.outputs.game_deploy_url }}](${{ steps.url.outputs.game_deploy_url }})
