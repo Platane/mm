@@ -9,4 +9,5 @@ export default {
   error_no_suitable_solution: "Error! no suitable solution",
   computing: "Computing",
   ok: "Ok",
+  connected_to_game_in_other_window: "Connected to Game in other window",
 } as const;

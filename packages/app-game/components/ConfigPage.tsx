@@ -12,6 +12,7 @@ import { useAppState } from "../services/appState/useAppState";
 import { colorSchemes, colorSchemeEquals } from "../services/colorScheme";
 import { MAX_P, MAX_N } from "../services/config";
 import { Button } from "./Button";
+import { Separator } from "./Separator";
 
 const generateGame = (p: number, n: number) => {
   const candidate = Array.from({ length: n }, () => null);
@@ -107,6 +108,9 @@ export const ConfigPage = ({
         {step > 2 && (
           <Section style={{ flexDirection: "column" }}>
             <Label>{t("configPage.chose_color_scheme")}</Label>
+
+            <Separator />
+
             <ColorSchemes>
               {colorSchemes
                 .filter((cs) => cs.length === p)
@@ -160,6 +164,7 @@ const ColorSchemes = styled.div`
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  margin: -10px;
 `;
 
 const Label = styled.label`

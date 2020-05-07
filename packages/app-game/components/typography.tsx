@@ -16,7 +16,7 @@ export const createLongShadow = (colors: string[], m = 1, px = 1, py = 1) =>
   `text-shadow:${colors
     .map((c) => Array.from({ length: m }, () => c))
     .flat()
-    .map((c, i) => `${i}px ${i}px 0 ${c}`)
+    .map((c, i) => `${i * px}px ${i * py}px 0 ${c}`)
     .join(",")};`;
 
 export const createHallo = (colors: string[], m = 1, k = 5) =>

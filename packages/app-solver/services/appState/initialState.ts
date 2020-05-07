@@ -12,6 +12,7 @@ export const getInitialState = (): State => {
   const c = storage.read(storageKey);
 
   const state0 = {
+    availableSessions: [],
     sessionId: null,
     n: 0,
     p: 0,

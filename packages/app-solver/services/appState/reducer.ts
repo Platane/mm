@@ -13,6 +13,7 @@ export type Game = {
   rows: Row[];
 };
 export type State = {
+  availableSessions: Session[];
   sessionId: string | null;
   p: number;
   n: number;
@@ -30,6 +31,7 @@ export type Action =
   | { type: "game:report"; line: Line; feedback: Feedback }
   | { type: "session:updated"; session: Session }
   | { type: "session:list"; sessions: Session[] }
+  | { type: "session:bind"; sessionId: string }
   | { type: "page:set"; page: Page };
 
 const reduce_ = (state: State, action: Action): State => {
@@ -52,12 +54,25 @@ const reduce_ = (state: State, action: Action): State => {
         state.game.rows.push({ line: action.line, feedback: action.feedback });
       });
 
-    case "session:list": {
-      const [session] = action.sessions.sort((a, b) => b.date - a.date);
+    case "session:list":
+      return {
+        ...state,
+        availableSessions: action.sessions
+          .slice()
+          .sort((a, b) => b.date - a.date),
+      };
 
+    case "session:bind": {
+      const session = state.availableSessions.find(
+        (s) => s.id === action.sessionId
+      );
       if (!session) return state;
-
-      return { ...session, sessionId: session.id, page: "game-instruction" };
+      return {
+        ...state,
+        ...session,
+        sessionId: action.sessionId,
+        page: "game-instruction",
+      };
     }
 
     case "session:updated":

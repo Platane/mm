@@ -40,6 +40,9 @@ export const OnBoarding = ({
         >
           <Content>
             <label>{t("how_many_slots")}</label>
+
+            <Separator />
+
             <InputNumber
               autoFocus
               min={1}
@@ -64,6 +67,9 @@ export const OnBoarding = ({
         >
           <Content>
             <label>{t("how_many_colors")}</label>
+
+            <Separator />
+
             <InputNumber
               autoFocus
               min={2}
@@ -75,6 +81,9 @@ export const OnBoarding = ({
             <Separator />
 
             <label>{t("chose_color_scheme")}</label>
+
+            <Separator />
+
             <ColorSchemes>
               {colorSchemes
                 .filter((cs) => cs.length === p)
@@ -102,6 +111,7 @@ export const OnBoarding = ({
 
 const ColorSchemes = styled.div`
   min-height: 200px;
+  margin: -10px;
 `;
 
 const Separator = styled.div`

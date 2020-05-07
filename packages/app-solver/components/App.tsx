@@ -3,6 +3,7 @@ import { colorSchemes } from "@mm/app-game/services/colorScheme";
 import { useAppState } from "../services/appState/useAppState";
 import { OnBoarding } from "./OnBoarding";
 import { Delayed } from "@mm/app-game/components/Delayed";
+import { Banner } from "./Banner";
 
 export const App = () => {
   const { setPage, ...ctx } = useAppState();
@@ -18,5 +19,10 @@ export const App = () => {
       </Delayed>
     );
 
-  return <Game key={ctx.game.id} {...ctx} />;
+  return (
+    <>
+      {ctx.sessionId && <Banner />}
+      <Game key={ctx.game.id} {...ctx} />
+    </>
+  );
 };

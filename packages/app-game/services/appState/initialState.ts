@@ -13,7 +13,7 @@ export const getInitialState = (): State => {
     p: 0,
     colorScheme: [],
     game: { id: "", rows: [], solution: [] },
-    page: "onboarding",
+    page: "game",
   } as State;
 
   let state = reduce(state0, { type: "game:config:set", p: 6, n: 4 } as any);

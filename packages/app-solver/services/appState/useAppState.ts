@@ -30,6 +30,10 @@ export const useAppState = () => {
         internalDispatch({ type: "page:set", page });
       },
 
+      bindSession: (sessionId: string) => {
+        internalDispatch({ type: "session:bind", sessionId });
+      },
+
       play: (line: Line) => {
         globalDispatch({ type: "game:play", line });
       },
