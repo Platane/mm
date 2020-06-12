@@ -3,6 +3,7 @@ import * as path from "path";
 import * as webpack from "webpack";
 import SetManifestIconsPurpose from "./SetManifestIconsPurpose";
 import HtmlWebpackPluginInlineStyle from "./HtmlWebpackPluginInlineStyle";
+import HtmlWebpackPluginPreload from "./HtmlWebpackPluginPreload";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import HtmlWebpackPlugin from "html-webpack-plugin";
@@ -10,7 +11,6 @@ import { GenerateSW } from "workbox-webpack-plugin";
 import TerserPlugin from "terser-webpack-plugin";
 import FaviconsWebpackPlugin from "favicons-webpack-plugin";
 import CopyPlugin from "copy-webpack-plugin";
-
 // @ts-ignore
 import RobotstxtPlugin from "robotstxt-webpack-plugin";
 
@@ -91,8 +91,21 @@ const config: webpack.Configuration = {
 
     new webpack.ProvidePlugin({ React: ["react"] }),
 
+    new SetManifestIconsPurpose({
+      purpose: "any maskable",
+    }),
+    new HtmlWebpackPluginPreload(),
+    new HtmlWebpackPluginInlineStyle(),
+
     // game
     new HtmlWebpackPlugin({
+      preloadFileExtension: ["ttf", "otf", "woff", "woff2"],
+      inlineStyle: `html{
+        touch-action: none;
+        user-select: none;
+        min-height:100%;
+        ${themeGame.backgroundStyle.styles}
+      }`,
       title: appGame.name,
       filename: "game/index.html",
       chunks: ["game"],
@@ -117,19 +130,6 @@ const config: webpack.Configuration = {
         removeStyleLinkTypeAttributes: true,
         useShortDoctype: true,
       },
-    }),
-    new SetManifestIconsPurpose({
-      inject: (htmlPlugin) => htmlPlugin.options.filename.includes("game"),
-      purpose: "any maskable",
-    }),
-    new HtmlWebpackPluginInlineStyle({
-      inject: (htmlPlugin) => htmlPlugin.options.filename.includes("game"),
-      inlineStyle: `html{
-        touch-action: none;
-        user-select: none;
-        min-height:100%;
-        ${themeGame.backgroundStyle.styles}
-      }`,
     }),
     new FaviconsWebpackPlugin({
       logo: path.resolve(__dirname, "../app-game/assets/images/icon.png"),
@@ -174,6 +174,12 @@ const config: webpack.Configuration = {
 
     // solver
     new HtmlWebpackPlugin({
+      inlineStyle: `html{
+        touch-action: none;
+        user-select: none;
+        min-height:100%;
+        ${themeSolver.backgroundStyle.styles}
+      }`,
       title: appSolver.name,
       filename: "solver/index.html",
       chunks: ["solver"],
@@ -198,20 +204,6 @@ const config: webpack.Configuration = {
         removeStyleLinkTypeAttributes: true,
         useShortDoctype: true,
       },
-    }),
-    new HtmlWebpackPluginInlineStyle({
-      inject: (htmlPlugin: any) =>
-        htmlPlugin.options.filename.includes("solver"),
-      inlineStyle: `html{
-        touch-action: none;
-        user-select: none;
-        min-height:100%;
-        ${themeSolver.backgroundStyle.styles}
-      }`,
-    }),
-    new SetManifestIconsPurpose({
-      inject: (htmlPlugin) => htmlPlugin.options.filename.includes("solver"),
-      purpose: "any maskable",
     }),
     new FaviconsWebpackPlugin({
       logo: path.resolve(__dirname, "../app-solver/assets/images/icon192.png"),

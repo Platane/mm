@@ -2,16 +2,13 @@ import type { Compiler } from "webpack";
 
 type Options = {
   purpose: string;
-  inject?: ((a: any) => boolean) | boolean | undefined;
 };
 
 class SetManifestIconsPurpose {
   purpose = "";
-  inject: Options["inject"];
 
-  constructor({ purpose, inject }: Options) {
+  constructor({ purpose }: Options) {
     this.purpose = purpose;
-    this.inject = inject;
   }
 
   apply(compiler: Compiler) {
