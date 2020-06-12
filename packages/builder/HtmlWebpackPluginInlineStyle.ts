@@ -1,5 +1,5 @@
 import type { Compiler } from "webpack";
-import * as HtmlWebpackPlugin from "html-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
 
 // @ts-ignore
 import { createHtmlTagObject } from "html-webpack-plugin/lib/html-tags";

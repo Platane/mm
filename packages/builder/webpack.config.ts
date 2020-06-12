@@ -4,20 +4,15 @@ import * as webpack from "webpack";
 import SetManifestIconsPurpose from "./SetManifestIconsPurpose";
 import HtmlWebpackPluginInlineStyle from "./HtmlWebpackPluginInlineStyle";
 import { CleanWebpackPlugin } from "clean-webpack-plugin";
-// @ts-ignore
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-// @ts-ignore
 import HtmlWebpackPlugin from "html-webpack-plugin";
-// @ts-ignore
 import { GenerateSW } from "workbox-webpack-plugin";
-// @ts-ignore
 import TerserPlugin from "terser-webpack-plugin";
+import FaviconsWebpackPlugin from "favicons-webpack-plugin";
+import CopyPlugin from "copy-webpack-plugin";
+
 // @ts-ignore
 import RobotstxtPlugin from "robotstxt-webpack-plugin";
-// @ts-ignore
-import FaviconsWebpackPlugin from "favicons-webpack-plugin";
-// @ts-ignore
-import CopyPlugin from "copy-webpack-plugin";
 
 import * as pkgGame from "../app-game/package.json";
 import * as themeGame from "../app-game/components/theme";
@@ -137,7 +132,6 @@ const config: webpack.Configuration = {
       }`,
     }),
     new FaviconsWebpackPlugin({
-      // @ts-ignore
       logo: path.resolve(__dirname, "../app-game/assets/images/icon.png"),
       publicPath: "/" + basePathname.join("/"),
       prefix: "game/",
@@ -166,15 +160,17 @@ const config: webpack.Configuration = {
         },
       },
     }),
-    new CopyPlugin([
-      {
-        from: path.resolve(
-          __dirname,
-          "../app-game/assets/images/screenshot_1800x600.png"
-        ),
-        to: "game/",
-      },
-    ]),
+    new CopyPlugin({
+      patterns: [
+        {
+          from: path.resolve(
+            __dirname,
+            "../app-game/assets/images/screenshot_1800x600.png"
+          ),
+          to: "game/",
+        },
+      ],
+    }),
 
     // solver
     new HtmlWebpackPlugin({

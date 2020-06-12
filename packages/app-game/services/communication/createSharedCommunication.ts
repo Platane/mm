@@ -7,14 +7,12 @@ export const createSharedCommunication = (
 ) => {
   const clientId = generateId();
 
-  // @ts-ignore
   if (typeof SharedWorker === "undefined")
     return { clientId, dispose: () => {}, publish: () => {} };
 
-  // @ts-ignore
   const worker = new SharedWorker(workerUrl);
 
-  worker.onError = console.error;
+  worker.onerror = console.error;
 
   const publish = (message: { type: string } & any) => {
     worker.port.postMessage({ ...message, clientId });
