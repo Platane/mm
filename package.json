@@ -24,7 +24,7 @@
   ],
   "scripts": {
     "type": "tsc --noEmit",
-    "lint": "yarn prettier -c '**/*.{ts,tsx,js,jsx,json,md}' '!**/dist/**'",
+    "lint": "yarn prettier -c '**/*.{ts,tsx,js,jsx,json,md,yml,yaml}' '!**/dist/**'",
     "test": "NODE_ENV=test jest --verbose",
     "build": "( cd packages/builder ; yarn build )",
     "dev": "( cd packages/builder ; yarn dev )"
