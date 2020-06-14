@@ -2,13 +2,16 @@ import { Global, css } from "@emotion/core";
 
 import milkshake_otf from "../assets/fonts/Milkshake/Milkshake.otf";
 import milkshake_ttf from "../assets/fonts/Milkshake/Milkshake.ttf";
+import milkshake_woff from "../assets/fonts/Milkshake/Milkshake.woff";
+import milkshake_woff2 from "../assets/fonts/Milkshake/Milkshake.woff2";
 import { bright, brightShade, brightLight } from "./theme";
 
 const fontFace = css`
   @font-face {
     font-family: Milkshake;
     src: url(${milkshake_ttf}) format("truetype"),
-      url(${milkshake_otf}) format("otf");
+      url(${milkshake_woff2}) format("woff2"),
+      url(${milkshake_woff}) format("woff"), url(${milkshake_otf}) format("otf");
   }
 `;
 
