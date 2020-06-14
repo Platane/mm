@@ -1,0 +1,27 @@
+{
+  "name": "@mm/app-game",
+  "version": "2.0.0",
+  "description": "__Master Mind™ Game__ Play the classic Master Mind game.",
+  "author": {
+    "name": "platane",
+    "url": "https://platane.github.io",
+    "twitter": "@platane_"
+  },
+  "homepage": "https://github.com/platane/mm",
+  "private": true,
+  "sideEffect": true,
+  "dependencies": {
+    "@emotion/core": "10.0.28",
+    "@emotion/styled": "10.0.27",
+    "@mm/solver": "2.0.0",
+    "@mm/utils": "2.0.0",
+    "@wessberg/pointer-events": "1.0.9",
+    "immer": "7.0.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  },
+  "devDependencies": {
+    "@types/react": "16.9.36",
+    "@types/react-dom": "16.9.8"
+  }
+}

@@ -1,48 +1,32 @@
 {
-    "name": "master-mind-solver",
-    "version": "1.0.0",
-    "dependencies": {
-        "prop-types": "15.5.10",
-        "react": "15.6.1",
-        "react-dom": "15.6.1",
-        "react-redux": "5.0.6",
-        "redux": "3.7.2"
-    },
-    "devDependencies": {
-        "@storybook/cli": "3.1.6",
-        "@storybook/react": "3.1.8",
-        "babel-cli": "6.24.1",
-        "babel-loader": "7.1.1",
-        "babel-plugin-add-module-exports": "0.2.1",
-        "babel-plugin-css-modules-transform": "1.2.7",
-        "babel-plugin-transform-assets-import-to-string": "1.0.1",
-        "babel-plugin-transform-async-to-generator": "6.24.1",
-        "babel-plugin-transform-class-properties": "6.24.1",
-        "babel-plugin-transform-runtime": "6.23.0",
-        "babel-preset-flow": "6.23.0",
-        "babel-preset-react": "6.24.1",
-        "babel-runtime": "6.23.0",
-        "css-loader": "0.28.4",
-        "extract-text-webpack-plugin": "3.0.0",
-        "file-loader": "0.11.2",
-        "flow-bin": "0.49.1",
-        "flow-typed": "2.1.2",
-        "jest": "20.0.4",
-        "raw-loader": "0.5.1",
-        "react-test-renderer": "15.6.1",
-        "style-loader": "0.18.2",
-        "webpack": "3.1.0",
-        "webpack-dev-server": "2.5.1"
-    },
-    "jest": {
-        "verbose": true,
-        "testMatch": ["**/?(*.)(spec|test).js"]
-    },
-    "scripts": {
-        "start": "webpack-dev-server --inline --devtool source-map -d",
-        "storybook": "start-storybook -p 6006",
-        "build": "env NODE_ENV=production webpack && cp ./src/manifest.json ./dist/manifest.json && cp ./src/asset/icon/* ./dist/ && cp ./src/asset/screenshot/* ./dist/ && node ./script/renameFile.js",
-        "benchmark": "babel --out-dir ./dist-bench --quiet ./src && node ./dist-bench/__benchmark__/index.js 100",
-        "test": "env NODE_ENV=test jest"
-    }
+  "name": "mm",
+  "version": "2.0.0",
+  "private": true,
+  "repository": "github:platane/mm",
+  "devDependencies": {
+    "@babel/cli": "7.10.1",
+    "@babel/core": "7.10.2",
+    "@babel/node": "7.10.1",
+    "@babel/plugin-transform-modules-commonjs": "7.10.1",
+    "@babel/preset-env": "7.10.2",
+    "@babel/preset-react": "7.10.1",
+    "@babel/preset-typescript": "7.10.1",
+    "@emotion/babel-preset-css-prop": "10.0.27",
+    "@types/jest": "26.0.0",
+    "jest": "26.0.1",
+    "prettier": "2.0.5",
+    "surge": "0.21.3",
+    "ts-jest": "26.1.0",
+    "typescript": "3.9.5"
+  },
+  "workspaces": [
+    "packages/**"
+  ],
+  "scripts": {
+    "type": "tsc --noEmit",
+    "lint": "yarn prettier -c '**/*.{ts,tsx,js,jsx,json,md,yml,yaml}' '!**/dist/**'",
+    "test": "NODE_ENV=test jest --verbose",
+    "build": "( cd packages/builder ; yarn build )",
+    "dev": "( cd packages/builder ; yarn dev )"
+  }
 }

@@ -1,0 +1,73 @@
+name: main
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - uses: bahmutov/npm-install@v1
+
+      - run: yarn type
+      - run: yarn lint
+      - run: yarn test --ci
+      - run: ( cd packages/benchmark ; yarn start 6 4 60 )
+
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: generate deploy url
+        id: url
+        run: |
+          echo "$SHA-mm.surge.sh"
+          echo "::set-output name=deploy_origin::$SHA-mm.surge.sh"
+          echo "::set-output name=deploy_url::https://$SHA-mm.surge.sh"
+          echo "::set-output name=game_deploy_url::https://$SHA-mm.surge.sh/game"
+        env:
+          SHA: ${{ github.sha }}
+
+      - uses: chrnorm/deployment-action@releases/v1
+        id: deployment
+        with:
+          token: ${{ github.token }}
+          target_url: ${{ steps.url.outputs.game_deploy_url }}
+          environment: preview
+          ref: ${{ github.sha }}
+
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14
+
+      - uses: bahmutov/npm-install@v1
+
+      - run: yarn build
+        env:
+          PUBLIC_URL: ${{ steps.url.outputs.deploy_url }}
+
+      - run: yarn surge ./dist $DEPLOY_ORIGIN
+        env:
+          SURGE_TOKEN: ${{ secrets.SURGE_TOKEN }}
+          SURGE_LOGIN: ${{ secrets.SURGE_LOGIN }}
+          DEPLOY_ORIGIN: ${{ steps.url.outputs.deploy_origin }}
+
+      - uses: chrnorm/deployment-status@releases/v1
+        with:
+          token: ${{ github.token }}
+          target_url: ${{ steps.url.outputs.game_deploy_url }}
+          state: "success"
+          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+
+      - uses: peter-evans/commit-comment@v1
+        with:
+          token: ${{ github.token }}
+          sha: ${{ github.sha }}
+          body: |
+            preview url [${{ steps.url.outputs.game_deploy_url }}](${{ steps.url.outputs.game_deploy_url }})

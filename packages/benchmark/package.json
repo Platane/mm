@@ -1,0 +1,10 @@
+{
+  "name": "@mm/benchmark",
+  "version": "2.0.0",
+  "private": true,
+  "sideEffect": false,
+  "scripts": {
+    "start": "NODE_ENV=test node ./dev.js",
+    "_start": "NODE_ENV=test babel-node --extensions \".ts\" --config-file ../../babel.config.js --eval \"require('./run').run(+process.argv[2],+process.argv[3],+process.argv[4])\""
+  }
+}

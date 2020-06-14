@@ -1,0 +1,26 @@
+{
+  "name": "@mm/app-solver",
+  "version": "2.0.0",
+  "description": "__Master Mind™ Solver__ Solve any Master Mind game from your pocket. Helpful to repeatedly beat your friend at this game.",
+  "author": {
+    "name": "platane",
+    "url": "https://platane.github.io",
+    "twitter": "@platane_"
+  },
+  "homepage": "https://github.com/platane/mm",
+  "private": true,
+  "sideEffect": true,
+  "dependencies": {
+    "@emotion/core": "10.0.28",
+    "@emotion/styled": "10.0.27",
+    "@mm/app-game": "2.0.0",
+    "@mm/solver": "2.0.0",
+    "@mm/utils": "2.0.0",
+    "react": "16.13.1",
+    "react-dom": "16.13.1"
+  },
+  "devDependencies": {
+    "@types/react": "16.9.36",
+    "@types/react-dom": "16.9.8"
+  }
+}
