@@ -91,6 +91,12 @@ const config: webpack.Configuration = {
     ],
   },
   plugins: [
+    new webpack.DefinePlugin({
+      "process.env.BASE_PATHNAME": JSON.stringify(
+        "/" + basePathname.map((x) => x + "/").join("")
+      ),
+    }),
+
     new CleanWebpackPlugin(),
 
     new webpack.ProvidePlugin({ React: ["react"] }),

@@ -15,7 +15,7 @@ export const App = () => {
         {page === "game" && (
           <>
             <Separator />
-            <a href="/solver" target="_blank">
+            <a href={process.env.BASE_PATHNAME + "solver"} target="_blank">
               <label>open solver</label>
             </a>
           </>
