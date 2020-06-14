@@ -8,6 +8,7 @@ import { colorSchemeEquals } from "@mm/app-game/services/colorScheme";
 import { MAX_P, MAX_N } from "@mm/app-game/services/config";
 import { Button } from "./Button";
 import type { ColorScheme } from "@mm/app-game/services/colorScheme";
+import type { Session } from "@mm/app-game/services/communication/session";
 
 export const OnBoarding = ({
   p,
@@ -17,6 +18,8 @@ export const OnBoarding = ({
   colorSchemes,
   colorScheme,
   onStartGame,
+  bindSession,
+  availableSessions,
 }: {
   p: number;
   n: number;
@@ -25,12 +28,61 @@ export const OnBoarding = ({
   colorSchemes: ColorScheme[];
   colorScheme: ColorScheme;
   onStartGame: () => void;
+  availableSessions: Session[];
+  bindSession: (id: string) => void;
 }) => {
-  const [step, setStep] = useState<"intro" | "n" | "p">("n");
+  const [availableSession] = availableSessions;
+  const [step, setStep] = useState<"intro" | "n" | "p">("intro");
   const { t } = useTranslate();
 
   return (
     <Container>
+      {step === "intro" && (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            setStep("n");
+          }}
+        >
+          <Content>
+            <label>
+              This app Compute the best combination to win every master mind
+              game
+            </label>
+
+            <Separator />
+            <Separator />
+
+            {availableSession ? (
+              <>
+                <label>{t("there_is_a_game_running_in_another_window")}</label>
+
+                <Separator />
+
+                <Row>
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      bindSession(availableSession.id);
+                    }}
+                  >
+                    {t("solve_this_game")}
+                  </Button>
+
+                  <label style={{ margin: "0 4px" }}>{t("or")}</label>
+
+                  <Button type="submit">{t("start_fresh")}</Button>
+                </Row>
+
+                <Separator />
+              </>
+            ) : (
+              <Button type="submit">{t("ok")}</Button>
+            )}
+          </Content>
+        </form>
+      )}
+
       {step === "n" && (
         <form
           onSubmit={(e) => {
@@ -108,6 +160,13 @@ export const OnBoarding = ({
     </Container>
   );
 };
+
+const Row = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+`;
 
 const ColorSchemes = styled.div`
   min-height: 200px;

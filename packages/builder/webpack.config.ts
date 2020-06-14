@@ -206,7 +206,7 @@ const config: webpack.Configuration = {
       },
     }),
     new FaviconsWebpackPlugin({
-      logo: path.resolve(__dirname, "../app-solver/assets/images/icon192.png"),
+      logo: path.resolve(__dirname, "../app-solver/assets/images/icon.png"),
       publicPath: "/" + basePathname.join("/"),
       prefix: "solver/",
       inject: (htmlPlugin: any) =>

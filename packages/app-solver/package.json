@@ -1,7 +1,7 @@
 {
   "name": "@mm/app-solver",
   "version": "2.0.0",
-  "description": "__🏴‍☠️ Master Mind™ Solver__ Solve any Master Mind game from your pocket. Helpful to repeatedly beat your friend at this game.",
+  "description": "__Master Mind™ Solver__ Solve any Master Mind game from your pocket. Helpful to repeatedly beat your friend at this game.",
   "author": {
     "name": "platane",
     "url": "https://platane.github.io",
