@@ -8,8 +8,6 @@
     "noUnusedParameters": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
-    "resolveJsonModule": true,
-    "noEmit": true,
     "esModuleInterop": true
   },
   "exclude": ["node_modules"],

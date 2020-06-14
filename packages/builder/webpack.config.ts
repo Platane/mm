@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import * as url from "url";
 import * as path from "path";
 import * as webpack from "webpack";
@@ -14,9 +15,7 @@ import CopyPlugin from "copy-webpack-plugin";
 // @ts-ignore
 import RobotstxtPlugin from "robotstxt-webpack-plugin";
 
-import * as pkgGame from "../app-game/package.json";
 import * as themeGame from "../app-game/components/theme";
-import * as pkgSolver from "../app-solver/package.json";
 import * as themeSolver from "../app-solver/components/theme";
 
 const mode =
@@ -41,12 +40,24 @@ const extractApp = (pkg: any) => ({
 });
 
 const appGame = {
-  ...extractApp(pkgGame),
+  ...extractApp(
+    JSON.parse(
+      fs
+        .readFileSync(path.resolve(__dirname, "../app-game/package.json"))
+        .toString()
+    )
+  ),
   screenshot_1600x800:
     "/" + [...basePathname, "game", "screenshot_1600x800.jpg"].join("/"),
 };
 const appSolver = {
-  ...extractApp(pkgSolver),
+  ...extractApp(
+    JSON.parse(
+      fs
+        .readFileSync(path.resolve(__dirname, "../app-solver/package.json"))
+        .toString()
+    )
+  ),
   screenshot_1200x800:
     "/" + [...basePathname, "solver", "screenshot_1200x800.jpg"].join("/"),
 };
@@ -92,6 +103,7 @@ const config: webpack.Configuration = {
   },
   plugins: [
     new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify(mode),
       "process.env.BASE_PATHNAME": JSON.stringify(
         "/" + basePathname.map((x) => x + "/").join("")
       ),
