@@ -42,10 +42,14 @@ const extractApp = (pkg: any) => ({
 
 const appGame = {
   ...extractApp(pkgGame),
-  screenshot_1800x600:
-    "/" + [...basePathname, "game", "screenshot_1800x600.png"].join("/"),
+  screenshot_1600x800:
+    "/" + [...basePathname, "game", "screenshot_1600x800.jpg"].join("/"),
 };
-const appSolver = extractApp(pkgSolver);
+const appSolver = {
+  ...extractApp(pkgSolver),
+  screenshot_1200x800:
+    "/" + [...basePathname, "solver", "screenshot_1200x800.jpg"].join("/"),
+};
 
 const outputPath = path.join(__dirname, "../../dist");
 
@@ -114,12 +118,12 @@ const config: webpack.Configuration = {
         "og:type": "website",
         "og:title": appGame.name,
         "og:description": appGame.description,
-        "og:image": appGame.screenshot_1800x600,
+        "og:image": appGame.screenshot_1600x800,
         "twitter:card": "summary_large_image",
         "twitter:title": appGame.name,
         "twitter:description": appGame.description,
         "twitter:creator": appGame.developer.twitter,
-        "twitter:image": appGame.screenshot_1800x600,
+        "twitter:image": appGame.screenshot_1600x800,
         viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
       },
       minify: mode === "production" && {
@@ -143,7 +147,7 @@ const config: webpack.Configuration = {
         developerURL: appGame.developer.url,
         version: appGame.version,
         background: themeGame.background,
-        theme_color: themeGame.theme_color,
+        theme_color: themeGame.background,
         display: "standalone",
         orientation: "portrait",
         start_url: "/" + [...basePathname, "game"].join("/") + "/",
@@ -165,9 +169,23 @@ const config: webpack.Configuration = {
         {
           from: path.resolve(
             __dirname,
-            "../app-game/assets/images/screenshot_1800x600.png"
+            "../app-game/assets/images/screenshot_1600x800.jpg"
           ),
           to: "game/",
+        },
+        {
+          from: path.resolve(
+            __dirname,
+            "../app-game/assets/images/screenshot_800x800.jpg"
+          ),
+          to: "game/",
+        },
+        {
+          from: path.resolve(
+            __dirname,
+            "../app-solver/assets/images/screenshot_1200x800.jpg"
+          ),
+          to: "solver/",
         },
       ],
     }),
@@ -188,11 +206,11 @@ const config: webpack.Configuration = {
         "og:type": "website",
         "og:title": appSolver.name,
         "og:description": appSolver.description,
-        "og:image": "",
+        "og:image": appSolver.screenshot_1200x800,
         "twitter:card": "summary_large_image",
         "twitter:title": appSolver.name,
         "twitter:description": appSolver.description,
-        "twitter:image": "",
+        "twitter:image": appSolver.screenshot_1200x800,
         "twitter:creator": appSolver.developer.twitter,
         viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
       },
@@ -218,7 +236,7 @@ const config: webpack.Configuration = {
         developerURL: appSolver.developer.url,
         version: appSolver.version,
         background: themeSolver.background,
-        theme_color: themeSolver.theme_color,
+        theme_color: themeSolver.background,
         display: "standalone",
         orientation: "portrait",
         start_url: "/" + [...basePathname, "solver"].join("/") + "/",
