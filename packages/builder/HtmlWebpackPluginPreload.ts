@@ -29,9 +29,16 @@ class HtmlWebpackPluginPreload {
                 const href = path.join(publicPath, asset);
                 const as = "font";
                 const type = "font/" + extension;
+                const crossorigin = true;
 
                 data.assetTags.styles.push(
-                  createHtmlTagObject("link", { rel, href, as, type })
+                  createHtmlTagObject("link", {
+                    rel,
+                    href,
+                    as,
+                    type,
+                    crossorigin,
+                  })
                 );
               }
             });
