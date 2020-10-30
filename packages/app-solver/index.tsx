@@ -8,6 +8,11 @@ const root = document.createElement("div");
 document.body.appendChild(root);
 root.id = "root";
 
+Promise.resolve().then(async () => {
+  const { greet } = await import("solver-wasm");
+  greet();
+});
+
 render(
   <StrictMode>
     <NormalizeCss />

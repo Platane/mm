@@ -20,7 +20,8 @@
     "typescript": "3.9.5"
   },
   "workspaces": [
-    "packages/**"
+    "packages/**",
+    "packages/solver-wasm/pkg/package.json"
   ],
   "scripts": {
     "type": "tsc --noEmit",

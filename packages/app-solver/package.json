@@ -11,6 +11,7 @@
   "private": true,
   "sideEffect": true,
   "dependencies": {
+    "solver-wasm": "0.1.0",
     "@emotion/core": "10.0.28",
     "@emotion/styled": "10.0.27",
     "@mm/app-game": "2.0.0",
